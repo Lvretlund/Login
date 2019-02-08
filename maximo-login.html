@@ -7,24 +7,42 @@
 
 <dom-module id="maximo-login">
     <template>
-        <h2>Login och hej!</h2>
+        <h2>Maximo Purchase Orders</h2>
         <iron-form id="form1">
             <form action="/foo" method="get">
                 <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
                 <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
                 <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
-                <paper-button raised class="indigo" raised on-tap="performLogin">Sign In</paper-button>&nbsp;
-                <paper-spinner-lite id="spinner"></paper-spinner-lite>
+                <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
             </form>
         </iron-form>
 
     </template>
 
     <script>
-        HTMLImports.whenReady(function () {
-            Polymer({
-                is: "maximo-login"
-            })
-        })
+        class MaximoLogin extends Polymer.Element {
+            static get is() {
+                return 'maximo-login';
+            }
+
+            performLogin() {
+                let baseUrl = this.get('baseUrl')
+                if (!(baseUrl.toLowerCase().startsWith('http://'))
+                    && !(baseUrl.toLowerCase().startsWith('https://'))) {
+                    this.$.spinner.active = false
+                    this.error = `The URL ${baseUrl} is malformed, please add the protocol information at the beginning.`
+                } else {
+                    //if the given URL doesn't end with a /, add one
+                    if (baseUrl[baseUrl.length - 1] !== '/') {
+                        baseUrl = baseUrl + '/'
+                    }
+                    this.set('baseUrl', baseUrl)
+                    this.$.spinner.active = true
+                    this.$.maximoLoginAjax.headers['maxAuth'] = btoa(`${this.get('username')}:${this.get('password')}`)
+                    this.$.maximoLoginAjax.generateRequest()
+                }
+            }
+        }
+        window.customElements.define(MaximoLogin.is, MaximoLogin);
     </script>
 </dom-module>
