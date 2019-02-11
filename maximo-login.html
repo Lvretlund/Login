@@ -4,6 +4,8 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <dom-module id="maximo-login">
     <template>
@@ -12,28 +14,18 @@
         <iron-ajax id="maximoLoginAjax" with-credentials content-type="application/json" url="[[baseUrl]]maximo/oslc/login" method="post"
                    handle-as="json" on-response="_handleLoginResponse" on-error="_handleLoginError"></iron-ajax>
 
-        <h1>IBM MAXIMO</h1>
-        <h2>Enterprise Asset Management</h2>
-        <iron-form id="form1">
-            <form action="/foo" method="get">
-                <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
-                <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
-                <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
-                <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
-            </form>
-        </iron-form>
-
-        <iron-ajax auto
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
+        <div class"card">
+            <h1>IBM MAXIMO</h1>
+            <h2>Enterprise Asset Management</h2>
+            <iron-form id="form1">
+                <form action="/foo" method="get">
+                    <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
+                    <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
+                    <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
+                    <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
+                </form>
+            </iron-form>
+        </div>
     </template>
 
 
@@ -66,15 +58,6 @@
                     composed: true
                 }))
                 alert("gfgfgg");
-            }
-
-            _handleResponse(event) {
-                this.set('authenticated', true)
-                // the user is already authenticated,
-                // if it is on login page and has a valid whoAmI response, redirect to the wo list
-                if ((this.get('route.path') === '/login' || this.get('route.path') === '/') && this.get('whoAmI'))
-                    this.set('route.path', '/work-orders-list/1')
-                alert("mamama");
             }
         }
         window.customElements.define(MaximoLogin.is, MaximoLogin);

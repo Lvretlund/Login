@@ -1,0 +1,163 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="maximo-icons.html">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<!--importerar övriga moduler-->
+<link rel="lazy-import" href="maximo-login.html">
+<link rel="lazy-import" href="maximo-purchaseorders.html">
+<link rel="lazy-import" href="maximo-logout.html">
+
+<dom-module id="maximo-app">
+    <template>
+
+        <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
+        <app-location route="{{route}}"
+                      url-space-regex="^[[rootPath]]">
+        </app-location>
+
+        <iron-ajax auto
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/whoami"
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{whoAmI}}"
+                   on-response="_handleResponse"
+                   on-error="_handleError"
+                   debounce-duration="1000"></iron-ajax>
+
+        <app-route route="{{route}}"
+                   pattern="[[rootPath]]:page"
+                   data="{{routeData}}"
+                   tail="{{subroute}}">
+        </app-route>
+
+        <app-drawer-layout fullbleed narrow="{{narrow}}">
+
+            <!-- Main content -->
+            <app-header-layout has-scrolling-region>
+
+                <app-header slot="header" condenses reveals effects="waterfall">
+                    <app-toolbar id="toolBar">
+                        <div main-title>Maximo Purchase Orders</div>
+                        <template is="dom-if" if="[[authenticated]]">
+                            <paper-button raised class="green" on-tap="goto" data-args="user">[[whoAmI.displayName]]</paper-button>
+                            <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Purchase Orders</paper-button>
+                            <paper-button raised class="green" on-tap="goto" data-args="logout">Log out</paper-button>
+                        </template>
+                    </app-toolbar>
+                </app-header>
+                <iron-pages style="margin: auto;width: 80%;"
+                            selected="[[page]]"
+                            attr-for-selected="name"
+                            fallback-selection="maximo-not-found"
+                            role="main">
+                    <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
+                    <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
+                    <maximo-purchaseorders name="purchaseorders"></maximo-purchaseorders>
+                </iron-pages>
+            </app-header-layout>
+        </app-drawer-layout>
+
+    </template>
+
+    <script>
+        class MaximoApp extends Polymer.Element {
+            static get is() { return 'maximo-app'; }
+
+            static get properties() {
+                return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    },
+                    routeData: Object,
+                    subroute: String,
+                    // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // Polymer.Element#rootPath
+                    rootPath: String,
+                    authenticated: {
+                        type: Boolean,
+                        value: false
+                    },
+                    whoAmI: {
+                        type: Object,
+                        notify: true
+                    }
+                };
+            }
+
+            goto(e) {
+                var link = e.target.getAttribute('data-args')
+                this.set('route.path', link);
+            }
+
+            //we want the user to go to the home page after authentication
+            _onAuthenticated() {
+                this.set('authenticated', true)
+                this.set('route.path', '/purchaseorders')
+            }
+
+            _handleResponse(event) {
+                this.set('authenticated', true)
+                // the user is already authenticated,
+                // if it is on login page and has a valid whoAmI response, redirect to the wo list
+                if ((this.get('route.path') === '/login' || this.get('route.path') === '/') && this.get('whoAmI'))
+                    this.set('route.path', '/purchaseorders')
+            }
+
+            _handleError(event) {
+                this._onLogout()
+            }
+
+            _onLogout() {
+                this.set('authenticated', false)
+                this.set('route.path', '/login');
+            }
+
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)',
+                ];
+            }
+
+            _routePageChanged(page) {
+                // If no page was found in the route data, page will be an empty string.
+                // Default to 'view1' in that case.
+                this.page = page || 'login';
+            }
+
+            _pageChanged(page) {
+                // Load page import on demand. Show 404 page if fails
+                var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');
+                Polymer.importHref(
+                    resolvedPageUrl,
+                    null,
+                    this._showPage404.bind(this),
+                    true);
+            }
+
+            _showPage404() {
+                this.page = 'not-found';
+            }
+        }
+
+        window.customElements.define(MaximoApp.is, MaximoApp);
+    </script>
+
+</dom-module>
