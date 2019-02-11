@@ -23,19 +23,19 @@
             </form>
         </iron-form>
 
+        <iron-ajax auto
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/whoami"
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{whoAmI}}"
+                   on-response="_handleResponse"
+                   on-error="_handleError"
+                   debounce-duration="1000"></iron-ajax>
     </template>
 
-    <iron-ajax auto
-               with-credentials
-               content-type="application/json"
-               url="[[baseUrl]]maximo/oslc/whoami"
-               method="get"
-               handle-as="json"
-               content-type="application/json"
-               last-response="{{whoAmI}}"
-               on-response="_handleResponse"
-               on-error="_handleError"
-               debounce-duration="1000"></iron-ajax>
 
     <script>
         class MaximoLogin extends Polymer.Element {
