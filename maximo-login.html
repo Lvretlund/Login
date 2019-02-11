@@ -74,6 +74,7 @@
                 // if it is on login page and has a valid whoAmI response, redirect to the wo list
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/') && this.get('whoAmI'))
                     this.set('route.path', '/work-orders-list/1')
+                alert("mamama");
             }
         }
         window.customElements.define(MaximoLogin.is, MaximoLogin);
