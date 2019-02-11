@@ -12,18 +12,6 @@
         <iron-ajax id="maximoLoginAjax" with-credentials content-type="application/json" url="[[baseUrl]]maximo/oslc/login" method="post"
                    handle-as="json" on-response="_handleLoginResponse" on-error="_handleLoginError"></iron-ajax>
 
-        <iron-ajax auto
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
-
         <h1>IBM MAXIMO</h1>
         <h2>Enterprise Asset Management</h2>
         <iron-form id="form1">
@@ -36,6 +24,18 @@
         </iron-form>
 
     </template>
+
+    <iron-ajax auto
+               with-credentials
+               content-type="application/json"
+               url="[[baseUrl]]maximo/oslc/whoami"
+               method="get"
+               handle-as="json"
+               content-type="application/json"
+               last-response="{{whoAmI}}"
+               on-response="_handleResponse"
+               on-error="_handleError"
+               debounce-duration="1000"></iron-ajax>
 
     <script>
         class MaximoLogin extends Polymer.Element {
@@ -70,7 +70,7 @@
 
             _handleResponse(event) {
                 this.set('authenticated', true)
-                // the user is already authenticated, 
+                // the user is already authenticated,
                 // if it is on login page and has a valid whoAmI response, redirect to the wo list
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/') && this.get('whoAmI'))
                     this.set('route.path', '/work-orders-list/1')
