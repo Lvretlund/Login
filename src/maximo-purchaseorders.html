@@ -26,16 +26,17 @@
                    last-response="{{PurchaseOrders}}"
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
-        <div id="polist">
-            <h1>Purchase Orders List</h1>
-            <template is="dom-if" if="[[error]]">
-                <p class="alert-error"><strong>Error:</strong> [[error]]</p>
-            </template>
-            <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
-            <span style="margin: 16px 0px 0px 16px;"><a href="[[_prevPageUrl(pageData.num)]]">Prev Page</a></span>
-            <span style="margin: 16px 0px 0px 16px;"><a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]>Next Page</a></span>
-            <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
-
+        <div id="poList">
+            <div id="poListTxt">
+                <h1>Purchase Orders List</h1>
+                <template is="dom-if" if="[[error]]">
+                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+                </template>
+                <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
+                <span style="margin: 16px 0px 0px 16px;"><a href="[[_prevPageUrl(pageData.num)]]">Prev Page</a></span>
+                <span style="margin: 16px 0px 0px 16px;"><a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]>Next Page</a></span>
+                <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
+            </div>
             <template is="dom-repeat" items="{{PurchaseOrders.rdfs:member}}">
                 <div class="card">
                     <div class="circle"><span>{{item.spi:ponum}}</span></div><span style="margin: 32px;">{{item.spi:description}} </span> <span style="margin: 32px;">{{item.spi:poid}} ID </span>
