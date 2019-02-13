@@ -12,7 +12,9 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="maximo-icons.html">
+
 <!--<link rel="stylesheet" type="text/css" href="style.css">-->
 <link rel="import" href="shared-styles.html">
 
@@ -55,11 +57,14 @@
                 <app-header slot="header" condenses reveals effects="waterfall">
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
+                            <iron-icon class="menu" icon="menu"></iron-icon>
                             <div main-title>Maximo Work Orders</div>
                             <span style="padding-right: 20px">[[whoAmI.displayName]]</span>
                             <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Home</paper-button>
                             <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Purchase orders</paper-button>
                             <paper-button raised class="green" on-tap="_onLogout">Log out</paper-button>
+                            <iron-icon class="menu" icon="home"></iron-icon>
+                            <iron-icon class="menu" icon="face"></iron-icon>
                         </app-toolbar>
                     </template>
                 </app-header>
