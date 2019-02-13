@@ -26,14 +26,14 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
-        <div class"card">
+        <div class"card" style="text-align: center;">
             <h1>IBM MAXIMO</h1>
             <h2>Enterprise Asset Management</h2>
-            <iron-form id="form1">
+            <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
                 <form action="/foo" method="get">
                     <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
                     <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
-                    <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
+                    <template><paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input></template>
                     <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
                 </form>
             </iron-form>
