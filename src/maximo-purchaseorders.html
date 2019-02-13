@@ -1,18 +1,103 @@
 ﻿<!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-purchaseorders">
     <!-- Defines the element's style and local DOM -->
     <template>
+        <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/purchaseorders/:num" data="{{pageData}}"></app-route>
+        <iron-ajax auto
+                   id="maximoPurchaseOrdersListAjax"
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo"
+                   params="[[_urlParams2(pageData.num)]]"
+                   method="get"
+                   handle-as="json"
+                   last-response="{{PurchaseOrders}}"
+                   on-response="_handleResponse"
+                   on-error="_handleError"></iron-ajax>
+        <h1>Purchase Orders List</h1>
+        <template is="dom-if" if="[[error]]">
+            <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+        </template>
+        <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
+        <span style="margin: 16px 0px 0px 16px;"><a href="[[_prevPageUrl(pageData.num)]]">Prev Page</a></span>
+        <span style="margin: 16px 0px 0px 16px;"><a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]>Next Page</a></span>
+        <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
+
+        <template is="dom-repeat" items="{{PurchaseOrders.rdfs:member}}">
+            <div class="card">
+                <div class="circle"><span>{{item.spi:ponum}}</span></div><span style="margin: 32px;">{{item.spi:description}} aaa </span> <span style="margin: 32px;">{{item.spi:poid}} ID </span>
+                <div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{item.spi:status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><div style="display:inline;"><a name="purchase-order" href="[[rootPath]]purchase-order/{{item.spi:poid}}">View Details >></a></div></div>
+            </div>
+        </template>
 
         <h1>TEST</h1>
     </template>
     <script>
-    // Your new element extends the Polymer.Element base class
-    class MaximoPurchaseOrders extends Polymer.Element {
-        static get is() { return 'maximo-purchaseorders'; }
+        // Your new element extends the Polymer.Element base class
+        class MaximoPurchaseOrders extends Polymer.Element {
+            static get is() { return 'maximo-purchaseorders'; }
+        _handleResponse(event) {
+        this.$.spinner.active = false
+        this.set('totalPages', event.detail.response["oslc:responseInfo"]["totalPages"])
+        this.set('totalRecords', event.detail.response["oslc:responseInfo"]["oslc:totalCount"])
+      }
+
+      _handleError(event) {
+        this.$.spinner.active = false
+        if(event.detail.request.xhr &&
+          event.detail.request.xhr.response &&
+          event.detail.request.xhr.response["oslc:Error"] &&
+          event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
+          this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+        } else {
+          this.error = "Could not authenticate user"
+        }
+      }
+
+      _urlParams(pageNum) {
+        return {
+          'oslc.pageSize': 100, //the number of records on a single page
+          'oslc.select': "wonum,description,name,status,status_description, workorderid", //the fields that will be returned on the response
+          'collectioncount': 5, //also returns the total number of records and pages
+          'oslc.where': 'spi:istask=0 and spi:status="WAPPR"', //filter for Work Orders Waiting for approval only
+          "pageno": pageNum //Set the requested page number
+        }
+        }
+
+        _urlParams2(pageNum) {
+            return {
+                'oslc.pageSize': 100, //the number of records on a single page
+                'oslc.select': "ponum,description,name,status,status_description, poid", //the fields that will be returned on the response
+                'collectioncount': 5, //also returns the total number of records and pages
+                'oslc.where': 'spi:status="*"', //filter for Work Orders Waiting for approval only
+                "pageno": pageNum //Set the requested page number
+            } 
+        }
+
+      _nextPageUrl(pagenum) {
+        return `purchase-orders-list/` + (parseInt(pagenum) + 1).toString()
+      }
+
+      _prevPageUrl(pagenum) {
+        let prevPageNum = parseInt(pagenum)
+        if(pagenum > 1) {
+          prevPageNum -= 1
+        }
+        return `purchase-orders-list/` + prevPageNum.toString()
+      }
     }
-    //Now, register your new custom element so the browser can use it
+        //Now, register your new custom element so the browser can use it
         customElements.define(MaximoPurchaseOrders.is, MaximoPurchaseOrders);
     </script>
 </dom-module>
