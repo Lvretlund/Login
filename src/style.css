@@ -1,6 +1,11 @@
 ﻿html, body {
-   background-color:white;
+   background-color: white;
    height:80%;
+   
+}
+
+#toolBar {
+    background-color: #1d3649;
 }
 
 .card {
@@ -9,6 +14,7 @@
     margin-left: 35%;
     margin-top: 10%;
     color: #3E668D;
+
 }
 
 #header {
