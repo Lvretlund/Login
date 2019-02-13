@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src"
   ],
-  "SelectedNode": "\\purchase-orders.html",
+  "SelectedNode": "\\service-worker.js",
   "PreviewInSolutionExplorer": false
 }

@@ -1,0 +1,18 @@
+﻿<!-- Load the Polymer.Element base class -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="maximo-purchaseorders">
+    <!-- Defines the element's style and local DOM -->
+    <template>
+
+        <h1>TEST</h1>
+    </template>
+    <script>
+    // Your new element extends the Polymer.Element base class
+    class MaximoPurchaseOrders extends Polymer.Element {
+        static get is() { return 'maximo-purchaseorders'; }
+    }
+    //Now, register your new custom element so the browser can use it
+        customElements.define(MaximoPurchaseOrders.is, MaximoPurchaseOrders);
+    </script>
+</dom-module>
