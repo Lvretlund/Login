@@ -39,7 +39,7 @@
             <template is="dom-repeat" items="{{PurchaseOrders.rdfs:member}}">
                 <div class="card">
                     <div class="circle"><span>{{item.spi:ponum}}</span></div><span style="margin: 32px;">{{item.spi:description}} aaa </span> <span style="margin: 32px;">{{item.spi:poid}} ID </span>
-                    <div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{item.spi:status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><div style="display:inline;"><a name="purchase-order" href="[[rootPath]]purchase-order/{{item.spi:poid}}">View Details >></a></div></div>
+                    <div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{item.spi:status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><div style="display:inline;"><a name="purchaseorder" href="[[rootPath]]purchaseorder/{{item.spi:poid}}">View Details >></a></div></div>
                 </div>
             </template>
 
