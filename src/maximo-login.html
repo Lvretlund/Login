@@ -13,8 +13,13 @@
     <template>
         <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
-        <iron-ajax id="maximoLoginAjax" with-credentials content-type="application/json" url="[[baseUrl]]maximo/oslc/login" method="post"
-                   handle-as="json" on-response="_handleLoginResponse" on-error="_handleLoginError"></iron-ajax>
+        <iron-ajax id="maximoLoginAjax" 
+                   with-credentials content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/login" 
+                   method="post"
+                   handle-as="json" 
+                   on-response="_handleLoginResponse"
+                   on-error="_handleLoginError"></iron-ajax>
 
         <iron-ajax id="auth"
                    with-credentials
@@ -86,8 +91,22 @@
             }
 
             _handleError(event) {
-                alert("wrong username/password, please try again");
+                //alert("wrong username/password, please try again");
                 this._onLogout()
+            }
+
+            _handleLoginError(event) {
+                alert("wrong username/password, please try again");
+                this.$.spinner.active = false
+                const req = event.detail.request;
+                if (event.detail.request.xhr &&
+                    event.detail.request.xhr.response &&
+                    event.detail.request.xhr.response["oslc:Error"] &&
+                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
+                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                } else {
+                    this.error = "Could not authenticate user"
+                }
             }
         }
         window.customElements.define(MaximoLogin.is, MaximoLogin);
