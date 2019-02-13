@@ -5,11 +5,13 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
-<link rel="stylesheet" type="text/css" href="style.css">
+<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+<link rel="import" href="shared-styles.html">
+
 
 <dom-module id="maximo-login">
     <template>
-
+        <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <iron-ajax id="maximoLoginAjax" with-credentials content-type="application/json" url="[[baseUrl]]maximo/oslc/login" method="post"
                    handle-as="json" on-response="_handleLoginResponse" on-error="_handleLoginError"></iron-ajax>
@@ -33,7 +35,9 @@
                 <form action="/foo" method="get">
                     <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
                     <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
-                    <template><paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input></template>
+                    <template>
+                        <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
+                    </template>
                     <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
                 </form>
             </iron-form>
@@ -78,7 +82,7 @@
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
                     this.set('route.path', '/purchaseorders')
                 }
-                    
+
             }
 
             _handleError(event) {

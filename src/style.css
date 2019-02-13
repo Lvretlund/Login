@@ -1,6 +1,11 @@
 ﻿html, body {
    background-color: white;
    height:80%;
+   
+}
+
+#toolBar {
+    background-color: #1d3649;
 }
 
 .card {
@@ -12,3 +17,6 @@
 
 }
 
+#header {
+    background-color: red;
+}

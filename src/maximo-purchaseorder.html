@@ -1,0 +1,200 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="maximo-purchaseorder">
+    <template>
+        <style include="shared-styles">
+        </style>
+        <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/purchaseorder/:poRef" data="{{pageData}}"></app-route>
+        <iron-ajax auto
+                   id="maximoLoadPurchaseOrderAjax"
+                   with-credentials
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   last-response="{{purchaseOrder}}"
+                   on-response="_handleLoadResponse"
+                   on-error="_handleLoadError"></iron-ajax>
+        <iron-ajax id="maximoSavePurchaseOrderAjax"
+                   with-credentials
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.spi:poid}}"
+                   method="post"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{purchaseOrder}}"
+                   on-response="_handleSaveResponse"
+                   on-error="_handleSaveError"></iron-ajax>
+        <template is="dom-if" if="[[error]]">
+            <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+        </template>
+        <template is="dom-if" if="[[success]]">
+            <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+        </template>
+        <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
+        <template is="dom-if" if="{{!(spinner.active)}}">
+            <div class="card">
+                <h3>[[purchaseOrder.spi:description]] [[purchaseOrder.spi:poid]] </h3>
+                <form action="/foo" method="get">
+                    <paper-input type="text" required label="Purchase Ordernumber" value="{{purchaseOrder.spi:ponum}}"></paper-input>
+                    <paper-input type="text" required label="Description" value="{{purchaseOrder.spi:description}}"></paper-input>
+                    <paper-input type="text" required label="Purchase Order Status" value="{{purchaseOrder.spi:status}}"></paper-input>
+                    <paper-dropdown-menu id="poStatus"
+                                         label="Status">
+                        <paper-listbox slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
+                            <paper-item value='APPR'>Approved</paper-item>
+                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                            <paper-item value='INPRG'>In Progress</paper-item>
+                            <paper-item value='CAN'>Canceled</paper-item>
+                            <paper-item value='HOLD'>Hold</paper-item>
+                            <paper-item value='CLOSE'>Closed</paper-item>
+                            <paper-item value='PNDREV'>Pending Revision</paper-item>
+                            <paper-item value='REVISD'>Revised</paper-item>
+                            <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-input type="text" required label="PO ID" value="{{purchaseOrder.spi:poid}}"></paper-input>
+                    <paper-input id="orgId" type="text" required label="Org ID" value="{{purchaseOrder.spi:orgid}}"></paper-input>
+                    <paper-input id="siteId" type="text" required label="Site ID" value="{{purchaseOrder.spi:siteid}}"></paper-input>
+                    <paper-button raised class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                </form>
+            </div>
+        </template>
+    </template>
+    <script>
+        class MaximoPurchaseOrder extends Polymer.Element {
+            static get is() { return 'maximo-purchaseorder'; }
+
+            static get properties() {
+                return {
+                    baseUrl: {
+                        type: String,
+                        observer: '_baseUrlChanged',
+                    },
+                    workOrder: {
+                        type: Object,
+                        value: {},
+                        notify: true
+                    },
+                    whoAmI: {
+                        type: Object,
+                        observer: '_whoAmIChanged',
+                    }
+                }
+            }
+
+            static get observers() {
+                return [
+                    '_poRefChanged(pageData)'
+                ]
+            }
+
+            _showDetails() {
+                if (parseInt(this.get('pageData.poRef')) > 0) {
+                    return true
+                }
+
+                return false
+            }
+
+
+
+
+            _poRefChanged(pageData) {
+                //if we have a valid id, load the related wo data
+                if (this._showDetails()) {
+                    this.$.spinner.active = true
+                    this.$.maximoLoadPurchaseOrder.generateRequest()
+                } else {
+                    this.set('purchaseOrder', {})
+                    this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.spi:siteid', this.get('whoAmI.defaultSite') || '')
+
+                }
+            }
+
+            //After the whoAmI object is populated, we need to populate those fields
+            _whoAmIChanged() {
+                if (!this._showDetails()) {
+                    this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.spi:siteid', this.get('whoAmI.defaultSite') || '')
+                }
+            }
+
+            _baseUrlChanged() {
+                if (this._showDetails()) {
+                    this.$.spinner.active = true
+                    this.$.maximoLoadPurchaseOrderAjax.generateRequest()
+                }
+            }
+
+            _handleLoadResponse(event) {
+                this.$.spinner.active = false
+            }
+
+            _handleLoadError(event, request) {
+                this.$.spinner.active = false
+            }
+
+            _handleSaveResponse(event) {
+                this.$.spinner.active = false
+                if (!this._showDetails()) {
+                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.spi:purchaseorderid'))
+                } else {
+                    this.error = null;
+                    this.success = "Work Order Successfully Saved"
+                }
+            }
+
+            _handleSaveError(event, request) {
+                this.$.spinner.active = false
+                if (event.detail.request.xhr &&
+                    event.detail.request.xhr.response &&
+                    event.detail.request.xhr.response["oslc:Error"] &&
+                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
+                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                    this.success = null;
+                } else {
+                    this.error = "Could not save Purchase Order"
+                    this.success = null;
+                }
+            }
+
+            _getSaveHeaders() {
+                let headers = { 'properties': '*' }
+                if (this._showDetails()) {
+                    headers['x-method-override'] = 'PATCH'
+                }
+                return headers
+            }
+
+            _getSavePayload(purchaseOrder) {
+                return purchaseOrder
+            }
+
+            savePurchaseOrder() {
+                this.error = null;
+                this.success = null;
+                this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
+                this.$.maximoSavePurchaseOrderAjax.body = this._getSavePayload(this.get('purchaseOrder'))
+                this.$.maximoSavePurchaseOrderAjax.generateRequest()
+                this.$.spinner.active = true
+            }
+        }
+
+        window.customElements.define(MaximoPurchaseOrder.is, MaximoPurchaseOrder);
+    </script>
+</dom-module>
