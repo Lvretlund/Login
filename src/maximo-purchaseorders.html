@@ -86,7 +86,7 @@
         }
 
       _nextPageUrl(pagenum) {
-        return `purchase-orders-list/` + (parseInt(pagenum) + 1).toString()
+        return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
       }
 
       _prevPageUrl(pagenum) {
@@ -94,7 +94,7 @@
         if(pagenum > 1) {
           prevPageNum -= 1
         }
-        return `purchase-orders-list/` + prevPageNum.toString()
+        return `purchaseorders/` + prevPageNum.toString()
       }
     }
         //Now, register your new custom element so the browser can use it

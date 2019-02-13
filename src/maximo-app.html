@@ -53,13 +53,12 @@
 
                 <app-header slot="header" condenses reveals effects="waterfall">
                     <app-toolbar id="toolBar">
-
-                        <div main-title>IBM Maximo Asset Management</div>
+                        <div main-title>Maximo Work Orders</div>
                         <template is="dom-if" if="[[authenticated]]">
-                            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                                <a name="purchaseorders" href="/purchaseorders/1">Purchaseorders</a>
-                                <a name="logout" href="/logout">Logout</a>
-                            </iron-selector>
+                            <span style="padding-right: 20px">[[whoAmI.displayName]]</span>
+                            <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Home</paper-button>
+                            <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Purchase orders</paper-button>
+                            <paper-button raised class="green" on-tap="_onLogout">Log out</paper-button>
                         </template>
                     </app-toolbar>
                 </app-header>
@@ -74,7 +73,6 @@
                 </iron-pages>
             </app-header-layout>
         </app-drawer-layout>
-
     </template>
 
     <script>
@@ -140,9 +138,8 @@
                 // If no page was found in the route data, page will be an empty string.
                 // Default to 'view1' in that case.
                 this.page = page || 'login';
-                
-            }
 
+            }
 
             _showPage404() {
                 this.page = 'not-found';
@@ -151,5 +148,4 @@
 
         window.customElements.define(MaximoApp.is, MaximoApp);
     </script>
-
 </dom-module>
