@@ -5,7 +5,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
-<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="import" href="shared-styles.html">
 
 
@@ -28,8 +28,8 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
-        <div class"card" style="text-align: center;">
-            <h1>IBM MAXIMO</h1>
+        <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">
+            <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
             <h2>Enterprise Asset Management</h2>
             <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
                 <form action="/foo" method="get">
@@ -38,7 +38,7 @@
                     <template>
                         <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
                     </template>
-                    <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
+                    <paper-button raised class="indigo" on-tap="performLogin" style="margin-top:10px;">Sign In</paper-button>&nbsp;
                 </form>
             </iron-form>
         </div>
@@ -86,6 +86,7 @@
             }
 
             _handleError(event) {
+                alert("wrong username/password, please try again");
                 this._onLogout()
             }
         }
