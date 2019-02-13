@@ -22,6 +22,7 @@
 
 <dom-module id="maximo-app">
     <template>
+        <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"
                       url-space-regex="^[[rootPath]]">
@@ -52,7 +53,7 @@
             <app-header-layout has-scrolling-region>
                 <app-header slot="header" condenses reveals effects="waterfall">
                     <app-toolbar id="toolBar">
-                        <div id="menu" main-title>Maximo Work Orders</div>
+                        <div id="menu" main-title>Maximo Purchase Orders</div>
                         <template is="dom-if" if="[[authenticated]]">
                             <span style="padding-right: 20px">[[whoAmI.displayName]]</span>
                             <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Home</paper-button>
@@ -68,6 +69,7 @@
                             role="main">
                     <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
                     <maximo-purchaseorders name="purchaseorders"></maximo-purchaseorders>
+                    <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
                     <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
                 </iron-pages>
             </app-header-layout>
