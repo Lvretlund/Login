@@ -13,7 +13,9 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="maximo-icons.html">
-<link rel="stylesheet" type="text/css" href="style.css">
+<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+<link rel="import" href="shared-styles.html">
+
 
 <!--importerar övriga moduler-->
 <link rel="lazy-import" href="maximo-login.html">
@@ -22,6 +24,7 @@
 
 <dom-module id="maximo-app">
     <template>
+        <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"
                       url-space-regex="^[[rootPath]]">
@@ -50,15 +53,15 @@
             <!-- Main content -->
             <app-header-layout has-scrolling-region>
                 <app-header slot="header" condenses reveals effects="waterfall">
-                    <app-toolbar id="toolBar">
-                        <div main-title>Maximo Work Orders</div>
-                        <template is="dom-if" if="[[authenticated]]">
+                    <template is="dom-if" if="[[authenticated]]">
+                        <app-toolbar id="toolBar">
+                            <div main-title>Maximo Work Orders</div>
                             <span style="padding-right: 20px">[[whoAmI.displayName]]</span>
                             <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Home</paper-button>
                             <paper-button raised class="green" on-tap="goto" data-args="purchaseorders">Purchase orders</paper-button>
                             <paper-button raised class="green" on-tap="_onLogout">Log out</paper-button>
-                        </template>
-                    </app-toolbar>
+                        </app-toolbar>
+                    </template>
                 </app-header>
                 <iron-pages style="margin: auto;width: 80%;"
                             selected="[[page]]"
