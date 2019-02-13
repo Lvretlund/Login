@@ -3,6 +3,10 @@
    height:80%;
 }
 
+#toolBar {
+    background-color: #1d3649;
+}
+
 .card {
     background-color: white;
     width: 25%;
