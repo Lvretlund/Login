@@ -55,10 +55,11 @@
         <template is="dom-if" if="{{!(spinner.active)}}">
             <div class="card">
                 <!--displays some choosen values of the order as a header -->
-                <h3>[[purchaseOrder.spi:description]] [[purchaseOrder.spi:poid]] </h3>
+                <h3> Detailed information regarding order [[purchaseOrder.spi:ponum]] </h3>
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
-                    <paper-input type="text" required label="Purchase Ordernumber" value="{{purchaseOrder.spi:ponum}}"></paper-input>
+
+                    <paper-input type="text" required label="Purchase Ordernumber" disabled value="{{purchaseOrder.spi:ponum}}"></paper-input>
                     <paper-input type="text" required label="Description" value="{{purchaseOrder.spi:description}}"></paper-input>
                     <paper-input type="text" required label="Purchase Order Status" value="{{purchaseOrder.spi:status}}"></paper-input>
                     <paper-dropdown-menu id="poStatus"
@@ -69,14 +70,16 @@
                             <paper-item value='CAN'>Canceled</paper-item>
                             <!--Order statuses avaliable but that should not be used (right now)-->
                             <!--<paper-item value='APPR'>Approved</paper-item>
-                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                            <paper-item value='HOLD'>Hold</paper-item>
-                            <paper-item value='PNDREV'>Pending Revision</paper-item>
-                            <paper-item value='REVISD'>Revised</paper-item>
-                            <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
+            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+            <paper-item value='HOLD'>Hold</paper-item>
+            <paper-item value='PNDREV'>Pending Revision</paper-item>
+            <paper-item value='REVISD'>Revised</paper-item>
+            <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input type="text" required label="PO ID" value="{{purchaseOrder.spi:poid}}"></paper-input>
+                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.spi:statusdate}}"></paper-input>
+                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.spi:orderdate}}"></paper-input>
+                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.spi:requireddate}}"></paper-input>
                     <paper-input id="orgId" type="text" required label="Org ID" value="{{purchaseOrder.spi:orgid}}"></paper-input>
                     <paper-input id="siteId" type="text" required label="Site ID" value="{{purchaseOrder.spi:siteid}}"></paper-input>
                     <paper-button raised class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
