@@ -31,7 +31,7 @@
                    on-error="_handleError"></iron-ajax>
         <div id="poList">
             <div id="poListTxt">
-                <h1>Purchase Orders List</h1>
+                <h1>Purchase Orders</h1>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
@@ -39,8 +39,9 @@
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
                 <!--links to next or previous pages, also fetched from script-->
-                <span style="margin: 16px 0px 0px 16px;"><a href="[[_prevPageUrl(pageData.num)]]">Prev Page</a></span>
-                <span style="margin: 16px 0px 0px 16px;"><a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]>Next Page</a></span>
+      
+                <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
+                <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
             </div>
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
