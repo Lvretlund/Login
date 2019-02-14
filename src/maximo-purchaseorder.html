@@ -64,15 +64,16 @@
                     <paper-dropdown-menu id="poStatus"
                                          label="Status">
                         <paper-listbox slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
-                            <paper-item value='APPR'>Approved</paper-item>
-                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                            <paper-item value='CLOSE'>Closed</paper-item>
                             <paper-item value='INPRG'>In Progress</paper-item>
                             <paper-item value='CAN'>Canceled</paper-item>
+                            <!--Order statuses avaliable but that should not be used (right now)-->
+                            <!--<paper-item value='APPR'>Approved</paper-item>
+                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
                             <paper-item value='HOLD'>Hold</paper-item>
-                            <paper-item value='CLOSE'>Closed</paper-item>
                             <paper-item value='PNDREV'>Pending Revision</paper-item>
                             <paper-item value='REVISD'>Revised</paper-item>
-                            <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                            <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
                         </paper-listbox>
                     </paper-dropdown-menu>
                     <paper-input type="text" required label="PO ID" value="{{purchaseOrder.spi:poid}}"></paper-input>
