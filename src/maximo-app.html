@@ -72,8 +72,15 @@
                                 </paper-listbox>
                             </paper-menu-button>
                                 <div main-title>Maximo Purchase Orders</div>
-                                <iron-icon class="menu" icon="home"></iron-icon>
-                                <iron-icon class="menu" icon="account-circle"></iron-icon>
+                                <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorder"></iron-icon>
+                                <paper-menu-button>
+                                    <iron-icon class="menuUser" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
+                                    <paper-listbox slot="dropdown-content">
+                                        <paper-item on-tap="goto" data-args="purchaseorder">My account</paper-item>
+                                        <paper-item on-tap="goto" data-args="purchaseorders">Change password</paper-item>
+                                        <paper-item on-tap="_onLogout">Sign out</paper-item>
+                                    </paper-listbox>
+                                </paper-menu-button>
                         </app-toolbar>
                     </template>
                 </app-header>
