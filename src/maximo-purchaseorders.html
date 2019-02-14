@@ -11,10 +11,13 @@
 <dom-module id="maximo-purchaseorders">
     <!-- Defines the element's style and local DOM -->
     <template>
+        <!--imports shared styles for the template-->
         <style include="shared-styles"></style>
+        <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/purchaseorders/:num" data="{{pageData}}"></app-route>
+        <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
         <iron-ajax auto
                    id="maximoPurchaseOrdersListAjax"
                    with-credentials
@@ -30,13 +33,17 @@
             <div id="poListTxt">
                 <h1>Purchase Orders List</h1>
                 <template is="dom-if" if="[[error]]">
+                    <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
                 </template>
+                <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
+                <!--links to next or previous pages, also fetched from script-->
                 <span style="margin: 16px 0px 0px 16px;"><a href="[[_prevPageUrl(pageData.num)]]">Prev Page</a></span>
                 <span style="margin: 16px 0px 0px 16px;"><a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]>Next Page</a></span>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
             </div>
+            <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.rdfs:member}}">
                 <div class="card">
                     <div class="circle"><span>{{item.spi:ponum}}</span></div><span style="margin: 32px;">{{item.spi:description}} </span> <span style="margin: 32px;">{{item.spi:poid}} ID </span>
@@ -69,17 +76,8 @@
                 }
             }
 
+            // the query for maximo
             _urlParams(pageNum) {
-                return {
-                    'oslc.pageSize': 100, //the number of records on a single page
-                    'oslc.select': "wonum,description,name,status,status_description, workorderid", //the fields that will be returned on the response
-                    'collectioncount': 5, //also returns the total number of records and pages
-                    'oslc.where': 'spi:istask=0 and spi:status="WAPPR"', //filter for Work Orders Waiting for approval only
-                    "pageno": pageNum //Set the requested page number
-                }
-            }
-
-            _urlParams2(pageNum) {
                 return {
                     'oslc.pageSize': 100, //the number of records on a single page
                     'oslc.select': "ponum,description,name,status,status_description, poid", //the fields that will be returned on the response

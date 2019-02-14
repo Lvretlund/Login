@@ -13,12 +13,16 @@
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-purchaseorder">
+    <!-- Defines the element's style and local DOM -->
     <template>
+        <!--imports shared styles for the template-->
         <style include="shared-styles">
         </style>
+        <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/purchaseorder/:poRef" data="{{pageData}}"></app-route>
+        <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
         <iron-ajax auto
                    id="maximoLoadPurchaseOrderAjax"
                    with-credentials
@@ -29,6 +33,7 @@
                    last-response="{{purchaseOrder}}"
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
+        <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
         <iron-ajax id="maximoSavePurchaseOrderAjax"
                    with-credentials
                    url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.spi:poid}}"
@@ -39,16 +44,20 @@
                    on-response="_handleSaveResponse"
                    on-error="_handleSaveError"></iron-ajax>
         <template is="dom-if" if="[[error]]">
+            <!-- if there is an error it displays here -->
             <p class="alert-error"><strong>Error:</strong> [[error]]</p>
         </template>
         <template is="dom-if" if="[[success]]">
+            <!-- if success, it displays here -->
             <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
         </template>
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{!(spinner.active)}}">
             <div class="card">
+                <!--displays some choosen values of the order as a header -->
                 <h3>[[purchaseOrder.spi:description]] [[purchaseOrder.spi:poid]] </h3>
                 <form action="/foo" method="get">
+                    <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <paper-input type="text" required label="Purchase Ordernumber" value="{{purchaseOrder.spi:ponum}}"></paper-input>
                     <paper-input type="text" required label="Description" value="{{purchaseOrder.spi:description}}"></paper-input>
                     <paper-input type="text" required label="Purchase Order Status" value="{{purchaseOrder.spi:status}}"></paper-input>
@@ -185,6 +194,7 @@
                 return purchaseOrder
             }
 
+            //this is the save order function, wich calls to the iron ajax element with save order ID.
             savePurchaseOrder() {
                 this.error = null;
                 this.success = null;
