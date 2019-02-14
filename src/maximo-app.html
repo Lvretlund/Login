@@ -66,11 +66,9 @@
                             <paper-menu-button>
                                 <paper-icon-button icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
-                                    <paper-item>Start</paper-item>
-                                    <paper-item>Purchase Orders</paper-item>
-                                    <paper-item>Item1</paper-item>
-                                    <paper-item>Item2</paper-item>
-                                    <paper-item>Log Out</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders">Purchase order</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorder">Home</paper-item>
+                                    <paper-item on-tap="_onLogout">Log out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                                 <div main-title>Maximo Purchase Orders</div>
@@ -79,6 +77,9 @@
                         </app-toolbar>
                     </template>
                 </app-header>
+
+
+
                 <iron-pages style="margin: auto;width: 80%;"
                             selected="[[page]]"
                             attr-for-selected="name"
