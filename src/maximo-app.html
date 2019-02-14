@@ -38,7 +38,7 @@
                       url-space-regex="^[[rootPath]]">
         </app-location>
 
-        <iron-ajax id="auth"
+        <iron-ajax auto
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/whoami"
@@ -137,6 +137,20 @@
             _onAuthenticated() {
                 this.set('authenticated', true)
                 this.set('route.path', '/purchaseorders/1')
+            }
+
+            _handleResponse(event) {
+                this.set('authenticated', true)
+                // the user is already authenticated,
+                // if it is on login page and has a valid whoAmI response, redirect to the wo list
+                if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
+                    this.set('route.path', '/purchaseorders')
+                }
+            }
+
+            _handleError(event) {
+                //alert("wrong username/password, please try again");
+                this._onLogout()
             }
 
             _onLogout() {
