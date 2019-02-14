@@ -21,17 +21,6 @@
                    on-response="_handleLoginResponse"
                    on-error="_handleLoginError"></iron-ajax>
 
-        <iron-ajax id="auth"
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
 
         <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">
             <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
@@ -78,21 +67,6 @@
                     bubbles: true,
                     composed: true
                 }))
-            }
-
-            _handleResponse(event) {
-                this.set('authenticated', true)
-                // the user is already authenticated,
-                // if it is on login page and has a valid whoAmI response, redirect to the wo list
-                if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
-                    this.set('route.path', '/purchaseorders')
-                }
-
-            }
-
-            _handleError(event) {
-                //alert("wrong username/password, please try again");
-                this._onLogout()
             }
 
             _handleLoginError(event) {
