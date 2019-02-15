@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
+    "\\bower_components\\paper-item",
     "\\src"
   ],
-  "SelectedNode": "\\src\\maximo-app.html",
+  "SelectedNode": "\\src\\maximo-purchaseorders.html",
   "PreviewInSolutionExplorer": false
 }
