@@ -1,11 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\bower_components\\iron-icons\\.github",
-    "\\bower_components\\iron-icons\\demo",
-    "\\bower_components\\iron-icons\\test",
     "\\src"
   ],
-  "SelectedNode": "\\src\\maximo-purchaseorders.html",
+  "SelectedNode": "\\src\\maximo-app.html",
   "PreviewInSolutionExplorer": false
 }
