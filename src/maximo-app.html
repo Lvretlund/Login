@@ -64,7 +64,7 @@
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
                             <paper-menu-button>
-                                <paper-icon-button icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+                                <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item on-tap="goto" data-args="purchaseorders">Purchase orders</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorder">Home</paper-item>
