@@ -213,7 +213,7 @@
             savePurchaseOrder() {
                 this.error = null;
                 this.success = null;
-                this.$.maximoSavePurchaseOrderAjax.headers. = this._getSaveHeaders()
+                this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
                 this.$.maximoSavePurchaseOrderAjax.body = this._getSavePayload(this.get('purchaseOrder'))
                 this.$.maximoSavePurchaseOrderAjax.generateRequest()
                 this.$.spinner.active = true
