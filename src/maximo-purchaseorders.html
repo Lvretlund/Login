@@ -31,8 +31,10 @@
                    on-error="_handleError"></iron-ajax>
         <div id="poList">
             <div id="poListTxt">
-                <iron-icon icon="list"></iron-icon>
-                <h1>Purchase Orders</h1>
+                <div>
+                    <iron-icon id="poListIcon" icon="list"></iron-icon>
+                    <h1 id="poListTitle">Purchase Orders</h1>
+                </div>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
