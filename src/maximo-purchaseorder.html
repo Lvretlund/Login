@@ -58,10 +58,23 @@
                 <h3> Detailed information regarding order [[purchaseOrder.spi:ponum]] </h3>
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
+                    <div class="card">
+                        <div class="circle"><span>{{purchaseOrder.spi:ponum}}</span></div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
+                            Description:<span style="margin: 16px 0px 0px 16px;">{{Purchaseorder.spi:description}}</span>
+                            <span style="margin: 16px 0px 0px 16px;"></span>
+                        </div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Vendor:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Buyer:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Entered by:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
 
-                    <paper-input type="text" required label="Purchase Ordernumber" disabled value="{{purchaseOrder.spi:ponum}}"></paper-input>
-                    <paper-input type="text" required label="Description" value="{{purchaseOrder.spi:description}}"></paper-input>
-                    <paper-input type="text" required label="Purchase Order Status" value="{{purchaseOrder.spi:status}}"></paper-input>
+                        <div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+                    </div>
+
+                    <paper-input type="text" required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
                     <paper-dropdown-menu id="poStatus"
                                          label="Status">
                         <paper-listbox slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
@@ -80,8 +93,6 @@
                     <paper-input type="text" required label="Status date" value="{{purchaseOrder.spi:statusdate}}"></paper-input>
                     <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.spi:orderdate}}"></paper-input>
                     <paper-input type="text" required label="Required date" value="{{purchaseOrder.spi:requireddate}}"></paper-input>
-                    <paper-input id="orgId" type="text" required label="Org ID" value="{{purchaseOrder.spi:orgid}}"></paper-input>
-                    <paper-input id="siteId" type="text" required label="Site ID" value="{{purchaseOrder.spi:siteid}}"></paper-input>
                     <paper-button raised class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                 </form>
             </div>
@@ -202,7 +213,7 @@
             savePurchaseOrder() {
                 this.error = null;
                 this.success = null;
-                this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
+                this.$.maximoSavePurchaseOrderAjax.headers. = this._getSaveHeaders()
                 this.$.maximoSavePurchaseOrderAjax.body = this._getSavePayload(this.get('purchaseOrder'))
                 this.$.maximoSavePurchaseOrderAjax.generateRequest()
                 this.$.spinner.active = true
