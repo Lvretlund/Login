@@ -31,6 +31,7 @@
                    on-error="_handleError"></iron-ajax>
         <div id="poList">
             <div id="poListTxt">
+                <iron-icon icon="list"></iron-icon>
                 <h1>Purchase Orders</h1>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
@@ -39,7 +40,7 @@
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
                 <!--links to next or previous pages, also fetched from script-->
-      
+
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>

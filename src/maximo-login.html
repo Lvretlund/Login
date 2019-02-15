@@ -13,13 +13,25 @@
     <template>
         <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
-        <iron-ajax id="maximoLoginAjax" 
+        <iron-ajax id="maximoLoginAjax"
                    with-credentials content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/login" 
+                   url="[[baseUrl]]maximo/oslc/login"
                    method="post"
-                   handle-as="json" 
+                   handle-as="json"
                    on-response="_handleLoginResponse"
                    on-error="_handleLoginError"></iron-ajax>
+
+        <iron-ajax id="auth"
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/whoami"
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{whoAmI}}"
+                   on-response="_handleResponse"
+                   on-error="_handleError"
+                   debounce-duration="1000"></iron-ajax>
 
 
         <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">

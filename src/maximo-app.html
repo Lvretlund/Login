@@ -38,7 +38,7 @@
                       url-space-regex="^[[rootPath]]">
         </app-location>
 
-        <iron-ajax id="auth"
+        <!--<iron-ajax id="auth"
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/whoami"
@@ -48,7 +48,7 @@
                    last-response="{{whoAmI}}"
                    on-response="_handleResponse"
                    on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
+                   debounce-duration="1000"></iron-ajax>-->
 
         <app-route route="{{route}}"
                    pattern="[[rootPath]]:page"
@@ -66,9 +66,9 @@
                             <paper-menu-button>
                                 <paper-icon-button icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
-                                    <paper-item on-tap="goto" data-args="purchaseorders">Purchase orders</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorder">Home</paper-item>
-                                    <paper-item on-tap="_onLogout">Log out</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon icon="home"></iron-icon> Home</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders"><iron-icon icon="list"></iron-icon> Purchase orders</paper-item>
+                                    <paper-item on-tap="_onLogout"><iron-icon icon="exit-to-app"></iron-icon>Log out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                                 <div main-title>Maximo Purchase Orders</div>
