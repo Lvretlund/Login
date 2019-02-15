@@ -71,7 +71,7 @@
                     event.detail.request.xhr.response &&
                     event.detail.request.xhr.response["oslc:Error"] &&
                     event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
-                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];               
                 } else {
                     this.error = "Could not authenticate user"
                 }
@@ -80,7 +80,7 @@
             // the query for maximo
             _urlParams(pageNum) {
                 return {
-                    'oslc.pageSize': 100, //the number of records on a single page
+                    'oslc.pageSize': 20, //the number of records on a single page
                     'oslc.select': "ponum,description,name,status,status_description, poid", //the fields that will be returned on the response
                     'collectioncount': 5, //also returns the total number of records and pages
                     'oslc.where': 'spi:status in["wappr","appr"]', //filter for purchase orders for waiting approval and approved only
@@ -88,7 +88,7 @@
                 }
             }
 
-            _nextPageUrl(pagenum) {
+            _nextPageUrl(pagenum) {             
                 return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
             }
 
