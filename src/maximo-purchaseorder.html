@@ -130,7 +130,7 @@
                 //if we have a valid id, load the related wo data
                 if (this._showDetails()) {
                     this.$.spinner.active = true
-                    this.$.maximoLoadPurchaseOrder.generateRequest()
+                    this.$.maximoLoadPurchaseOrderAjax.generateRequest()
                 } else {
                     this.set('purchaseOrder', {})
                     this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')

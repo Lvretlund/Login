@@ -66,7 +66,7 @@
                             <paper-menu-button>
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
-                                    <paper-item on-tap="goto" data-args="purchaseorders">Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1">Purchase orders</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorder">Home</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
@@ -76,7 +76,7 @@
                                     <iron-icon class="menuUser" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
                                     <paper-listbox slot="dropdown-content">
                                         <paper-item on-tap="goto" data-args="purchaseorder">My account</paper-item>
-                                        <paper-item on-tap="goto" data-args="purchaseorders">Change password</paper-item>
+                                        <paper-item on-tap="goto" data-args="purchaseorders/1">Change password</paper-item>
                                         <paper-item on-tap="_onLogout">Sign out</paper-item>
                                     </paper-listbox>
                                 </paper-menu-button>
@@ -92,7 +92,7 @@
                             fallback-selection="maximo-not-found"
                             role="main">
                     <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
-                    <maximo-purchaseorders name="purchaseorders"></maximo-purchaseorders>
+                    <maximo-purchaseorders name="purchaseorders"who-am-i='[[whoAmI]]'></maximo-purchaseorders>
                     <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
                     <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
                 </iron-pages>
@@ -143,7 +143,7 @@
                 // the user is already authenticated,
                 // if it is on login page and has a valid whoAmI response, redirect to the wo list
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
-                    this.set('route.path', '/purchaseorders')
+                    this.set('route.path', '/purchaseorders/1')
                 }
             }
 
