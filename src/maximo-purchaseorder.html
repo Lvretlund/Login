@@ -232,15 +232,26 @@
             //this function increases the purchase order quantity, and also increases the PO-line quantity
             increasePurchaseOrderQty() {
 
-                let getPoCostQty = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity');
-                let poCostQty = parseInt(getPoCostQty);
-                poCostQty++;;
-                let getPoLineQty = this.get('purchaseOrder.spi:poline.0.spi:orderqty');
-                let poLineQty = parseInt(getPoLineQty);
-                poLineQty++;
+                let getPoCostQty = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity')
+                let poCostQty = parseInt(getPoCostQty)
+                poCostQty++
+                let getPoLineQty = this.get('purchaseOrder.spi:poline.0.spi:orderqty')
+                let poLineQty = parseInt(getPoLineQty)
+                poLineQty++
 
                 this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', poCostQty)
                 this.set('purchaseOrder.spi:poline.0.spi:orderqty', poLineQty) 
+
+                //also, if the quantity increases, so should the cost 
+
+                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
+                let poUnitCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:unitcost'))
+
+                poLineCost += poUnitCost
+
+                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
+            
+
 
             }
             //this function decreases the purchase order quantity, and also decreases the PO-line quantity
@@ -254,6 +265,15 @@
 
                 this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', poCostQty)
                 this.set('purchaseOrder.spi:poline.0.spi:orderqty', poLineQty)
+
+                //also, if the quantity decreases, so should the cost 
+
+                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
+                let poUnitCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:unitcost'))
+
+                poLineCost -= poUnitCost
+
+                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
 
             }
 
