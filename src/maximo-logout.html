@@ -20,7 +20,8 @@
                    method="post"
                    handle-as="json"
                    on-response="_handleLogoutResponse"
-                   on-error="_handleLogoutError"></iron-ajax>
+                   on-error="_handleLogoutError">
+        </iron-ajax>
         <h1>Logging out...</h1>
         <template is="dom-if" if="[[error]]">
             <p class="alert-error"><strong>Error:</strong> [[error]]</p>
@@ -35,7 +36,8 @@
         this.dispatchEvent(new CustomEvent('logout', {
           bubbles: true,
           composed: true
-        }))
+          }))
+          this.$.spinner.active = false
       }
 
       _handleLogoutError(event) {

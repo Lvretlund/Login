@@ -38,7 +38,7 @@
                       url-space-regex="^[[rootPath]]">
         </app-location>
 
-        <!--<iron-ajax id="auth"
+        <iron-ajax id="auth"
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/whoami"
@@ -48,7 +48,7 @@
                    last-response="{{whoAmI}}"
                    on-response="_handleResponse"
                    on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>-->
+                   debounce-duration="1000"></iron-ajax>
 
         <app-route route="{{route}}"
                    pattern="[[rootPath]]:page"

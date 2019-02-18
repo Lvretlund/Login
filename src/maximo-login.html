@@ -33,7 +33,14 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
+
+
         <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">
+            <template is="dom-if" if="[[error]]">
+                <p class="alert-error">
+                    <strong>Error:</strong> [[error]]
+                </p>
+            </template>
             <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
             <h2>Enterprise Asset Management</h2>
             <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
@@ -44,6 +51,7 @@
                         <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
                     </template>
                     <paper-button raised class="indigo" on-tap="performLogin" style="margin-top:10px;">Sign In</paper-button>&nbsp;
+                    <paper-spinner-lite id="spinner"></paper-spinner-lite>
                 </form>
             </iron-form>
         </div>
@@ -67,6 +75,7 @@
                         baseUrl = baseUrl + '/'
                     }
                     this.set('baseUrl', baseUrl)
+                    this.$.spinner.active = true
                     this.$.maximoLoginAjax.headers['maxAuth'] = btoa(`${this.get('username')}:${this.get('password')}`)
                     this.$.maximoLoginAjax.generateRequest()
                     
@@ -78,10 +87,11 @@
                     bubbles: true,
                     composed: true
                 }))
+                this.$.spinner.active = false
             }
 
             _handleLoginError(event) {
-                alert("wrong username/password, please try again");
+                //alert("wrong username/password, please try again");
                 this.$.spinner.active = false
                 const req = event.detail.request;
                 if (event.detail.request.xhr &&
