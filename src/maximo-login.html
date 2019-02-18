@@ -33,19 +33,6 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
-
-        <iron-ajax id="auth"
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
-
         <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">
             <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
             <h2>Enterprise Asset Management</h2>
