@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    <paper-input type="text" required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
+                    <paper-input  type="number"  required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
                     <paper-dropdown-menu id="poStatus"
                                          label="Status">
                         <paper-listbox slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
@@ -117,6 +117,7 @@
                         type: Object,
                         observer: '_whoAmIChanged',
                     }
+                 
                 }
             }
 
@@ -135,9 +136,7 @@
             }
 
 
-
-
-            _poRefChanged(pageData) {
+           _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
                 if (this._showDetails()) {
                     this.$.spinner.active = true
@@ -206,6 +205,10 @@
             }
 
             _getSavePayload(purchaseOrder) {
+                // format the input-string to an integer before updating
+                let getValue = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity');
+                let result = parseInt(getValue);
+                this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', result) 
                 return purchaseOrder
             }
 
