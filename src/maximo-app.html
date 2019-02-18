@@ -38,7 +38,8 @@
                       url-space-regex="^[[rootPath]]">
         </app-location>
 
-        <iron-ajax id="auth"
+        <iron-ajax
+                   auto
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/whoami"
@@ -75,6 +76,7 @@
                                 <paper-menu-button>
                                     <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
                                     <paper-listbox slot="dropdown-content">
+                                        <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                         <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
                                         <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                     </paper-listbox>
@@ -82,8 +84,6 @@
                         </app-toolbar>
                     </template>
                 </app-header>
-
-
 
                 <iron-pages style="margin: auto;width: 80%;"
                             selected="[[page]]"
@@ -137,14 +137,16 @@
                 this.set('route.path', '/purchaseorders/1')
             }
 
-            _handleResponse(event) {
-                this.set('authenticated', true)
-                // the user is already authenticated,
-                // if it is on login page and has a valid whoAmI response, redirect to the wo list
-                if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
-                    this.set('route.path', '/purchaseorders/1')
-                }
-            }
+
+            //Det är denna som gör att vi loggar in automatiskt. Kommenterade bort den. 
+            //_handleResponse(event) {
+            //    this.set('authenticated', true)
+            //    // the user is already authenticated,
+            //    // if it is on login page and has a valid whoAmI response, redirect to the wo list
+            //    if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
+            //        this.set('route.path', '/purchaseorders/1')
+            //    }
+            //}
 
             _handleError(event) {
                 //alert("wrong username/password, please try again");
