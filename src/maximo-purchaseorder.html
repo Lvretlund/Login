@@ -74,13 +74,13 @@
                         </div>
                     </div>
 
-                    <paper-input type="text" required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
+                    <paper-input type="number"  required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
                     <paper-dropdown-menu id="poStatus"
                                          label="Status">
-                        <paper-listbox slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
-                            <paper-item value='CLOSE'>Closed</paper-item>
-                            <paper-item value='INPRG'>In Progress</paper-item>
-                            <paper-item value='CAN'>Canceled</paper-item>
+                        <paper-listbox  id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
+                            <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
+                            <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
+                            <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
                             <!--Order statuses avaliable but that should not be used (right now)-->
                             <!--<paper-item value='APPR'>Approved</paper-item>
                 <paper-item value='WAPPR'>Waiting on Approval</paper-item>
@@ -116,7 +116,13 @@
                     whoAmI: {
                         type: Object,
                         observer: '_whoAmIChanged',
+                    },
+                    disabled: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true
                     }
+                 
                 }
             }
 
@@ -135,19 +141,29 @@
             }
 
 
-
-
-            _poRefChanged(pageData) {
+           _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
                 if (this._showDetails()) {
                     this.$.spinner.active = true
                     this.$.maximoLoadPurchaseOrderAjax.generateRequest()
+                    
                 } else {
                     this.set('purchaseOrder', {})
                     this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')
                     this.set('purchaseOrder.spi:siteid', this.get('whoAmI.defaultSite') || '')
+               }
+                    
+            }
 
-                }
+            //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
+             _poLoaded() {
+                 let checkWO = (this.get('purchaseOrder.spi:poline.0.spi:refwo'))               
+                 if (typeof checkWO === 'string' || checkWO instanceof String) {
+                     this.disabled = true;    
+                 } else {
+                     this.disabled = false;
+                   
+                 }
             }
 
             //After the whoAmI object is populated, we need to populate those fields
@@ -167,6 +183,7 @@
 
             _handleLoadResponse(event) {
                 this.$.spinner.active = false
+                this._poLoaded(this.get('purchaseOrder'))
             }
 
             _handleLoadError(event, request) {
@@ -206,6 +223,11 @@
             }
 
             _getSavePayload(purchaseOrder) {
+                // format the input-string to an integer before updating
+                let getValue = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity');
+                let result = parseInt(getValue);
+                this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', result) 
+
                 return purchaseOrder
             }
 
