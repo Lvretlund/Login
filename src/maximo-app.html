@@ -155,7 +155,8 @@
 
             _onLogout() {
                 this.set('authenticated', false)
-                this.set('route.path', '/login');
+                //this.set('route.path', '/login');
+                window.location.replace('/login');
             }
 
             static get observers() {
