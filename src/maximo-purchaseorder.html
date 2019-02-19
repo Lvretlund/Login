@@ -36,7 +36,7 @@
         <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
         <iron-ajax id="maximoSavePurchaseOrderAjax"
                    with-credentials
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.spi:poid}}"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.poid}}"
                    method="post"
                    handle-as="json"
                    content-type="application/json"
@@ -61,25 +61,25 @@
                     <div class="card">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Order Information:<span style="margin: 16px 0px 0px 16px;">{{Purchaseorder.spi:description}}</span>
+                                Order Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.description}}</span>
                                 <span style="margin: 16px 0px 0px 16px;"></span>
                             </div>
                         </div>
-                        <div class="circle" label"><span>{{purchaseOrder.spi:ponum}}</span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Vendor:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Buyer:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div class="circle" label"><span>{{purchaseOrder.ponum}}</span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Vendor:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Buyer:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                            Entered by:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Total Cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Type:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            Entered by:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Total Cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Type:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
 
                         </div>
                     </div>
                     <div>
                         <paper-dropdown-menu id="poStatus"
                                              label="Status">
-                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
+                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
                                 <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
                                 <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
                                 <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
@@ -93,49 +93,49 @@
                             </paper-listbox>
                         </paper-dropdown-menu>
                     </div>
-                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.spi:statusdate}}"></paper-input>
-                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.spi:orderdate}}"></paper-input>
-                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.spi:requireddate}}"></paper-input>
+                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.statusdate}}"></paper-input>
+                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.orderdate}}"></paper-input>
+                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.requireddate}}"></paper-input>
 
                     <div class="card">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:description}}</span>
+                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.description}}</span>
                                 <span style="margin: 16px 0px 0px 16px;"></span>
                             </div>
                         </div>
                         <div>
-                            <div class="circle"><span>{{purchaseOrder.spi:poline.0.spi:itemnum}}</span></div>
-                            <!--<div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>-->
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div class="circle"><span>{{purchaseOrder.poline.0.itemnum}}</span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
 
                     </div>
 
 
 
-                    <!--<paper-input disabled type="number" required label="Purchase Order Quantity" value="{{purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity}}"></paper-input>
-                    <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    <paper-input disabled type="number" required label="Purchase Order Quantity" value="{{purchaseOrder.poline.0.pocost.0.quantity}}"></paper-input>
+                    <!--<paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                     <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>-->
-                    <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{purchaseOrder.spi:poline.0.spi:orderqty}}"></paper-input>
+                    <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{purchaseOrder.poline.0.orderqty}}"></paper-input>
                     <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderLineQty">Increase purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                     <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderLineQty">Decrease purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
 
                     <div id="line2" class="card">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:description}}</span>
+                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.description}}</span>
                                 <span style="margin: 16px 0px 0px 16px;"></span>
                             </div>
                         </div>
                         <div>
-                            <div class="circle"><span>{{purchaseOrder.spi:poline.1.spi:itemnum}}</span></div>
-                            <!--<div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:pocost.0.spi:quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>-->
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div class="circle"><span>{{purchaseOrder.poline.1.itemnum}}</span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
 
                     </div>
@@ -198,8 +198,8 @@
 
                 } else {
                     this.set('purchaseOrder', {})
-                    this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')
-                    this.set('purchaseOrder.spi:siteid', this.get('whoAmI.defaultSite') || '')
+                    this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
 
             }
@@ -207,7 +207,7 @@
 
             _poLoaded() {
                 //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
-                let checkWO = (this.get('purchaseOrder.spi:poline.0.spi:refwo'))
+                let checkWO = (this.get('purchaseOrder.poline.0.refwo'))
                 if (typeof checkWO === 'string' || checkWO instanceof String) {
                     this.disabled = true;
                 } else {
@@ -218,8 +218,8 @@
             //After the whoAmI object is populated, we need to populate those fields
             _whoAmIChanged() {
                 if (!this._showDetails()) {
-                    this.set('purchaseOrder.spi:orgid', this.get('whoAmI.defaultOrg') || '')
-                    this.set('purchaseOrder.spi:siteid', this.get('whoAmI.defaultSite') || '')
+                    this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
             }
 
@@ -242,7 +242,7 @@
             _handleSaveResponse(event) {
                 this.$.spinner.active = false
                 if (!this._showDetails()) {
-                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.spi:purchaseorderid'))
+                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
                 } else {
                     this.error = null;
                     this.success = "Work Order Successfully Saved"
@@ -253,9 +253,9 @@
                 this.$.spinner.active = false
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
-                    event.detail.request.xhr.response["oslc:Error"] &&
-                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
-                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                    event.detail.request.xhr.response["Error"] &&
+                    event.detail.request.xhr.response["Error"]["message"]) {
+                    this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
                 } else {
                     this.error = "Could not save Purchase Order"
@@ -271,96 +271,85 @@
                 return headers
             }
 
-            //this function increases the purchase order quantity, and also increases the PO-line quantity
+            //this function increases the purchase order quantity
             increasePurchaseOrderQty() {
-
-                let getPoCostQty = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity')
+                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity')
                 let poCostQty = parseInt(getPoCostQty)
                 poCostQty++
-                let getPoLineQty = this.get('purchaseOrder.spi:poline.0.spi:orderqty')
-                let poLineQty = parseInt(getPoLineQty)
-                poLineQty++
-
-                this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', poCostQty)
-                this.set('purchaseOrder.spi:poline.0.spi:orderqty', poLineQty)
-
-                //also, if the quantity increases, so should the cost
-
-                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
-                let poUnitCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:unitcost'))
-
-                poLineCost += poUnitCost
-
-                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
-
-
-
+                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
             }
             //this function decreases the purchase order quantity, and also decreases the PO-line quantity
             decreasePurchaseOrderQty() {
-                let getPoCostQty = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity');
+                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity');
                 let poCostQty = parseInt(getPoCostQty);
                 poCostQty--;;
-                let getPoLineQty = this.get('purchaseOrder.spi:poline.0.spi:orderqty');
-                let poLineQty = parseInt(getPoLineQty);
-                poLineQty--;
-
-                this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', poCostQty)
-                this.set('purchaseOrder.spi:poline.0.spi:orderqty', poLineQty)
-
-                //also, if the quantity decreases, so should the cost
-
-                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
-                let poUnitCost = parseInt(this.get('purchaseOrder.spi:totalcost'))
-
-                poLineCost -= poUnitCost
-
-                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
-
+                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
             }
 
             //this function increases the purchase order line quantity
             increasePurchaseOrderLineQty() {
-                let getPoLineQty = parseInt(this.get('purchaseOrder.spi:poline.0.spi:orderqty'));
+                //gets the line quantity
+                let getPoLineQty = parseInt(this.get('purchaseOrder.poline.0.orderqty'));
+                //calculates the tax per unit
+                //let totalTax1 = parseInt(this.get('purchaseOrder.totaltax1'))
+                //let totalTax2 = parseInt(this.get('purchaseOrder.totalTax2'))
+                //let holder
+                //if (totalTax1 && totalTax2 > 0) {
+                //    holder = totalTax1 / totalTax2
+                //    alert(holder)
+                //}
+                let poTax = parseInt(this.get('purchaseOrder.poline.0.tax1')) / getPoLineQty
+                //adds 1 to the quantity
                 getPoLineQty++
-                this.set('purchaseOrder.spi:poline.0.spi:orderqty', getPoLineQty)
+                //updates the quantity
+                this.set('purchaseOrder.poline.0.orderqty', getPoLineQty)
+                //gets the unitcost
+                let poUnitCost = parseInt(this.get('purchaseOrder.poline.0.unitcost'))
+                //gets the linecost
+                let poLineCost = parseInt(this.get('purchaseOrder.poline.0.linecost'))
+                //gets the totalcost
+                let poTotalCost = parseInt(this.get('purchaseOrder.totalcost'))
 
-                let poUnitCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:unitcost'))
-                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
-                let poTotalCost = parseInt(this.get('purchaseOrder.spi:totalcost'))
-
+                
+                //calculates the line cost
                 poLineCost = poLineCost + poUnitCost
-                poTotalCost = poTotalCost + poUnitCost
-                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
-                this.set('purchaseOrder.spi:totalcost', poTotalCost)
+                //calculate total tax
+                poTax = poTax * getPoLineQty
 
-            }
+                // calculates the total cost
+                poTotalCost = poTotalCost + poUnitCost 
+                //this.set('purchaseOrder.poline.0.linecost', poLineCost)
+                //this.set('purchaseOrder.totalcost', poTotalCost)
+
+                this.increasePurchaseOrderQty()
+            }   
 
             //this function decreases the purchase order line quantity
             decreasePurchaseOrderLineQty() {
-                let getPoLineQty = parseInt(this.get('purchaseOrder.spi:poline.0.spi:orderqty'));
+                let getPoLineQty = parseInt(this.get('purchaseOrder.poline.0.orderqty'));
                 getPoLineQty--
-                this.set('purchaseOrder.spi:poline.0.spi:orderqty', getPoLineQty)
+                this.set('purchaseOrder.poline.0.orderqty', getPoLineQty)
 
-                let poUnitCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:unitcost'))
-                let poLineCost = parseInt(this.get('purchaseOrder.spi:poline.0.spi:linecost'))
-                let poTotalCost = parseInt(this.get('purchaseOrder.spi:totalcost'))
+                let poUnitCost = parseInt(this.get('purchaseOrder.poline.0.unitcost'))
+                let poLineCost = parseInt(this.get('purchaseOrder.poline.0.linecost'))
+                let poTotalCost = parseInt(this.get('purchaseOrder.totalcost'))
 
                 poLineCost = poLineCost - poUnitCost
                 poTotalCost = poTotalCost - poUnitCost
-                this.set('purchaseOrder.spi:poline.0.spi:linecost', poLineCost)
-                this.set('purchaseOrder.spi:totalcost', poTotalCost)
+                //this.set('purchaseOrder.poline.0.linecost', poLineCost)
+                //this.set('purchaseOrder.totalcost', poTotalCost)
+                this.decreasePurchaseOrderQty()
             }
 
             _getSavePayload(purchaseOrder) {
                 // format the input-string to an integer before updating
-                let getPoCostQty = this.get('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity');
+                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity');
                 let poCostQty = parseInt(getPoCostQty);
-                let getPoLineQty = this.get('purchaseOrder.spi:poline.0.spi:orderqty');
+                let getPoLineQty = this.get('purchaseOrder.poline.0.orderqty');
                 let poLineQty = parseInt(getPoLineQty);
 
-                this.set('purchaseOrder.spi:poline.0.spi:pocost.0.spi:quantity', poCostQty)
-                this.set('purchaseOrder.spi:poline.0.spi:orderqty', poLineQty)
+                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
+                this.set('purchaseOrder.poline.0.orderqty', poLineQty)
 
                 return purchaseOrder
             }
