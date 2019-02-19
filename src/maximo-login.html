@@ -79,6 +79,8 @@
                     this.$.spinner.active = true
                     this.$.maximoLoginAjax.headers['maxAuth'] = btoa(`${this.get('username')}:${this.get('password')}`)
                     this.$.maximoLoginAjax.generateRequest()
+                    //this.$.auth.generateRequest()
+                  
                     
                 }
             }
