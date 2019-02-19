@@ -65,6 +65,7 @@
 
             performLogin() {
                 let baseUrl = this.get('baseUrl')
+                alert(baseUrl)
                 if (!(baseUrl.toLowerCase().startsWith('http://'))
                     && !(baseUrl.toLowerCase().startsWith('https://'))) {
                     this.$.spinner.active = false
