@@ -58,7 +58,7 @@
                 <h3> Detailed information regarding order [[purchaseOrder.spi:ponum]] </h3>
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
-                    <div class="card" style="margin-bottom: 5em;">
+                    <div class="card">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
                                 Order Information:<span style="margin: 16px 0px 0px 16px;">{{Purchaseorder.spi:description}}</span>
@@ -76,10 +76,31 @@
 
                         </div>
                     </div>
+                    <div>
+                        <paper-dropdown-menu id="poStatus"
+                                             label="Status">
+                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
+                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
+                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
+                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
+                                <!--Order statuses avaliable but that should not be used (right now)-->
+                                <!--<paper-item value='APPR'>Approved</paper-item>
+                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                                <paper-item value='HOLD'>Hold</paper-item>
+                                <paper-item value='PNDREV'>Pending Revision</paper-item>
+                                <paper-item value='REVISD'>Revised</paper-item>
+                                <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </div>
+                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.spi:statusdate}}"></paper-input>
+                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.spi:orderdate}}"></paper-input>
+                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.spi:requireddate}}"></paper-input>
+
                     <div class="card">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{Purchaseorder.spi:description}}</span>
+                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.0.spi:description}}</span>
                                 <span style="margin: 16px 0px 0px 16px;"></span>
                             </div>
                         </div>
@@ -101,27 +122,27 @@
                     <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{purchaseOrder.spi:poline.0.spi:orderqty}}"></paper-input>
                     <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderLineQty">Increase purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                     <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderLineQty">Decrease purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                    <div>
-                        <paper-dropdown-menu id="poStatus"
-                                             label="Status">
-                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.spi:status}}" attr-for-selected="value">
-                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
-                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
-                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
-                                <!--Order statuses avaliable but that should not be used (right now)-->
-                                <!--<paper-item value='APPR'>Approved</paper-item>
-                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                                <paper-item value='HOLD'>Hold</paper-item>
-                                <paper-item value='PNDREV'>Pending Revision</paper-item>
-                                <paper-item value='REVISD'>Revised</paper-item>
-                                <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
-                            </paper-listbox>
-                        </paper-dropdown-menu>
+
+                    <div id="line2" class="card">
+                        <div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
+                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:description}}</span>
+                                <span style="margin: 16px 0px 0px 16px;"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="circle"><span>{{purchaseOrder.spi:poline.1.spi:itemnum}}</span></div>
+                            <!--<div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:pocost.0.spi:quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>-->
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.spi:poline.1.spi:linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+
                     </div>
-                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.spi:statusdate}}"></paper-input>
-                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.spi:orderdate}}"></paper-input>
-                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.spi:requireddate}}"></paper-input>
-                    <paper-button raised class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+
+                    <div>
+                        <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    </div>
                 </form>
             </div>
         </template>

@@ -156,6 +156,7 @@
             _onLogout() {
                 this.set('authenticated', false)
                 //this.set('route.path', '/login');
+                localStorage.clear();
                 window.location.replace('/login');
             }
 
