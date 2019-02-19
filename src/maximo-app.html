@@ -38,8 +38,7 @@
                       url-space-regex="^[[rootPath]]">
         </app-location>
 
-        <iron-ajax
-                   auto
+        <iron-ajax id="maximoLogin"
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/whoami"
@@ -50,6 +49,17 @@
                    on-response="_handleResponse"
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
+
+        <iron-ajax 
+                   id="maximoLogoutAjax"
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/logout"
+                   method="post"
+                   handle-as="json"
+                   on-response="_handleLogoutResponse"
+                   on-error="_handleLogoutError">
+        </iron-ajax>
 
         <app-route route="{{route}}"
                    pattern="[[rootPath]]:page"
@@ -71,16 +81,16 @@
                                     <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="home"></iron-icon>Home</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
-                                <div main-title>Maximo Purchase Orders</div>
-                                <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorder"></iron-icon>
-                                <paper-menu-button>
-                                    <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
-                                    <paper-listbox slot="dropdown-content">
-                                        <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
-                                        <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
-                                        <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" icon="exit-to-app"></iron-icon>Sign out</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button>
+                            <div main-title>Maximo Purchase Orders</div>
+                            <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorder"></iron-icon>
+                            <paper-menu-button>
+                                <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
+                                <paper-listbox slot="dropdown-content">
+                                    <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
+                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" icon="exit-to-app"></iron-icon>Sign out</paper-item>
+                                </paper-listbox>
+                            </paper-menu-button>
                         </app-toolbar>
                     </template>
                 </app-header>
@@ -91,7 +101,7 @@
                             fallback-selection="maximo-not-found"
                             role="main">
                     <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
-                    <maximo-purchaseorders name="purchaseorders"who-am-i='[[whoAmI]]'></maximo-purchaseorders>
+                    <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
                     <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
                     <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
                 </iron-pages>
@@ -133,8 +143,10 @@
 
             //we want the user to go to the home page after authentication
             _onAuthenticated() {
+                this.$.maximoLogin.generateRequest()
                 this.set('authenticated', true)
                 this.set('route.path', '/purchaseorders/1')
+                
             }
 
 
@@ -154,9 +166,11 @@
             }
 
             _onLogout() {
+                this.$.maximoLogoutAjax.generateRequest()
                 this.set('authenticated', false)
-                //this.set('route.path', '/login');
-                window.location.replace('/login');
+                this.set('route.path', '/login');
+                //window.location.replace('/login');
+                
             }
 
             static get observers() {
