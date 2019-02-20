@@ -46,7 +46,8 @@
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
-            </div>
+
+                
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
                 <div class="card">
@@ -88,6 +89,11 @@
                 } else {
                     this.error = "Could not authenticate user"
                 }
+            }
+
+            searchPurchaseOrder() {
+                let searchValue = document.getElementById("aaa").value;
+                alert(searchValue)
             }
 
             // the query for maximo
