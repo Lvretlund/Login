@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\bower_components",
+    "\\bower_components\\paper-dropdown-menu",
+    "\\Login",
     "\\src"
   ],
-  "SelectedNode": "\\src\\maximo-purchaseorders.html",
+  "SelectedNode": "\\bower_components",
   "PreviewInSolutionExplorer": false
 }
