@@ -29,6 +29,8 @@
 <link rel="lazy-import" href="maximo-login.html">
 <link rel="lazy-import" href="maximo-purchaseorders.html">
 <link rel="lazy-import" href="maximo-logout.html">
+<link rel="lazy-import" href="maximo-account.html">
+<link rel="lazy-import" href="maximo-purchaseorder.html">
 
 <dom-module id="maximo-app">
     <template>
@@ -87,7 +89,7 @@
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
+                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
@@ -100,6 +102,7 @@
                             attr-for-selected="name"
                             fallback-selection="maximo-not-found"
                             role="main">
+                    <maximo-account name="account" who-am-i='[[whoAmI]]'></maximo-account>
                     <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
                     <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
                     <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>

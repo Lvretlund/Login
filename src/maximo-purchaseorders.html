@@ -29,6 +29,7 @@
                    last-response="{{PurchaseOrders}}"
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
+
         <div id="poList">
             <div id="poListTxt">
                 <div>
@@ -42,12 +43,12 @@
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
                 <!--links to next or previous pages, also fetched from script-->
-
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
+            </div>
 
-                
+
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
                 <div class="card">
@@ -62,7 +63,7 @@
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Quantity:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="display:inline;"><a name="purchaseorder" href="[[rootPath]]purchaseorder/{{item.poid}}" >Edit order >></a></div>
+                        <div style="display:inline;"><a name="purchaseorder" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit order >></a></div>
                     </div>
                 </div>
             </template>
@@ -78,14 +79,14 @@
                 this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
                 this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
             }
-            
+
             _handleError(event) {
                 this.$.spinner.active = false
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
                     event.detail.request.xhr.response["Error"] &&
                     event.detail.request.xhr.response["Error"]["message"]) {
-                    this.error = event.detail.request.xhr.response["Error"]["message"];               
+                    this.error = event.detail.request.xhr.response["Error"]["message"];
                 } else {
                     this.error = "Could not authenticate user"
                 }
@@ -107,7 +108,7 @@
                     "lean": 1
                 }
             }
-            _nextPageUrl(pagenum) {             
+            _nextPageUrl(pagenum) {
                 return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
             }
 
