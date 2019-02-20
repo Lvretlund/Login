@@ -114,16 +114,11 @@
 
                     </div>
 
-
-
-                    <paper-input disabled type="number" required label="Purchase Order Quantity" value="{{purchaseOrder.poline.0.pocost.0.quantity}}"></paper-input>
-                    <!--<paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                    <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>-->
                     <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{purchaseOrder.poline.0.orderqty}}"></paper-input>
-                    <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderLineQty">Increase purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                    <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderLineQty">Decrease purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
 
-                    <div id="line2" class="card">
+                    <div class="card" hidden="{{hide}}">
                         <div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
                                 Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.description}}</span>
@@ -132,7 +127,6 @@
                         </div>
                         <div>
                             <div class="circle"><span>{{purchaseOrder.poline.1.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Order Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
@@ -170,6 +164,10 @@
                         type: Boolean,
                         notify: true,
                         reflectToAttribute: true
+                    },
+                    hide: {
+                        type: Boolean,
+                        value: true
                     }
 
                 }
@@ -207,11 +205,20 @@
 
             _poLoaded() {
                 //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
-                let checkWO = (this.get('purchaseOrder.poline.0.refwo'))
+                let checkWO = this.get('purchaseOrder.poline.0.refwo')
                 if (typeof checkWO === 'string' || checkWO instanceof String) {
                     this.disabled = true;
                 } else {
                     this.disabled = false;
+                }
+            }
+
+            _isThereMultipleLines() {
+                let checkLines = this.get('purchaseOrder.poline.1')
+                if (checkLines == undefined) {
+                    //alert('undefined')
+                } else {
+                    this.hide = false;
                 }
             }
 
@@ -232,7 +239,9 @@
 
             _handleLoadResponse(event) {
                 this.$.spinner.active = false
-                this._poLoaded(this.get('purchaseOrder'))
+                this._poLoaded()
+                this._isThereMultipleLines()
+
             }
 
             _handleLoadError(event, request) {
@@ -264,94 +273,46 @@
             }
 
             _getSaveHeaders() {
-                let headers = { 'properties': '*' }
+                let headers = { 'properties': '*'}
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
+                    headers['patchtype'] = 'MERGE'
+                     
                 }
                 return headers
             }
 
             //this function increases the purchase order quantity
             increasePurchaseOrderQty() {
-                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity')
-                let poCostQty = parseInt(getPoCostQty)
-                poCostQty++
-                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
+                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
+                let poCostQty = parseInt(getPoCostQty);
+                poCostQty++;
+                this.set('purchaseOrder.poline.0.orderqty', poCostQty)
             }
             //this function decreases the purchase order quantity, and also decreases the PO-line quantity
             decreasePurchaseOrderQty() {
-                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity');
+                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
                 let poCostQty = parseInt(getPoCostQty);
-                poCostQty--;;
-                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
+                poCostQty--;
+                this.set('purchaseOrder.poline.0.orderqty', poCostQty)
             }
 
-            //this function increases the purchase order line quantity
-            increasePurchaseOrderLineQty() {
-                //gets the line quantity
-                let getPoLineQty = parseInt(this.get('purchaseOrder.poline.0.orderqty'));
-                //calculates the tax per unit
-                //let totalTax1 = parseInt(this.get('purchaseOrder.totaltax1'))
-                //let totalTax2 = parseInt(this.get('purchaseOrder.totalTax2'))
-                //let holder
-                //if (totalTax1 && totalTax2 > 0) {
-                //    holder = totalTax1 / totalTax2
-                //    alert(holder)
-                //}
-                let poTax = parseInt(this.get('purchaseOrder.poline.0.tax1')) / getPoLineQty
-                //adds 1 to the quantity
-                getPoLineQty++
-                //updates the quantity
-                this.set('purchaseOrder.poline.0.orderqty', getPoLineQty)
-                //gets the unitcost
-                let poUnitCost = parseInt(this.get('purchaseOrder.poline.0.unitcost'))
-                //gets the linecost
-                let poLineCost = parseInt(this.get('purchaseOrder.poline.0.linecost'))
-                //gets the totalcost
-                let poTotalCost = parseInt(this.get('purchaseOrder.totalcost'))
-
-                
-                //calculates the line cost
-                poLineCost = poLineCost + poUnitCost
-                //calculate total tax
-                poTax = poTax * getPoLineQty
-
-                // calculates the total cost
-                poTotalCost = poTotalCost + poUnitCost 
-                //this.set('purchaseOrder.poline.0.linecost', poLineCost)
-                //this.set('purchaseOrder.totalcost', poTotalCost)
-
-                this.increasePurchaseOrderQty()
-            }   
-
-            //this function decreases the purchase order line quantity
-            decreasePurchaseOrderLineQty() {
-                let getPoLineQty = parseInt(this.get('purchaseOrder.poline.0.orderqty'));
-                getPoLineQty--
-                this.set('purchaseOrder.poline.0.orderqty', getPoLineQty)
-
-                let poUnitCost = parseInt(this.get('purchaseOrder.poline.0.unitcost'))
-                let poLineCost = parseInt(this.get('purchaseOrder.poline.0.linecost'))
-                let poTotalCost = parseInt(this.get('purchaseOrder.totalcost'))
-
-                poLineCost = poLineCost - poUnitCost
-                poTotalCost = poTotalCost - poUnitCost
-                //this.set('purchaseOrder.poline.0.linecost', poLineCost)
-                //this.set('purchaseOrder.totalcost', poTotalCost)
-                this.decreasePurchaseOrderQty()
-            }
+            
 
             _getSavePayload(purchaseOrder) {
-                // format the input-string to an integer before updating
-                let getPoCostQty = this.get('purchaseOrder.poline.0.pocost.0.quantity');
+                //here we have to set the values of the body we want to change
+
+                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
                 let poCostQty = parseInt(getPoCostQty);
-                let getPoLineQty = this.get('purchaseOrder.poline.0.orderqty');
-                let poLineQty = parseInt(getPoLineQty);
-
-                this.set('purchaseOrder.poline.0.pocost.0.quantity', poCostQty)
-                this.set('purchaseOrder.poline.0.orderqty', poLineQty)
-
-                return purchaseOrder
+                
+                purchaseOrder.body = {
+                    "poline": [
+                        {
+                            "polinenum": 1,
+                            "orderqty": poCostQty
+                        }]
+                        }
+                return purchaseOrder.body
             }
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.
@@ -359,7 +320,7 @@
                 this.error = null;
                 this.success = null;
                 this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
-                this.$.maximoSavePurchaseOrderAjax.body = this._getSavePayload(this.get('purchaseOrder'))
+                this.$.maximoSavePurchaseOrderAjax.body =this._getSavePayload(this.get('purchaseOrder'))
                 this.$.maximoSavePurchaseOrderAjax.generateRequest()
                 this.$.spinner.active = true
             }
