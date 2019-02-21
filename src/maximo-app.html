@@ -171,8 +171,7 @@
             _onLogout() {
                 this.$.maximoLogoutAjax.generateRequest()
                 this.set('authenticated', false)
-                this.set('route.path', '/login');
-                //window.location.replace('/login');
+                window.location.replace('/login');
                 
             }
 

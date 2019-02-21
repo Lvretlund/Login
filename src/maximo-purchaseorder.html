@@ -316,26 +316,6 @@
                 }
                 
             }
-            _nextOrder() {
-                this.$.#next
-            }
-
-            <div class="card">
-            <div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                    Line Information:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.description }}</span>
-                    <span style="margin: 16px 0px 0px 16px;"></span>
-                </div>
-            </div>
-            <div>
-                <div class="circle"><span>{{ purchaseOrder.poline.0.itemnum }}</span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.orderqty }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.unitcost }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.linecost }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-            </div>
-
-        </div>
-
 
             //After the whoAmI object is populated, we need to populate those fields
             _whoAmIChanged() {
