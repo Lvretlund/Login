@@ -79,7 +79,6 @@
                     this.$.spinner.active = true
                     this.$.maximoLoginAjax.headers['maxAuth'] = btoa(`${this.get('username')}:${this.get('password')}`)
                     this.$.maximoLoginAjax.generateRequest()
-                    //this.$.auth.generateRequest()
                   
                     
                 }
@@ -94,7 +93,6 @@
             }
 
             _handleLoginError(event) {
-                //alert("wrong username/password, please try again");
                 this.$.spinner.active = false
                 const req = event.detail.request;
                 if (event.detail.request.xhr &&
