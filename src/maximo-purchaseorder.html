@@ -96,106 +96,28 @@
                     <paper-input type="text" required label="Status date" value="{{purchaseOrder.statusdate}}"></paper-input>
                     <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.orderdate}}"></paper-input>
                     <paper-input type="text" required label="Required date" value="{{purchaseOrder.requireddate}}"></paper-input>
-
-                    <div class="card">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.description}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
+                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+                        <div class="card">
+                            <div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
+                                    Line Information:<span style="margin: 16px 0px 0px 16px;">{{item.description}}</span>
+                                    <span style="margin: 16px 0px 0px 16px;"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="circle"><span>{{item.itemnum}}</span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
                         </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.0.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
+                        <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order line quantity</paper-button>&nbsp;
+                        <paper-spinner-lite id="spinner"></paper-spinner-lite>
+                        <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order line quantity</paper-button>&nbsp;
+                        <paper-spinner-lite id="spinner"></paper-spinner-lite>
 
-                    </div>
-
-                    <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{purchaseOrder.poline.0.orderqty}}"></paper-input>
-                    <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                    <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order line quantity</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-
-                    <div class="card" hidden="{{hide}}">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.orderqty}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.1.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.1.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                    </div>
-
-                    <div class="card" hidden="{{hide1}}">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.2.orderqty}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.2.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.2.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.2.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.2.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                    </div>
-
-                    <div class="card" hidden="{{hide2}}">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.3.orderqty}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.3.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.3.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.3.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.3.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                    </div>
-
-                    <div class="card" hidden="{{hide3}}">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.4.orderqty}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.4.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.4.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.4.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.4.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                    </div>
-
-                    <div class="card" hidden="{{hide4}}">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                                Line Information:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.5.orderqty}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="circle"><span>{{purchaseOrder.poline.5.itemnum}}</span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.5.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.5.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{purchaseOrder.poline.5.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                    </div>
+                    </template>
 
                     <div>
                         <paper-button id="next" style="margin-top: 2em;" class="indigo" raised >Show Next Line</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
@@ -203,7 +125,7 @@
                 </form>
 
                     <div>
-                        <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="savePurchaseOrder">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                        <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSavePayload">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                     </div>
                 </form>
             </div>
@@ -232,26 +154,6 @@
                         type: Boolean,
                         notify: true,
                         reflectToAttribute: true
-                    },
-                    hide: {
-                        type: Boolean,
-                        value: true
-                    },
-                    hide1: {
-                        type: Boolean,
-                        value: true
-                    },
-                    hide2: {
-                        type: Boolean,
-                        value: true
-                    },
-                    hide3: {
-                        type: Boolean,
-                        value: true
-                    },
-                    hide4: {
-                        type: Boolean,
-                        value: true
                     }
 
                 }
@@ -301,41 +203,10 @@
             _isThereMultipleLines() {
                 let checkLines = this.get('purchaseOrder.poline')
                 if (checkLines != undefined) {
-                    let i = checkLines.length;
-                    if (i > 1) {
-                        this.hide = false;
-                    } if (i > 2) {
-                        this.hide1 = false
-                    } if (i > 3) {
-                        this.hide2 = false
-                    } if (i > 4) {
-                        this.hide3 = false
-                    } if (i > 5) {
-                        this.hide4 = false
-                    }
+                   this.hide = false
                 }
                 
             }
-            _nextOrder() {
-                this.$.#next
-            }
-
-            <div class="card">
-            <div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                    Line Information:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.description }}</span>
-                    <span style="margin: 16px 0px 0px 16px;"></span>
-                </div>
-            </div>
-            <div>
-                <div class="circle"><span>{{ purchaseOrder.poline.0.itemnum }}</span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.orderqty }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.unitcost }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{ purchaseOrder.poline.0.linecost }}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-            </div>
-
-        </div>
-
 
             //After the whoAmI object is populated, we need to populate those fields
             _whoAmIChanged() {
@@ -398,37 +269,50 @@
             }
 
             //this function increases the purchase order quantity
-            increasePurchaseOrderQty() {
-                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
-                let poCostQty = parseInt(getPoCostQty);
-                poCostQty++;
-                this._nextOrderLine()
-                this.set('purchaseOrder.poline.0.orderqty', poCostQty)
+            increasePurchaseOrderQty(item) {
+                let getPoLineQty = parseInt(item.model.__data.item.orderqty);
+                getPoLineQty++;
+                item.model.__data.item.orderqty = getPoLineQty;
+                
+
             }
             //this function decreases the purchase order quantity, and also decreases the PO-line quantity
-            decreasePurchaseOrderQty() {
-                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
-                let poCostQty = parseInt(getPoCostQty);
-                poCostQty--;
-                this.set('purchaseOrder.poline.0.orderqty', poCostQty)
+            decreasePurchaseOrderQty(item) {
+                let getPoLineQty = parseInt(item.model.__data.item.orderqty);
+                getPoLineQty--;
+
+                item.model.__data.item.orderqty =getPoLineQty
             }
 
             
 
             _getSavePayload(purchaseOrder) {
                 //here we have to set the values of the body we want to change
+                let item = this.get('purchaseOrder.poline')
 
-                let getPoCostQty = this.get('purchaseOrder.poline.0.orderqty');
-                let poCostQty = parseInt(getPoCostQty);
+                for (var i = 0; i < item.length;) {
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    console.log(getPoCostQty)
+                    let poCostQty = parseInt(getPoCostQty);
+                    purchaseOrder.body = {
+                        "poline":[
+                            {
+                                "polinenum": i+1,
+                                "orderqty": poCostQty
+                            }]
+                        
+                    }
+                    
+                    console.log(purchaseOrder.body)
+                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                    this.savePurchaseOrder();
+                    //return purchaseOrder.body
+                    i++
+                    
+                }
+
+ 
                 
-                purchaseOrder.body = {
-                    "poline": [
-                        {
-                            "polinenum": 1,
-                            "orderqty": poCostQty
-                        }]
-                        }
-                return purchaseOrder.body
             }
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.
@@ -436,7 +320,7 @@
                 this.error = null;
                 this.success = null;
                 this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
-                this.$.maximoSavePurchaseOrderAjax.body =this._getSavePayload(this.get('purchaseOrder'))
+                //this.$.maximoSavePurchaseOrderAjax.body =this._getSavePayload(this.get('purchaseOrder'))
                 this.$.maximoSavePurchaseOrderAjax.generateRequest()
                 this.$.spinner.active = true
             }
