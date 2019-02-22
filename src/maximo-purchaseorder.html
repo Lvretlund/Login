@@ -47,7 +47,7 @@
                    on-error="_handleSaveError"></iron-ajax>
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{!(spinner.active)}}">
-            <div class="card">
+            <div class="poCard">
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
@@ -129,7 +129,7 @@
                     <div>
                         <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSavePayload">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                     </div>
-                </form>
+     
             </div>
         </template>
     </template>
