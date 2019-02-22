@@ -81,8 +81,8 @@
                             <paper-menu-button vertical-offset="60">
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" icon="list"></iron-icon>Purchase orders</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" icon="home"></iron-icon>Home</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" data-args="purchaseorder" icon="home"></iron-icon>Home</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                             <div main-title>Maximo Purchase Orders</div>
@@ -91,8 +91,8 @@
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
-                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" icon="account-circle"></iron-icon>My account</paper-item>
-                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" icon="exit-to-app"></iron-icon>Sign out</paper-item>
+                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
+                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                         </app-toolbar>
@@ -142,6 +142,7 @@
             }
 
             goto(e) {
+                var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
                 this.set('route.path', link);
             }
@@ -153,7 +154,6 @@
                 this.set('route.path', '/purchaseorders/1')
                 
             }
-
 
             //Det är denna som gör att vi loggar in automatiskt. Kommenterade bort den. 
             //_handleResponse(event) {
@@ -186,6 +186,7 @@
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
                 var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');
+                //this.set('authenticated', true)
                 Polymer.importHref(
                     resolvedPageUrl,
                     null,
