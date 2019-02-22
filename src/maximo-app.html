@@ -186,7 +186,10 @@
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
                 var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');
-                //this.set('authenticated', true)
+                if (resolvedPageUrl != this.resolveUrl('maximo-login.html')) {
+                    this.set('authenticated', true)
+                }
+                
                 Polymer.importHref(
                     resolvedPageUrl,
                     null,
