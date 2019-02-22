@@ -282,8 +282,9 @@
             decreasePurchaseOrderQty(item) {
                 let getPoLineQty = parseInt(item.model.__data.item.orderqty);
                 getPoLineQty--;
-
-                item.model.__data.item.orderqty =getPoLineQty
+                item.model.__data.item.orderqty = getPoLineQty;
+                let getPoLineNum = item.model.__data.item.polinenum;
+                getPoLineNum--;
             }
 
             
