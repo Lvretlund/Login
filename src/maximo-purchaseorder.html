@@ -113,11 +113,11 @@
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
                         </div>
-                        <paper-input disabled type="number" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
-                        <paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order line quantity</paper-button>&nbsp;
+                         <paper-input type="number" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        <!--<paper-button raised class="indigo" raised on-tap="increasePurchaseOrderQty">Increase purchase order line quantity</paper-button>&nbsp;
                         <paper-spinner-lite id="spinner"></paper-spinner-lite>
                         <paper-button raised class="indigo" raised on-tap="decreasePurchaseOrderQty">Decrease purchase order line quantity</paper-button>&nbsp;
-                        <paper-spinner-lite id="spinner"></paper-spinner-lite>
+                        <paper-spinner-lite id="spinner"></paper-spinner-lite>-->
 
                     </template>
 
@@ -274,23 +274,22 @@
                 return headers
             }
 
-            //this function increases the purchase order quantity
-            increasePurchaseOrderQty(item) {
-                let getPoLineQty = parseInt(item.model.__data.item.orderqty);
-                getPoLineQty++;
-                item.model.__data.item.orderqty = getPoLineQty;
+            ////this function increases the purchase order quantity
+            //increasePurchaseOrderQty(item) {
+            //    let getPoLineQty = parseInt(item.model.__data.item.orderqty);
+            //    getPoLineQty++;
+            //    item.model.__data.item.orderqty = getPoLineQty;
                 
 
-            }
-            //this function decreases the purchase order quantity, and also decreases the PO-line quantity
-            decreasePurchaseOrderQty(item) {
-                let getPoLineQty = parseInt(item.model.__data.item.orderqty);
-                getPoLineQty--;
-                item.model.__data.item.orderqty = getPoLineQty;
-                let getPoLineNum = item.model.__data.item.polinenum;
-                getPoLineNum--;
-            }
-
+            //}
+            ////this function decreases the purchase order quantity, and also decreases the PO-line quantity
+            //decreasePurchaseOrderQty(item) {
+            //    let getPoLineQty = parseInt(item.model.__data.item.orderqty);
+            //    getPoLineQty--;
+            //    item.model.__data.item.orderqty = getPoLineQty;
+            //    let getPoLineNum = item.model.__data.item.polinenum;
+            //    getPoLineNum--;
+            //}
             
 
             _getSavePayload(purchaseOrder) {
