@@ -38,9 +38,7 @@
     <template>
         <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
-        <app-location route="{{route}}"
-                      url-space-regex="^[[rootPath]]">
-        </app-location>
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
 
         <iron-ajax id="maximoLogin"
                    with-credentials
@@ -54,8 +52,7 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
-        <iron-ajax 
-                   id="maximoLogoutAjax"
+        <iron-ajax id="maximoLogoutAjax"
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/logout"
@@ -64,6 +61,18 @@
                    on-response="_handleLogoutResponse"
                    on-error="_handleLogoutError">
         </iron-ajax>
+
+        <!--<iron-ajax auto
+                   with-credentials
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/whoami"
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{whoAmI}}"
+                   on-response="_handleResponse"
+                   on-error="_handleError"
+                   debounce-duration="1000"></iron-ajax>-->
 
         <app-route route="{{route}}"
                    pattern="[[rootPath]]:page"
@@ -79,7 +88,7 @@
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
                             <paper-menu-button vertical-offset="60">
-                                <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+                                <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu" ></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorder"><iron-icon class="menuIcon" data-args="purchaseorder" icon="home"></iron-icon>Home</paper-item>
@@ -88,7 +97,7 @@
                             <div main-title>Maximo Purchase Orders</div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorder"></iron-icon>
                             <paper-menu-button vertical-offset="60">
-                                <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account"></iron-icon>
+                                <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
@@ -141,10 +150,14 @@
                 };
             }
 
-            goto(e) {
+            goto(e) {               
                 var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
                 this.set('route.path', link);
+                
+            }
+            fill() {
+                this.$.maximoLogin.generateRequest()
             }
 
             //we want the user to go to the home page after authentication
@@ -156,14 +169,17 @@
             }
 
             //Det är denna som gör att vi loggar in automatiskt. Kommenterade bort den. 
-            //_handleResponse(event) {
-            //    this.set('authenticated', true)
-            //    // the user is already authenticated,
-            //    // if it is on login page and has a valid whoAmI response, redirect to the wo list
-            //    if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
-            //        this.set('route.path', '/purchaseorders/1')
-            //    }
-            //}
+            _handleResponse(event) {
+                
+                this.set('authenticated', true)
+                // the user is already authenticated,
+                // if it is on login page and has a valid whoAmI response, redirect to the wo list
+                if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
+                    this.set('route.path', '/purchaseorders/1')
+                }
+                this.$.maximoLogin.generateRequest()
+                
+            }
 
             _handleError(event) {
                 //alert("wrong username/password, please try again");
@@ -178,14 +194,16 @@
             }
 
             static get observers() {
+
                 return [
                     '_routePageChanged(routeData.page)',
                 ];
+
             }
 
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
-                var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');
+                var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');               
                 if (resolvedPageUrl != this.resolveUrl('maximo-login.html')) {
                     this.set('authenticated', true)
                 }
@@ -195,7 +213,10 @@
                     null,
                     this._showPage404.bind(this),
                     true);
+                
             }
+                
+         
 
             _routePageChanged(page) {
                 // If no page was found in the route data, page will be an empty string.
@@ -207,7 +228,9 @@
             _showPage404() {
                 this.page = 'not-found';
             }
+
         }
+
         window.customElements.define(MaximoApp.is, MaximoApp);
     </script>
 </dom-module>

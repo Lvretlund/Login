@@ -230,6 +230,10 @@
                 this._poLoaded()
                 this._isThereMultipleLines()
 
+                var me = this.get('whoAmI');
+                alert(me.displayName)
+                console.log(me);
+
             }
 
             _handleLoadError(event, request) {
