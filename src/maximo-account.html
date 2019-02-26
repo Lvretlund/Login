@@ -27,26 +27,32 @@
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
 
-        <h1>Account</h1>
-
-        <div class="card">
-
-            <h3>Change language</h3>
-            <paper-listbox>
-                <paper-item>Swedish</paper-item>
-                <paper-item>English</paper-item>
-
-            </paper-listbox>
-
+        <div class="poTitle">
+            <iron-icon class="titleIcon" icon="account-circle" alt="account"></iron-icon>
+            <h1 id="poListTitle">Account</h1>
         </div>
 
-        <div class="card">
-
-            <h3>Change password</h3>
+        <div class="poCard">
 
 
+            <div class="card">
+
+                <h3>Change language</h3>
+                <paper-listbox>
+                    <paper-item>Swedish</paper-item>
+                    <paper-item>English</paper-item>
+
+                </paper-listbox>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Change password</h3>
+
+
+            </div>
         </div>
-
     </template>
 
     <script>

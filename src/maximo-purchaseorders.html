@@ -42,12 +42,13 @@
                    on-error="_handleError"
                    debounce-duration="1000"></iron-ajax>
 
+        <div class="poTitle">
+            <iron-icon class="titleIcon" icon="list"></iron-icon>
+            <h1 id="poListTitle">Purchase Orders</h1>
+        </div>
+
         <div class="poCard">
-            <div id="poListTxt">
-                <div>
-                    <iron-icon class="titleIcon" icon="list"></iron-icon>
-                    <h1 id="poListTitle">Purchase Orders</h1>
-                </div>
+            <div class="poTitle">
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
