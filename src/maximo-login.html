@@ -36,25 +36,27 @@
 
 
 
-        <div class="card" style="text-align: center; border: 1px solid; border-radius:5px; margin-top: 20%; margin-left: 35%; margin-right: 35%;">
-            <template is="dom-if" if="[[error]]">
-                <p class="alert-error">
-                    <strong>Error:</strong> [[error]]
-                </p>
-            </template>
-            <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
-            <h2>Enterprise Asset Management</h2>
-            <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
-                <form action="/foo" method="get">
-                    <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
-                    <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
-                    <template>
-                        <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
-                    </template>
-                    <paper-button raised class="indigo" on-tap="performLogin" style="margin-top:10px;">Sign In</paper-button>&nbsp;
-                    <paper-spinner-lite id="spinner"></paper-spinner-lite>
-                </form>
-            </iron-form>
+        <div class="card">
+            <div class="cardContent">
+                <template is="dom-if" if="[[error]]">
+                    <p class="alert-error">
+                        <strong>Error:</strong> [[error]]
+                    </p>
+                </template>
+                <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
+                <h2>Enterprise Asset Management</h2>
+                <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
+                    <form action="/foo" method="get">
+                        <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
+                        <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
+                        <template>
+                            <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
+                        </template>
+                        <paper-button raised class="indigo" on-tap="performLogin" style="margin-top:10px;">Sign In</paper-button>&nbsp;
+                        <paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    </form>
+                </iron-form>
+            </div>
         </div>
     </template>
 
