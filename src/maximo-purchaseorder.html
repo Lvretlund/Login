@@ -85,25 +85,24 @@
                         </div>
                     </div>
                     <div>
-                        <paper-dropdown-menu id="poStatus"
+                        <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
+                        <!--<paper-dropdown-menu id="poStatus"
                                              label="Status">
                             <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
                                 <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
                                 <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
                                 <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
-                                <!--Order statuses avaliable but that should not be used (right now)-->
-                                <!--<paper-item value='APPR'>Approved</paper-item>
-                    <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                    <paper-item value='HOLD'>Hold</paper-item>
-                    <paper-item value='PNDREV'>Pending Revision</paper-item>
-                    <paper-item value='REVISD'>Revised</paper-item>
-                    <paper-item value='HISTEDIT'>Edited in History</paper-item>-->
+
+                                <paper-item value='APPR'>Approved</paper-item>
+                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                                <paper-item value='HOLD'>Hold</paper-item>
+                                <paper-item value='PNDREV'>Pending Revision</paper-item>
+                                <paper-item value='REVISD'>Revised</paper-item>
+                                <paper-item value='HISTEDIT'>Edited in History</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                    </div>
-                    <paper-input type="text" required label="Status date" value="{{purchaseOrder.statusdate}}"></paper-input>
-                    <paper-input type="text" required label="Ordered date" value="{{purchaseOrder.orderdate}}"></paper-input>
-                    <paper-input type="text" required label="Required date" value="{{purchaseOrder.requireddate}}"></paper-input>
+                    </div>-->
+                    <div style="display :{{shouldShow}}"><iron-icon on-tap="_approveStatus"class="poCheck" icon="icons:check-circle"></iron-icon>Approve Purchase Order</div><div id="poCheckCancel" style="display: {{shouldShow2}}"><iron-icon on-tap="_closeStatus"class="poCheck" icon="cancel"></iron-icon>Cancel Purchase Order</div>
                     <template is="dom-repeat" items="{{purchaseOrder.poline}}">
                         <div class="card">
                             <div>
@@ -153,8 +152,18 @@
                         type: Boolean,
                         notify: true,
                         reflectToAttribute: true
+                    },
+                    shouldShow: {
+                        type: String,
+                        
+                        reflectToAttribute: true
+                    },
+                    shouldShow2: {
+                        type: String,
+                        reflectToAttribute: true
                     }
-
+                    
+ 
                 }
             }
 
@@ -197,6 +206,14 @@
                     
                     this.disabled = false;
                 }
+                //check if we should allow the user to approve the status 
+                let checkPoAppr = this.get('purchaseOrder.status')
+                if (checkPoAppr == "APPR" ||checkPoAppr == "CAN" ||checkPoAppr == "CLOSE" ||checkPoAppr == "REVISD") {   
+                    this.shouldShow = "none";
+                } if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
+                    this.shouldShow2 = "none";
+                }
+
             }
 
             //After the whoAmI object is populated, we need to populate those fields
@@ -248,6 +265,14 @@
                 }
             }
 
+            _approveStatus() {
+                this.set('purchaseOrder.status', "APPR");   
+            }
+
+            _closeStatus() {
+                this.set('purchaseOrder.status', "CLOSE");
+            }
+
             _getSaveHeaders() {
                 let headers = { 'properties': '*'}
                 if (this._showDetails()) {
@@ -264,10 +289,11 @@
 
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
                 for (var i = 0; i < item.length;) {
-                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
-                    console.log(getPoCostQty)
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');  
                     let poCostQty = parseInt(getPoCostQty);
+                    let poStatus = this.get('purchaseOrder.status')
                     purchaseOrder.body = {
+                        "status": poStatus,
                         "poline":[
                             {
                                 "polinenum": i+1,
