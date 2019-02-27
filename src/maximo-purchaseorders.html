@@ -122,6 +122,11 @@
                 }
             }
             _nextPageUrl(pagenum) {
+                let totalPages = this.get('totalPages');
+                if (pagenum >= totalPages) {
+                    pagenum = 0;
+                }
+               
                 return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
             }
 
