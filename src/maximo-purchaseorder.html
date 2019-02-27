@@ -209,11 +209,13 @@
                 }
                 //check if we should allow the user to approve the status 
                 let checkPoAppr = this.get('purchaseOrder.status')
-                if (checkPoAppr == "APPR" ||checkPoAppr == "CAN" ||checkPoAppr == "CLOSE" ||checkPoAppr == "REVISD") {   
+                if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow = "none";
-                } if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
+                } else { this.shouldShow = "inline";}
+
+                if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow2 = "none";
-                }
+                } else { this.shouldShow2 = "inline";}
 
             }
 
