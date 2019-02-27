@@ -87,7 +87,7 @@
                 <app-header slot="header" condenses reveals effects="waterfall">
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
-                            <paper-menu-button vertical-offset="60">
+                            <paper-menu-button vertical-offset="69">
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu" ></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
@@ -96,7 +96,7 @@
                             </paper-menu-button>
                             <div main-title>Maximo Purchase Orders</div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
-                            <paper-menu-button vertical-offset="60">
+                            <paper-menu-button vertical-offset="69">
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
