@@ -54,7 +54,7 @@
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
                 </template>
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
-                <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
+                <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
