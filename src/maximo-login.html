@@ -100,13 +100,14 @@
                 const req = event.detail.request;
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
-                    event.detail.request.xhr.response["oslc:Error"] &&
-                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
-                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                    event.detail.request.xhr.response.Error &&
+                    event.detail.request.xhr.response.Error.message) {
+                    this.error = event.detail.request.xhr.response.Error.message;
+                    
                 } else {
                     this.error = "Could not authenticate user"
                 }
-            }
+            } 
         }
         window.customElements.define(MaximoLogin.is, MaximoLogin);
     </script>
