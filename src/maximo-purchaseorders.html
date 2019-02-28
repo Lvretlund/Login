@@ -54,7 +54,7 @@
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
                 </template>
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
-                <h3>Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h3>
+                <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
@@ -76,7 +76,7 @@
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Quantity:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="display:inline;"><a name="purchaseorder" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit order >></a></div>
+                        <div style="display:inline; border: 1px solid; border-radius: 2px;"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit order >></a></div>
                     </div>
                 </div>
             </template>
@@ -121,6 +121,8 @@
                     "lean": 1
                 }
             }
+
+
             _nextPageUrl(pagenum) {
                 let totalPages = this.get('totalPages');
                 if (pagenum >= totalPages) {
