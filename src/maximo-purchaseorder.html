@@ -80,39 +80,38 @@
                     <div>
                         <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
                         <!--<paper-dropdown-menu id="poStatus"
-                                             label="Status">
-                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
-                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
-                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
-                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
+                                     label="Status">
+                    <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
+                        <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
+                        <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
+                        <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
 
-                                <paper-item value='APPR'>Approved</paper-item>
-                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                                <paper-item value='HOLD'>Hold</paper-item>
-                                <paper-item value='PNDREV'>Pending Revision</paper-item>
-                                <paper-item value='REVISD'>Revised</paper-item>
-                                <paper-item value='HISTEDIT'>Edited in History</paper-item>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
-                    </div>-->
-                        <div style="margin: 16px -15px 0px -2px; "display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon>Approve Purchase Order</div><div id="poCheckCancel" display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus"class="poCheck" icon="cancel"></iron-icon>Cancel Purchase Order</div>
-                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
-                        <div class="card">
-                            <div>
-                                <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
-                                    Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
-                                    <span style="margin: 16px 0px 0px 16px;"></span>
+                        <paper-item value='APPR'>Approved</paper-item>
+                        <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                        <paper-item value='HOLD'>Hold</paper-item>
+                        <paper-item value='PNDREV'>Pending Revision</paper-item>
+                        <paper-item value='REVISD'>Revised</paper-item>
+                        <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>-->
+                        <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+                            <div class="card">
+                                <div>
+                                    <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
+                                        Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
+                                        <span style="margin: 16px 0px 0px 16px;"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="circle"><span>{{item.itemnum}}</span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="circle"><span>{{item.itemnum}}</span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            </div>
-                        </div>
-                        <paper-input type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
-                    </template>
+                            <paper-input type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        </template>
                 </form>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
@@ -122,6 +121,9 @@
                     <!-- if success, it displays here -->
                     <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
                 </template>
+                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon>Approve Purchase Order</div>
+                <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon>Cancel Purchase Order</div>
+
                 <div>
                     <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                 </div>
