@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-purchaseorders">
@@ -29,18 +30,6 @@
                    last-response="{{PurchaseOrders}}"
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
-
-        <iron-ajax auto
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>
 
         <div class="poTitle">
             <iron-icon class="titleIcon" icon="list"></iron-icon>
@@ -87,6 +76,7 @@
         // Your new element extends the Polymer.Element base class
         class MaximoPurchaseOrders extends Polymer.Element {
             static get is() { return 'maximo-purchaseorders'; }
+
             _handleResponse(event) {
                 this.$.spinner.active = false
                 this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
