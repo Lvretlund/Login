@@ -64,18 +64,18 @@
 
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
-                <div class="card">
+                <div class="PurchaseOrdersCard">
                     <div class="circle"><span>{{item.ponum}}</span></div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
-                        Description:<span style="margin: 16px 0px 0px 16px;">{{item.description}}</span>
+                        Description:<span style="margin:16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
                         <span style="margin: 16px 0px 0px 16px;"></span>
-                    </div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Vendor:<span style="margin: 16px 0px 0px 16px;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Buyer:<span style="margin: 16px 0px 0px 16px;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Entered by:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                    </div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                     <div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px 0px 0px 16px;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Quantity:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px 0px 0px 16px;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="display:inline; border: 1px solid; border-radius: 2px;"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit order >></a></div>
                     </div>
                 </div>
