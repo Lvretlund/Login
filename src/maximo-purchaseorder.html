@@ -10,6 +10,7 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
 <link rel="import" href="shared-styles.html">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -200,13 +201,13 @@
 
             _poLoaded() {
                 //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
-                //let checkWO = this.get('purchaseOrder.poline.0.refwo')
-                //if (typeof checkWO === 'string' || checkWO instanceof String) {
-                //    this.disabled = true;
-                //} else {
+                let checkWO = this.get('purchaseOrder.poline.0.refwo')
+                if (typeof checkWO === 'string' || checkWO instanceof String) {
+                    this.disabled = true;
+                } else {
                     
-                //    this.disabled = false;
-                //}
+                    this.disabled = false;
+                }
                 //check if we should allow the user to approve the status 
                 let checkPoAppr = this.get('purchaseOrder.status')
                 if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {

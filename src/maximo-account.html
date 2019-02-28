@@ -4,10 +4,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
-<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="bower_components/paper-item/paper-item.html">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,15 +14,6 @@
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
 
-        <iron-ajax auto
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/language"
-                   method="get"
-                   handle-as="json"
-                   last-response="{{SystemInfo}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"></iron-ajax>
 
         <div class="poTitle">
             <iron-icon class="titleIcon" icon="account-circle" alt="account"></iron-icon>
