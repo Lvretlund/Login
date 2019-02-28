@@ -33,7 +33,7 @@
 
         <div class="poTitle">
             <iron-icon class="titleIcon" icon="list"></iron-icon>
-            <h1 id="poListTitle">Purchase Orders</h1>
+            <h1 id="poTitleTxt">Purchase Orders</h1>
         </div>
 
         <div class="poCard">
@@ -54,19 +54,22 @@
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
                 <div class="PurchaseOrdersCard">
-                    <div class="circle"><span>{{item.ponum}}</span></div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
+                    <div class="circle"><span>{{item.ponum}}</span></div>
+                    <div id="descript" style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">
                         Description:<span style="margin:16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
                         <span style="margin: 16px 0px 0px 16px;"></span>
-                    </div><div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                    <div>
+                    </div>
+                    <div id="poContent">
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+               
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="display:inline-block; border: 1px solid; border-radius: 2px;"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit order >></a></div>
                     </div>
+                    <div id="poView"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">View order >></a></div>
                 </div>
             </template>
         </div>
@@ -118,7 +121,7 @@
                 if (pagenum >= totalPages) {
                     pagenum = 0;
                 }
-               
+
                 return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
             }
 
@@ -129,7 +132,7 @@
                 }
                 return `purchaseorders/` + prevPageNum.toString()
             }
-        } 
+        }
         //Now, register your new custom element so the browser can use it
         customElements.define(MaximoPurchaseOrders.is, MaximoPurchaseOrders);
     </script>
