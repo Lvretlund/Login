@@ -48,10 +48,10 @@
                     <form action="/foo" method="get">
                         <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
                         <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
+                        <paper-button raised class="indigo" on-tap="performLogin" style="display: block;">Sign In</paper-button>&nbsp;
                         <template>
                             <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
                         </template>
-                        <paper-button raised class="indigo" on-tap="performLogin">Sign In</paper-button>&nbsp;
                         <paper-spinner-lite id="spinner"></paper-spinner-lite>
                     </form>
                 </iron-form>
@@ -100,13 +100,14 @@
                 const req = event.detail.request;
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
-                    event.detail.request.xhr.response["oslc:Error"] &&
-                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
-                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                    event.detail.request.xhr.response.Error &&
+                    event.detail.request.xhr.response.Error.message) {
+                    this.error = event.detail.request.xhr.response.Error.message;
+                    
                 } else {
                     this.error = "Could not authenticate user"
                 }
-            }
+            } 
         }
         window.customElements.define(MaximoLogin.is, MaximoLogin);
     </script>
