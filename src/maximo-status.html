@@ -1,0 +1,374 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+<link rel="import" href="shared-styles.html">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<dom-module id="maximo-status">
+    <!-- Defines the element's style and local DOM -->
+    <template>
+        <!--imports shared styles for the template-->
+        <style include="shared-styles">
+        </style>
+        <!--gets the stored baseUrl and saves as data-->
+        <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/status/:poRef" data="{{pageData}}"></app-route>
+        <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
+        <iron-ajax auto
+                   id="maximoLoadPurchaseOrderAjax"
+                   with-credentials
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   last-response="{{purchaseOrder}}"
+                   on-response="_handleLoadResponse"
+                   on-error="_handleLoadError"></iron-ajax>
+        <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
+        <iron-ajax id="maximoSavePurchaseOrderAjax"
+                   with-credentials
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.poid}}"
+                   method="post"
+                   handle-as="json"
+                   content-type="application/json"
+                   last-response="{{purchaseOrder}}"
+                   on-response="_handleSaveResponse"
+                   on-error="_handleSaveError"></iron-ajax>
+
+        <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
+        <template is="dom-if" if="{{(spinner.active)}}">
+
+            <div class="poTitle">
+                <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                <h1 id="poTitleTxt">Order {{purchaseOrder.ponum}}</h1>
+            </div>
+
+            <div class="poCard">
+
+                <form action="/foo" method="get">
+                    <!--display some choosen values regarding the order, wich we want to be able to edit. -->
+                    <div class="card">
+                        <div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
+                                Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span>
+                                <span style="margin: 16px 0px 0px 16px;"></span>
+                            </div>
+                        </div>
+                        <div class="circlePurchaseOrder" label"><span>{{purchaseOrder.ponum}}</span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
+                            Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+
+                        </div>
+                    </div>
+                    <!--<div>-->
+                    <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
+                    <!--<paper-dropdown-menu id="poStatus"
+                                             label="Status">
+                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
+                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
+                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
+                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
+
+                                <paper-item value='APPR'>Approved</paper-item>
+                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                                <paper-item value='HOLD'>Hold</paper-item>
+                                <paper-item value='PNDREV'>Pending Revision</paper-item>
+                                <paper-item value='REVISD'>Revised</paper-item>
+                                <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </div>-->
+                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+                        <div class="card">
+                            <div>
+                                <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
+                                    Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
+                                    <span style="margin: 16px 0px 0px 16px;"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="circle"><span>{{item.itemnum}}</span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            </div>
+                        </div>
+                    </template>
+                </form>
+                <template is="dom-if" if="[[error]]">
+                    <!-- if there is an error it displays here -->
+                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+                </template>
+                <template is="dom-if" if="[[success]]">
+                    <!-- if success, it displays here -->
+                    <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+                </template>
+
+                <div id="poCheckDiv">
+                    <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon><h class="approveCancelText">Approve Purchase Order</h></div>
+                    <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon><h class="approveCancelText">Close Purchase Order</h></div>
+                </div>
+
+            </div>
+        </template>
+    </template>
+    <script>
+        class MaximoPurchaseOrderStatus extends Polymer.Element {
+            static get is() { return 'maximo-status'; }
+
+            static get properties() {
+                return {
+                    baseUrl: {
+                        type: String,
+                        observer: '_baseUrlChanged',
+                    },
+                    workOrder: {
+                        type: Object,
+                        value: {},
+                        notify: true
+                    },
+                    whoAmI: {
+                        type: Object,
+                        observer: '_whoAmIChanged',
+                    },
+                    //this has to do with status-items being disabled if they should not be accesable
+                    disabled: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    shouldShow: {
+                        type: String,
+
+                        reflectToAttribute: true
+                    },
+                    shouldShow2: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+
+
+                }
+            }
+
+            static get observers() {
+                return [
+                    '_poRefChanged(pageData)'
+                ]
+            }
+
+            goto(e) {
+                var x = e.target.hasAttribute('data-args');
+                var link = e.target.getAttribute('data-args')
+                this.set('route.path', link);
+
+            }
+
+            _showDetails() {
+                if (parseInt(this.get('pageData.poRef')) > 0) {
+                    return true
+                }
+
+                return false
+            }
+
+
+            _poRefChanged(pageData) {
+                //if we have a valid id, load the related wo data
+                if (this._showDetails()) {
+                    this.$.spinner.active = true
+                    this.$.maximoLoadPurchaseOrderAjax.generateRequest()
+
+                } else {
+                    this.set('purchaseOrder', {})
+                    this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
+                }
+
+            }
+
+
+            _poLoaded() {
+                //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
+                let checkWO = this.get('purchaseOrder.poline.0.refwo')
+                if (typeof checkWO === 'string' || checkWO instanceof String) {
+                    this.disabled = true;
+                } else {
+
+                    this.disabled = false;
+                }
+                //check if we should allow the user to approve the status
+                let checkPoAppr = this.get('purchaseOrder.status')
+                if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
+                    this.shouldShow = "none";
+                } else { this.shouldShow = "inline"; }
+
+                if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
+                    this.shouldShow2 = "none";
+                } else { this.shouldShow2 = "inline"; }
+
+            }
+
+            //After the whoAmI object is populated, we need to populate those fields
+            _whoAmIChanged() {
+                if (!this._showDetails()) {
+                    this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
+                    this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
+                }
+            }
+
+            _baseUrlChanged() {
+                if (this._showDetails()) {
+                    this.$.spinner.active = true
+                    this.$.maximoLoadPurchaseOrderAjax.generateRequest()
+                }
+            }
+
+            _handleLoadResponse(event) {
+                this.$.spinner.active = false
+                this._poLoaded()
+
+            }
+
+            _handleLoadError(event, request) {
+                this.$.spinner.active = false
+            }
+
+            _handleSaveResponse(event) {
+                this.$.spinner.active = false
+                if (!this._showDetails()) {
+                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
+                } else {
+                    this.error = null;
+                    this.success = "Work Order Successfully Saved"
+                }
+            }
+
+            _handleSaveError(event, request) {
+                this.$.spinner.active = false
+                if (event.detail.request.xhr &&
+                    event.detail.request.xhr.response &&
+                    event.detail.request.xhr.response["Error"] &&
+                    event.detail.request.xhr.response["Error"]["message"]) {
+                    this.error = event.detail.request.xhr.response["Error"]["message"];
+                    this.success = null;
+                } else {
+                    this.error = "Could not save Purchase Order"
+                    this.success = null;
+                }
+            }
+
+            _approveStatus(purchaseOrder) {
+
+                let item = this.get('purchaseOrder.poline')
+
+                //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
+                for (var i = 0; i < item.length;) {
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    let poCostQty = parseInt(getPoCostQty);
+                    let poStatus = "APPR";
+                    purchaseOrder.body = {
+                        "status": poStatus,
+                        "poline": [
+                            {
+                                "polinenum": i + 1,
+                                "orderqty": poCostQty
+                            }]
+                    }
+                    //here we sets the body if the ajax element with our new values
+                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                    this.savePurchaseOrder();
+                    i++
+                }
+
+            }
+
+            _closeStatus(purchaseOrder) {
+                let item = this.get('purchaseOrder.poline')
+
+                //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
+                for (var i = 0; i < item.length;) {
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    let poCostQty = parseInt(getPoCostQty);
+                    let poStatus = "CLOSE";
+                    purchaseOrder.body = {
+                        "status": poStatus,
+                        "poline": [
+                            {
+                                "polinenum": i + 1,
+                                "orderqty": poCostQty
+                            }]
+                    }
+                    //here we sets the body if the ajax element with our new values
+                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                    this.savePurchaseOrder();
+                    i++
+                }
+            }
+
+            _getSaveHeaders() {
+                let headers = { 'properties': '*' }
+                if (this._showDetails()) {
+                    headers['x-method-override'] = 'PATCH'
+                    headers['patchtype'] = 'MERGE'
+                }
+                return headers
+            }
+
+            _getSaveBody(purchaseOrder) {
+                //here we have to set the values of the body we want to change
+                // first, check how many lines there are
+                let item = this.get('purchaseOrder.poline')
+
+                //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
+                for (var i = 0; i < item.length;) {
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    let poCostQty = parseInt(getPoCostQty);
+                    let poStatus = this.get('purchaseOrder.status')
+                    purchaseOrder.body = {
+                        "status": poStatus,
+                        "poline": [
+                            {
+                                "polinenum": i + 1,
+                                "orderqty": poCostQty
+                            }]
+                    }
+                    //here we sets the body if the ajax element with our new values
+                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                    this.savePurchaseOrder();
+                    i++
+                }
+            }
+
+            //this is the save order function, wich calls to the iron ajax element with save order ID.
+            savePurchaseOrder() {
+                this.error = null;
+                this.success = null;
+                //sets the headers in the ajax element before running the save request
+                this.$.maximoSavePurchaseOrderAjax.headers = this._getSaveHeaders()
+                this.$.maximoSavePurchaseOrderAjax.generateRequest()
+                this.$.spinner.active = true
+
+            }
+        }
+
+        window.customElements.define(MaximoPurchaseOrderStatus.is, MaximoPurchaseOrderStatus);
+    </script>
+</dom-module>
