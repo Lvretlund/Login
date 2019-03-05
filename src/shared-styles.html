@@ -20,6 +20,7 @@
                 border-radius: 5px;
                 background-color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
             }
 
             .circle {
@@ -139,7 +140,7 @@
                 width: 58px;
             }
 
-            #poListTitle, #poListIcon {
+            #poTitleTxt, #poListIcon {
                 display: inline-block;
             }
 
@@ -178,23 +179,28 @@
                 --iron-icon-width: 4em;
                 padding: 5px;
                 cursor: pointer;
-                margin-right: 50px;
-                margin-left: 50px;
+                padding:10px;
             }
 
             .poCheck:hover {
                     background: #808080;
             }
 
-            .responsiveMenu {
-                height: 58px;
-                width: 58px;
+            #poCheckDiv{
+                text-align: center;
             }
 
             #totalPages {
                 display: block;
                 font-size: 1.20em;
                 font-weight:bold;
+            }
+
+            #poView {
+                display: inline-block; 
+                border: 1px solid; 
+                border-radius: 2px;
+                float: right;
             }
 
 
@@ -204,7 +210,7 @@
                     }
                 }
 
-                @media only screen and (min-width: 768px) {
+                @media only screen and (min-width: 769px) {
                     .cardLogin {
                         max-width: 50%;
                     }
@@ -215,9 +221,14 @@
 
                 }
 
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 769px) {
                 .menu {
                     display: none;
+                }
+
+                .responsiveMenu {
+                    height: 58px;
+                    width: 58px;
                 }
 
                 .menuRight {
@@ -266,6 +277,7 @@
                     margin-left:30%;
                     margin-bottom:15%;
                     cursor:pointer;
+
                 }
 
                 .card {
@@ -290,6 +302,18 @@
                     text-align:center;
                     padding-bottom:20px;
                     
+                }
+
+                #poContent {
+                    display: none;
+                }
+
+                #descript{
+                    display:block;
+                }
+
+                .approveCancelText {
+                    display:none;
                 }
             }
 

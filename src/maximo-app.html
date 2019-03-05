@@ -32,6 +32,7 @@
 <link rel="lazy-import" href="maximo-logout.html">
 <link rel="lazy-import" href="maximo-account.html">
 <link rel="lazy-import" href="maximo-purchaseorder.html">
+<link rel="lazy-import" href="maximo-status.html">
 
 <dom-module id="maximo-app">
     <template>
@@ -128,6 +129,7 @@
                     <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
                     <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
                     <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
+                    <maximo-status name="status"></maximo-status>
                 </iron-pages>
             </app-header-layout>
         </app-drawer-layout>

@@ -51,13 +51,11 @@
 
             <div class="poTitle">
                 <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                <h1 id="poListTitle">Order {{purchaseOrder.ponum}}</h1>
+                <h1 id="poTitleTxt">Edit Order {{purchaseOrder.ponum}}</h1>
             </div>
 
             <div class="poCard">
 
-                <!--displays some choosen values of the order as a header -->
-                <h id="detailedInfoText"> Detailed information regarding order [[purchaseOrder.spi:ponum]] </h>
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
@@ -78,41 +76,41 @@
 
                         </div>
                     </div>
-                    <div>
-                        <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
-                        <!--<paper-dropdown-menu id="poStatus"
-                                     label="Status">
-                    <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
-                        <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
-                        <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
-                        <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
+                    <!--<div>-->
+                    <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
+                    <!--<paper-dropdown-menu id="poStatus"
+                                             label="Status">
+                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
+                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
+                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
+                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
 
-                        <paper-item value='APPR'>Approved</paper-item>
-                        <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                        <paper-item value='HOLD'>Hold</paper-item>
-                        <paper-item value='PNDREV'>Pending Revision</paper-item>
-                        <paper-item value='REVISD'>Revised</paper-item>
-                        <paper-item value='HISTEDIT'>Edited in History</paper-item>
-                    </paper-listbox>
-                </paper-dropdown-menu>
-            </div>-->
-                        <template is="dom-repeat" items="{{purchaseOrder.poline}}">
-                            <div class="card">
-                                <div>
-                                    <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
-                                        Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
-                                        <span style="margin: 16px 0px 0px 16px;"></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="circle"><span>{{item.itemnum}}</span></div>
-                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <paper-item value='APPR'>Approved</paper-item>
+                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                                <paper-item value='HOLD'>Hold</paper-item>
+                                <paper-item value='PNDREV'>Pending Revision</paper-item>
+                                <paper-item value='REVISD'>Revised</paper-item>
+                                <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </div>-->
+                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+                        <div class="card">
+                            <div>
+                                <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
+                                    Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
+                                    <span style="margin: 16px 0px 0px 16px;"></span>
                                 </div>
                             </div>
-                            <paper-input type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
-                        </template>
+                            <div>
+                                <div class="circle"><span>{{item.itemnum}}</span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            </div>
+                        </div>
+                        <paper-input type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                    </template>
                 </form>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
@@ -122,11 +120,15 @@
                     <!-- if success, it displays here -->
                     <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
                 </template>
-                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon>Approve Purchase Order</div>
-                <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon>Cancel Purchase Order</div>
+
+                <!--<div id="poCheckDiv">
+                    <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon><h class="approveCancelText">Approve Purchase Order</h></div>
+                    <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon><h class="approveCancelText">Cancel Purchase Order</h></div>
+                </div>-->
 
                 <div>
                     <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                    <paper-button style="margin-top: 2em;" class="indigo" data-args="purchaseorders/1" raised on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                 </div>
 
             </div>
@@ -159,15 +161,15 @@
                     },
                     shouldShow: {
                         type: String,
-                        
+
                         reflectToAttribute: true
                     },
                     shouldShow2: {
                         type: String,
                         reflectToAttribute: true
                     }
-                    
- 
+
+
                 }
             }
 
@@ -175,6 +177,13 @@
                 return [
                     '_poRefChanged(pageData)'
                 ]
+            }
+
+            goto(e) {
+                var x = e.target.hasAttribute('data-args');
+                var link = e.target.getAttribute('data-args')
+                this.set('route.path', link);
+
             }
 
             _showDetails() {
@@ -207,18 +216,18 @@
                 if (typeof checkWO === 'string' || checkWO instanceof String) {
                     this.disabled = true;
                 } else {
-                    
+
                     this.disabled = false;
                 }
-                //check if we should allow the user to approve the status 
+                //check if we should allow the user to approve the status
                 let checkPoAppr = this.get('purchaseOrder.status')
                 if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow = "none";
-                } else { this.shouldShow = "inline";}
+                } else { this.shouldShow = "inline"; }
 
                 if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow2 = "none";
-                } else { this.shouldShow2 = "inline";}
+                } else { this.shouldShow2 = "inline"; }
 
             }
 
@@ -271,19 +280,11 @@
                 }
             }
 
-            _approveStatus() {
-                this.set('purchaseOrder.status', "APPR");   
-            }
-
-            _closeStatus() {
-                this.set('purchaseOrder.status', "CLOSE");
-            }
-
             _getSaveHeaders() {
-                let headers = { 'properties': '*'}
+                let headers = { 'properties': '*' }
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
-                    headers['patchtype'] = 'MERGE'    
+                    headers['patchtype'] = 'MERGE'
                 }
                 return headers
             }
@@ -295,22 +296,22 @@
 
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
                 for (var i = 0; i < item.length;) {
-                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');  
+                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
                     let poCostQty = parseInt(getPoCostQty);
                     let poStatus = this.get('purchaseOrder.status')
                     purchaseOrder.body = {
                         "status": poStatus,
-                        "poline":[
+                        "poline": [
                             {
-                                "polinenum": i+1,
+                                "polinenum": i + 1,
                                 "orderqty": poCostQty
-                            }]                       
+                            }]
                     }
-                    //here we sets the body if the ajax element with our new values 
+                    //here we sets the body if the ajax element with our new values
                     this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
                     this.savePurchaseOrder();
-                    i++  
-                } 
+                    i++
+                }
             }
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.

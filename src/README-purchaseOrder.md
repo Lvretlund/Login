@@ -1,7 +1,9 @@
 När vi läser in sidan purchaseOrder så körs ett automatiskt ajaxanrop som använder referensnumret i urlen (som motsvarar orderns ID) för att hämta just denna order. 
-Ordern sparas och hanteras som {{purchaseOrder}}
-Vi har ett statuskort där vi visar upp lite information om själva statusen. 
-Därefter ligger två ikoner som möjliggör att antingen ändra status till Approved, eller Closed
+Referensnumret läggs in i slutet på anropet till Maximo, dvs. efter mxpo. <Approute> använder sig av pattern="/purchaseorder/:poRef" för att visa rätt order.
+Ordern sparas och hanteras som {{purchaseOrder}}.
+
+När vi visar detaljerad info om vald PO syns orderinformation överst där vi visar upp information som ordernr, status, totalcost etc.
+Därefter ligger två ikoner som möjliggör att antingen ändra status till Approved eller Closed.
 Dessa ikoner är synliga baserat på vad vi kunde se verkade rimligt i maximo, vi provade lite för varje statustyp för att se om man kunde approva eller closea dem.
 Detta sköts via en if else sats som kollar vad purchaseOrder.status är , och baserat på detta sätter den iconernas properties för style till ="display: none;"
 
