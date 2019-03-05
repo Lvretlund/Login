@@ -92,7 +92,7 @@
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
                         </div>
-                        <paper-input type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        <paper-input disabled="{{disabled}}" type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
                     </template>
                 </form>
                 <template is="dom-if" if="[[error]]">
@@ -195,17 +195,21 @@
 
             _poLoaded() {
                 //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
-                let checkWO = this.get('purchaseOrder.poline.0.refwo')
-                if (typeof checkWO === 'string' || checkWO instanceof String) {
-                    this.disabled = true;
-                } else {
+                //let checkWO = this.get('purchaseOrder.poline.0.refwo')
+                //if (typeof checkWO === 'string' || checkWO instanceof String) {
+                //    this.disabled = true;
+                //} else {
 
-                    this.disabled = false;
-                }
+                //    this.disabled = false;
+                //}
                 //check if we should allow the user to approve the status
                 let checkPoAppr = this.get('purchaseOrder.status')
+                if (checkPoAppr == "APPR") {
+                    this.disabled = true
+                }
                 if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow = "none";
+
                 } else { this.shouldShow = "inline"; }
 
                 if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
