@@ -92,7 +92,13 @@
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
                         </div>
-                        <paper-input disabled="{{disabled}}" type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        <hr />
+                        <div id="poQuant">
+                        <paper-button style="display: inline;"on-tap="_poIncQuant"><iron-icon icon="add"></iron-icon></paper-button>
+                        <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
+                        <paper-button style="display: inline;"><iron-icon icon="remove" on-tap="add"></iron-icon></paper-button>
+                        </div>
+                        
                     </template>
                 </form>
                 <template is="dom-if" if="[[error]]">
@@ -103,11 +109,6 @@
                     <!-- if success, it displays here -->
                     <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
                 </template>
-
-                <!--<div id="poCheckDiv">
-                    <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon><h class="approveCancelText">Approve Purchase Order</h></div>
-                    <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon><h class="approveCancelText">Cancel Purchase Order</h></div>
-                </div>-->
 
                 <div>
                     <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
@@ -161,6 +162,7 @@
                     '_poRefChanged(pageData)'
                 ]
             }
+
 
             goto(e) {
                 var x = e.target.hasAttribute('data-args');
@@ -265,6 +267,19 @@
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
+            }
+
+            _poIncQuant(item) {
+                
+                let inp = parseInt(item.model.__data.item.orderqty)
+                let line = parseInt(item.model.__data.item.polinenum)
+                inp++
+                line--
+                console.log(inp)
+                console.log(line)
+                this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
+
+              
             }
 
             _getSaveHeaders() {
