@@ -76,24 +76,7 @@
 
                         </div>
                     </div>
-                    <!--<div>-->
-                    <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
-                    <!--<paper-dropdown-menu id="poStatus"
-                                             label="Status">
-                            <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
-                                <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
-                                <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
-                                <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
 
-                                <paper-item value='APPR'>Approved</paper-item>
-                                <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                                <paper-item value='HOLD'>Hold</paper-item>
-                                <paper-item value='PNDREV'>Pending Revision</paper-item>
-                                <paper-item value='REVISD'>Revised</paper-item>
-                                <paper-item value='HISTEDIT'>Edited in History</paper-item>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
-                    </div>-->
                     <template is="dom-repeat" items="{{purchaseOrder.poline}}">
                         <div class="card">
                             <div>
