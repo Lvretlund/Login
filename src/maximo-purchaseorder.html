@@ -208,14 +208,23 @@
                 let checkPoAppr = this.get('purchaseOrder.status')
                 if (checkPoAppr == "APPR") {
                     this.disabled = true
-                }
-                if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow = "none";
+                    console.log(checkPoAppr + " 1")
+                } if (checkPoAppr == "WAPPR") {
+                    this.disabled = false;
+                }
+                if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
+                    this.shouldShow = "none";
+                    this.disabled = false;
+                    console.log(checkPoAppr + "2")
 
                 } else { this.shouldShow = "inline"; }
 
                 if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow2 = "none";
+                    this.disabled = false;
+
+                    console.log(checkPoAppr + " 3")
                 } else { this.shouldShow2 = "inline"; }
 
             }
@@ -232,7 +241,9 @@
                 if (this._showDetails()) {
                     this.$.spinner.active = true
                     this.$.maximoLoadPurchaseOrderAjax.generateRequest()
+                    
                 }
+                
             }
 
             _handleLoadResponse(event) {
