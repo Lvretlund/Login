@@ -96,11 +96,11 @@
                                 <paper-button id="pen" style="display:{{pen}}" on-tap="editPo"><iron-icon icon="create"></iron-icon></paper-button>
                             </div>
                         </div>
-
+                       
                         <div id="poQuant" style="display:{{showq}}">
                             <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon icon="add"></iron-icon></paper-button>
                             <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
-                            <paper-button style="display: inline;"><iron-icon icon="remove" on-tap="add"></iron-icon></paper-button>
+                            <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon icon="remove"></iron-icon></paper-button>
                         </div>
 
                     </template>
@@ -109,9 +109,12 @@
                     <!-- if there is an error it displays here -->
                     <p class="alert-error"><strong>Error:</strong> [[error]]</p>
                 </template>
+
                 <template is="dom-if" if="[[success]]">
                     <!-- if success, it displays here -->
-                    <p class="alert-success">[[success]] <paper-button raised on-tap="reload">OK</paper-button></p>    
+                    <div class="message">
+                        <p class="alert-success">[[success]] <paper-button raised on-tap="reload">OK</paper-button></p>
+                    </div>
                 </template>
 
                 <div>
@@ -179,7 +182,7 @@
             location.reload();
             }
 
-            editPo() {
+            editPo(item) {
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
@@ -310,7 +313,16 @@
                 console.log(line)
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
 
+            }
 
+            _poDecQuant(item) {
+                let inp = parseInt(item.model.__data.item.orderqty)
+                let line = parseInt(item.model.__data.item.polinenum)
+                inp--
+                line--
+                console.log(inp)
+                console.log(line)
+                this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
             }
 
             _getSaveHeaders() {
