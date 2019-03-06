@@ -72,7 +72,7 @@
             #toolBar {
                 background-color: #1d3649;
                 color: white;
-                position:fixed;
+                position: fixed;
                 width: 100%;
             }
 
@@ -119,9 +119,9 @@
                 margin-right: 90px;
             }
 
-            .menuRight:hover {
+                .menuRight:hover {
                     background: #808080;
-            }
+                }
 
             .arrow {
                 --iron-icon-height: 40px;
@@ -160,9 +160,8 @@
             }
 
             #whoAmI {
-                background:#FFF;
-                font-weight:bold;
-
+                background: #FFF;
+                font-weight: bold;
             }
 
             .cardLogin {
@@ -172,54 +171,78 @@
                 margin-top: 10%;
                 border-radius: 5px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
- 
             }
+
             .PoCheck {
                 --iron-icon-height: 4em;
                 --iron-icon-width: 4em;
                 padding: 5px;
                 cursor: pointer;
-                padding:10px;
+                padding: 10px;
             }
 
-            .poCheck:hover {
+                .poCheck:hover {
                     background: #808080;
-            }
+                }
 
-            #poCheckDiv{
+            #poCheckDiv {
                 text-align: center;
             }
 
             #totalPages {
                 display: block;
                 font-size: 1.20em;
-                font-weight:bold;
+                font-weight: bold;
             }
 
             #poView {
-                display: inline-block; 
-                border: 1px solid; 
+                display: inline-block;
+                border: 1px solid;
                 border-radius: 2px;
                 float: right;
             }
 
+            #poQuant {
+                display: none;
+                width: 25%;
+                margin: 24px;
+                color: #757575;
+                border-radius: 5px;
+                background-color: #fff;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                text-align: center;
+            }
+
+            #poQuantLine {
+                display: inline-block;
+                text-align: center;
+            }
+
+            #pen {
+                display: inline-block;
+                float: right;
+            }
+
+            #x {
+                display: none;
+                float: right;
+            }
 
             @media only screen and (max-width: 375px) {
                 .indigo {
-                        width: 10%;
-                    }
+                    width: 10%;
+                }
+            }
+
+            @media only screen and (min-width: 769px) {
+                .cardLogin {
+                    max-width: 50%;
                 }
 
-                @media only screen and (min-width: 769px) {
-                    .cardLogin {
-                        max-width: 50%;
-                    }
-
-                    .responsiveMenu {
-                        display: none;
-                    }
-
+                .responsiveMenu {
+                    display: none;
                 }
+            }
 
             @media only screen and (max-width: 769px) {
                 .menu {
@@ -267,56 +290,49 @@
                 }
 
                 .PurchaseOrdersCard {
-      
                     display: block;
                     margin: 0px 20px 20px 20px;
-                    font-size:15px;
+                    font-size: 15px;
                 }
 
                 .circle {
-                    margin-left:30%;
-                    margin-bottom:15%;
-                    cursor:pointer;
-
+                    margin-left: 30%;
+                    margin-bottom: 15%;
+                    cursor: pointer;
                 }
 
                 .card {
                     margin: 0px 20px 20px 20px;
                     font-size: 15px;
-                    
                 }
 
                 .circlePurchaseOrder {
                     margin-left: 28%;
                     margin-bottom: 5%;
                     cursor: pointer;
-                    margin-top:15px;
-                    
+                    margin-top: 15px;
                 }
 
                 #detailedInfoText {
-                    
-                    display:inline-block;
+                    display: inline-block;
                     font-size: 15px;
                     font-weight: bold;
-                    text-align:center;
-                    padding-bottom:20px;
-                    
+                    text-align: center;
+                    padding-bottom: 20px;
                 }
 
                 #poContent {
                     display: none;
                 }
 
-                #descript{
-                    display:block;
+                #descript {
+                    display: block;
                 }
 
                 .approveCancelText {
-                    display:none;
+                    display: none;
                 }
             }
-
         </style>
     </template>
 </dom-module>

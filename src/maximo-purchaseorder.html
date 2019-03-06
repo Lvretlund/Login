@@ -77,6 +77,8 @@
                         </div>
                     </div>
 
+                    <hr />
+
                     <template is="dom-repeat" items="{{purchaseOrder.poline}}">
                         <div class="card">
                             <div>
@@ -90,9 +92,17 @@
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                                <paper-button id="pen" style="display:{{pen}}" on-tap="editPo"><iron-icon icon="create"></iron-icon></paper-button>
                             </div>
                         </div>
-                        <paper-input disabled="{{disabled}}" type="number" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Purchase Order Line Quantity" value="{{item.orderqty}}"></paper-input>
+
+                        <div id="poQuant" style="display:{{showq}}">
+                            <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon icon="add"></iron-icon></paper-button>
+                            <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
+                            <paper-button style="display: inline;"><iron-icon icon="remove" on-tap="add"></iron-icon></paper-button>
+                        </div>
+
                     </template>
                 </form>
                 <template is="dom-if" if="[[error]]">
@@ -101,13 +111,8 @@
                 </template>
                 <template is="dom-if" if="[[success]]">
                     <!-- if success, it displays here -->
-                    <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+                    <p class="alert-success">[[success]] <paper-button raised on-tap="reload">OK</paper-button></p>    
                 </template>
-
-                <!--<div id="poCheckDiv">
-                    <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon><h class="approveCancelText">Approve Purchase Order</h></div>
-                    <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon><h class="approveCancelText">Cancel Purchase Order</h></div>
-                </div>-->
 
                 <div>
                     <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
@@ -162,11 +167,28 @@
                 ]
             }
 
+
             goto(e) {
                 var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
                 this.set('route.path', link);
 
+            }
+
+            reload() {
+            location.reload();
+            }
+
+            editPo() {
+                this.showq = "inline-block";
+                this.pen = "none";
+                this.x = "inline-block";
+            }
+
+            closeEditPo() {
+                this.showq = "none";
+                this.x = "none";
+                this.pen = "inline-block";
             }
 
             _showDetails() {
@@ -239,9 +261,9 @@
                 if (this._showDetails()) {
                     this.$.spinner.active = true
                     this.$.maximoLoadPurchaseOrderAjax.generateRequest()
-                    
+
                 }
-                
+
             }
 
             _handleLoadResponse(event) {
@@ -276,6 +298,19 @@
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
+            }
+
+            _poIncQuant(item) {
+
+                let inp = parseInt(item.model.__data.item.orderqty)
+                let line = parseInt(item.model.__data.item.polinenum)
+                inp++
+                line--
+                console.log(inp)
+                console.log(line)
+                this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
+
+
             }
 
             _getSaveHeaders() {
