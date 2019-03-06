@@ -295,6 +295,7 @@
                 let line = parseInt(item.model.__data.item.polinenum)
                 inp--
                 line--
+
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
             }
 
@@ -307,11 +308,12 @@
                 return headers
             }
 
+
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
                 let item = this.get('purchaseOrder.poline')
-
+               
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
                 for (var i = 0; i < item.length;) {
                     let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
@@ -321,7 +323,9 @@
                         this.error = "You cannot enter a negative number!";
                         this.blur = "blur(8px); -webkit - filter: blur(8px);";
                         break;
-                    }  
+                        return false;
+                        //throw new Error("No negative numbers dammit");
+                    } else {
                         let poStatus = this.get('purchaseOrder.status')
                         purchaseOrder.body = {
                             "status": poStatus,
@@ -331,10 +335,13 @@
                                     "orderqty": poCostQty
                                 }]
                         }
+                    }
+                    
                     //here we sets the body if the ajax element with our new values
                     this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
                     this.savePurchaseOrder();
                     i++
+
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 }
             }
