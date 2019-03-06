@@ -111,7 +111,7 @@
                 </template>
                 <template is="dom-if" if="[[success]]">
                     <!-- if success, it displays here -->
-                    <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+                    <p class="alert-success">[[success]] <paper-button raised on-tap="reload">OK</paper-button></p>    
                 </template>
 
                 <div>
@@ -173,6 +173,10 @@
                 var link = e.target.getAttribute('data-args')
                 this.set('route.path', link);
 
+            }
+
+            reload() {
+            location.reload();
             }
 
             editPo() {
