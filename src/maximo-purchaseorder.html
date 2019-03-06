@@ -105,10 +105,6 @@
 
                     </template>
                 </form>
-                <template is="dom-if" if="[[error]]">
-                    <!-- if there is an error it displays here -->
-                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
-                </template>
 
                 <div>
                     <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
@@ -119,6 +115,10 @@
 
             <template is="dom-if" if="[[success]]">
                 <p class="alert-success">[[success]]<paper-button raised on-tap="reload">OK</paper-button></p>
+            </template>
+
+            <template is="dom-if" if="[[error]]">
+                <p class="alert-error">[[error]]<paper-button raised on-tap="reload">OK</paper-button></p>
             </template>
 
         </template>
