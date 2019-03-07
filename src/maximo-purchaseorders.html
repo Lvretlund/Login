@@ -6,8 +6,8 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
-<!-->Load css</!-->
-<link rel="import" href="shared-styles.html">
+<!-->Control the page's dimensions and scaling</!-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <dom-module id="maximo-purchaseorders">
     <!-- Defines the element's style and local DOM -->
@@ -15,6 +15,7 @@
 
         <!--imports shared styles for the template-->
         <style include="shared-styles"></style>
+
         <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>

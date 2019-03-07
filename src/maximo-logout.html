@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
+<!--importing other module-->
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-logout">
@@ -13,8 +14,7 @@
         <style include="shared-styles"></style>
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
-        <iron-ajax 
-                   id="maximoLogoutAjax"
+        <iron-ajax id="maximoLogoutAjax"
                    with-credentials
                    content-type="application/json"
                    url="[[baseUrl]]maximo/oslc/logout"
@@ -30,35 +30,37 @@
     </template>
 
     <script>
-    class MaximoLogout extends Polymer.Element {
-      static get is() { return 'maximo-logout'; }
+        class MaximoLogout extends Polymer.Element {
+            static get is() { return 'maximo-logout'; }
 
-      _handleLogoutResponse(event) {
-        this.dispatchEvent(new CustomEvent('logout', {
-          bubbles: true,
-          composed: true
-          }))
-          this.$.spinner.active = false
-      }
-
-      _handleLogoutError(event) {
-        const req = event.detail.request;
-        if(event.detail.request.xhr &&
-        event.detail.request.xhr.response &&
-        event.detail.request.xhr.response["oslc:Error"] &&
-        event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
-          this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
-        } else {
-          this.error = "Error during logout"
+            //handle logout response function that is handling logout responses when log out occurs
+            _handleLogoutResponse(event) {
+                this.dispatchEvent(new CustomEvent('logout', {
+                    bubbles: true,
+                    composed: true
+                }))
+                this.$.spinner.active = false
+            }
+            //handle logout error function that is handling error when log out error occurs
+            _handleLogoutError(event) {
+                const req = event.detail.request;
+                if (event.detail.request.xhr &&
+                    event.detail.request.xhr.response &&
+                    event.detail.request.xhr.response["oslc:Error"] &&
+                    event.detail.request.xhr.response["oslc:Error"]["oslc:message"]) {
+                    this.error = event.detail.request.xhr.response["oslc:Error"]["oslc:message"];
+                } else {
+                    this.error = "Error during logout"
+                }
+                this.dispatchEvent(new CustomEvent('logout', {
+                    bubbles: true,
+                    omposed: true
+                }))
+                this.set('route.path', '/login');
+            }
         }
-        this.dispatchEvent(new CustomEvent('logout', {
-          bubbles: true,
-          omposed: true
-        }))
-        this.set('route.path', '/login');
-      }
-    }
 
-    window.customElements.define(MaximoLogout.is, MaximoLogout);
+        //now, register your new custom element so the browser can use it
+        window.customElements.define(MaximoLogout.is, MaximoLogout);
     </script>
 </dom-module>
