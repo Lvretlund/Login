@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
+<!--Make screen responsive-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <dom-module id="maximo-account">
@@ -21,36 +22,27 @@
         </div>
 
         <div class="poCard">
-
-
             <div class="card">
-
                 <h3>Change language</h3>
                 <paper-listbox>
                     <paper-item>Swedish</paper-item>
                     <paper-item>English</paper-item>
-
                 </paper-listbox>
-
             </div>
 
             <div class="card">
-
                 <h3>Change password</h3>
-
-
             </div>
 
-              <div>
-                    <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                </div>
+            <div>
+                 <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+            </div>
         </div>
     </template>
 
     <script>
         class MaximoAccount extends Polymer.Element {
             static get is() { return 'maximo-account'; }
-
         }
 
         window.customElements.define(MaximoAccount.is, MaximoAccount);
