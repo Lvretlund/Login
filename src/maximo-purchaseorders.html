@@ -1,23 +1,25 @@
-﻿<!-- Load the Polymer.Element base class -->
+﻿<!-- Load the Polymer.Element base class and other Polymer components -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
+<!-->Load css</!-->
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-purchaseorders">
     <!-- Defines the element's style and local DOM -->
     <template>
+
         <!--imports shared styles for the template-->
         <style include="shared-styles"></style>
         <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/purchaseorders/:num" data="{{pageData}}"></app-route>
+
         <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
         <iron-ajax auto
                    id="maximoPurchaseOrdersListAjax"
@@ -31,6 +33,7 @@
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
 
+        <!-->Page title</!-->
         <div class="poTitle">
             <iron-icon class="titleIcon" icon="list"></iron-icon>
             <h1 id="poTitleTxt">Purchase Orders</h1>
@@ -38,6 +41,7 @@
 
         <div class="poCard">
             <div class="poTitle">
+
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
@@ -45,9 +49,10 @@
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
+                <!-->Status filter</!-->
                 <div>
-                    <paper-dropdown-menu id="poStatus" label="Status" on-iron-select="_itemSelected">
-                        <paper-listbox id="dropdown" slot="dropdown-content" attr-for-selected="value">
+                    <paper-dropdown-menu id="poStatus" label="Status">
+                        <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected">
                             <paper-item value='CLOSE'>Closed</paper-item>
                             <paper-item value='INPRG'>In Progress</paper-item>
                             <paper-item value='CAN'>Canceled</paper-item>
@@ -61,10 +66,12 @@
                     </paper-dropdown-menu>
                 </div>
             </div>
+
+            <!-- if there is an error it displays here -->
             <template is="dom-if" if="[[error]]">
-                <!-- if there is an error it displays here -->
                 <p class="alert-error">[[error]]</p>
             </template>
+
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
                 <div class="PurchaseOrdersCard">
@@ -88,10 +95,10 @@
                 </div>
             </template>
         </div>
-
     </template>
+
     <script>
-        // Your new element extends the Polymer.Element base class
+        // element extends the Polymer.Element base class
         class MaximoPurchaseOrders extends Polymer.Element {
             static get is() { return 'maximo-purchaseorders'; }
 
@@ -112,10 +119,9 @@
                     this.error = "Could not authenticate user"
                 }
             }
-
-            _itemSelected(e) {
-                var status = e.target.selectedItem;
-                console.log(status);
+            // filter status method - in progress
+            _itemSelected() {
+                console.log(this.status);
             }
 
             // the query for maximo
@@ -124,19 +130,18 @@
                     'oslc.pageSize': 20, //the number of records on a single page
                     'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                     'collectioncount': 5, //also returns the total number of records and pages
-                    'oslc.where': 'spi:status in["wappr"]', //filter for purchase orders for waiting approval, approved only & inprogress (not closed)
+                    'oslc.where': 'spi:status in["wappr"]', //filter for purchase orders for waiting approval
                     "pageno": pageNum, //Set the requested page number
                     "lean": 1
                 }
             }
 
-
+            // next/prev methods to change po-pages
             _nextPageUrl(pagenum) {
                 let totalPages = this.get('totalPages');
                 if (pagenum >= totalPages) {
                     pagenum = 0;
                 }
-
                 return `purchaseorders/` + (parseInt(pagenum) + 1).toString()
             }
 
@@ -148,6 +153,7 @@
                 return `purchaseorders/` + prevPageNum.toString()
             }
         }
+
         //Now, register your new custom element so the browser can use it
         customElements.define(MaximoPurchaseOrders.is, MaximoPurchaseOrders);
     </script>
