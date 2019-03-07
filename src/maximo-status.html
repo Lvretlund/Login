@@ -114,11 +114,11 @@
                 </form>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
-                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+                    <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
                 </template>
                 <template is="dom-if" if="[[success]]">
                     <!-- if success, it displays here -->
-                    <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+                    <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
                 </template>
 
                 <div id="poCheckDiv">
@@ -168,6 +168,10 @@
 
 
                 }
+            }
+
+            reload() {
+                location.reload();
             }
 
             static get observers() {
@@ -261,6 +265,7 @@
                     this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
                 } else {
                     this.error = null;
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.success = "Work Order Successfully Saved"
                 }
             }
@@ -274,6 +279,7 @@
                     this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
                 } else {
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
