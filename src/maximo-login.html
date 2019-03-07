@@ -36,12 +36,7 @@
 
 
         <div class="cardContainer">
-            <div class="cardLogin">
-                <template is="dom-if" if="[[error]]">
-                    <p class="alert-error">
-                        <strong>Error:</strong> [[error]]
-                    </p>
-                </template>
+            <div class="cardLogin" style="filter:{{blur}}">
                 <h1 style="margin-top: 5%;">IBM MAXIMO</h1>
                 <h2>Enterprise Asset Management</h2>
                 <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
@@ -56,6 +51,9 @@
                     </form>
                 </iron-form>
             </div>
+            <template is="dom-if" if="[[error]]">
+                <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+            </template>
         </div>
 
     </template>
@@ -83,8 +81,13 @@
                     this.$.maximoLoginAjax.headers['maxAuth'] = btoa(`${this.get('username')}:${this.get('password')}`)
                     this.$.maximoLoginAjax.generateRequest()
 
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
 
                 }
+            }
+
+            reload() {
+                location.reload();
             }
 
             _handleLoginResponse(event) {
