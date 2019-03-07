@@ -77,24 +77,6 @@
 
                         </div>
                     </div>
-                    <!--<div>-->
-                    <!--Order statuses in a dropdown menu that could be used later.. perhaps-->
-                    <!--<paper-dropdown-menu id="poStatus"
-                                 label="Status">
-                <paper-listbox id="dropdown" slot="dropdown-content" selected="{{purchaseOrder.status}}" attr-for-selected="value">
-                    <paper-item disabled="{{disabled}}" value='CLOSE'>Closed</paper-item>
-                    <paper-item disabled="{{disabled}}" value='INPRG'>In Progress</paper-item>
-                    <paper-item disabled="{{disabled}}" value='CAN'>Canceled</paper-item>
-
-                    <paper-item value='APPR'>Approved</paper-item>
-                    <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                    <paper-item value='HOLD'>Hold</paper-item>
-                    <paper-item value='PNDREV'>Pending Revision</paper-item>
-                    <paper-item value='REVISD'>Revised</paper-item>
-                    <paper-item value='HISTEDIT'>Edited in History</paper-item>
-                </paper-listbox>
-            </paper-dropdown-menu>
-        </div>-->
                     <template is="dom-repeat" items="{{purchaseOrder.poline}}">
                         <div class="card">
                             <div>
@@ -114,11 +96,11 @@
                 </form>
                 <template is="dom-if" if="[[error]]">
                     <!-- if there is an error it displays here -->
-                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+                    <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
                 </template>
                 <template is="dom-if" if="[[success]]">
                     <!-- if success, it displays here -->
-                    <p class="alert-success"><strong>Sucess:</strong> [[success]]</p>
+                    <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
                 </template>
 
                 <div id="poCheckDiv">
@@ -149,13 +131,7 @@
                     whoAmI: {
                         type: Object,
                         observer: '_whoAmIChanged',
-                    },
-                    //this has to do with status-items being disabled if they should not be accesable
-                    disabled: {
-                        type: Boolean,
-                        notify: true,
-                        reflectToAttribute: true
-                    },
+                    },         
                     shouldShow: {
                         type: String,
 
@@ -168,6 +144,10 @@
 
 
                 }
+            }
+
+            reload() {
+                location.reload();
             }
 
             static get observers() {
@@ -208,14 +188,6 @@
 
 
             _poLoaded() {
-                //checking if the loaded order has a workorder binded to it, to prevent statuschange if the wo does not allow it
-                let checkWO = this.get('purchaseOrder.poline.0.refwo')
-                if (typeof checkWO === 'string' || checkWO instanceof String) {
-                    this.disabled = true;
-                } else {
-
-                    this.disabled = false;
-                }
                 //check if we should allow the user to approve the status
                 let checkPoAppr = this.get('purchaseOrder.status')
                 let checkLines = this.get('purchaseOrder.poline')
@@ -261,6 +233,7 @@
                     this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
                 } else {
                     this.error = null;
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.success = "Work Order Successfully Saved"
                 }
             }
@@ -274,6 +247,7 @@
                     this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
                 } else {
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
@@ -311,31 +285,6 @@
                     headers['patchtype'] = 'MERGE'
                 }
                 return headers
-            }
-
-            _getSaveBody(purchaseOrder) {
-                //here we have to set the values of the body we want to change
-                // first, check how many lines there are
-                let item = this.get('purchaseOrder.poline')
-
-                //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
-                for (var i = 0; i < item.length;) {
-                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
-                    let poCostQty = parseInt(getPoCostQty);
-                    let poStatus = this.get('purchaseOrder.status')
-                    purchaseOrder.body = {
-                        "status": poStatus,
-                        "poline": [
-                            {
-                                "polinenum": i + 1,
-                                "orderqty": poCostQty
-                            }]
-                    }
-                    //here we sets the body if the ajax element with our new values
-                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
-                    this.savePurchaseOrder();
-                    i++
-                }
             }
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.

@@ -20,13 +20,14 @@
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 
+<!--using viewport to make this a responsive page-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--<link rel="stylesheet" type="text/css" href="style.css">-->
 <link rel="import" href="shared-styles.html">
 
 
-<!--importerar övriga moduler-->
+<!--importing other modules-->
 <link rel="lazy-import" href="maximo-login.html">
 <link rel="lazy-import" href="maximo-purchaseorders.html">
 <link rel="lazy-import" href="maximo-logout.html">
@@ -62,18 +63,6 @@
                    on-error="_handleLogoutError">
         </iron-ajax>
 
-        <!--<iron-ajax auto
-                   with-credentials
-                   content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/whoami"
-                   method="get"
-                   handle-as="json"
-                   content-type="application/json"
-                   last-response="{{whoAmI}}"
-                   on-response="_handleResponse"
-                   on-error="_handleError"
-                   debounce-duration="1000"></iron-ajax>-->
-
         <app-route route="{{route}}"
                    pattern="[[rootPath]]:page"
                    data="{{routeData}}"
@@ -82,15 +71,16 @@
 
         <app-drawer-layout fullbleed narrow="{{narrow}}">
 
-            <!-- Main content -->
+            <!-- main content -->
             <app-header-layout has-scrolling-region>
                 <app-header slot="header" condenses reveals effects="waterfall">
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
+                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="responsiveMenu" icon="menu" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
-                                    <!--Detta menu visas när det är mindre skärm, den är gömd när det är stor skärm-->
+                                    <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
@@ -98,18 +88,22 @@
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
+                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
+                                    <!--dropdown menu for home and purchase orders-->
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                             <div main-title id="responsivePO">Maximo Purchase Orders</div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
+                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
                                 <paper-listbox slot="dropdown-content">
+                                    <!--dropdown menu for my account and sign out-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
@@ -162,12 +156,15 @@
                 };
             }
 
+            //go to function where the route decide which path we go to
             goto(e) {               
                 var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
                 this.set('route.path', link);
                 
             }
+
+
             fill() {
                 this.$.maximoLogin.generateRequest()
             }
@@ -180,23 +177,24 @@
                 
             }
 
-            //Det är denna som gör att vi loggar in automatiskt. Kommenterade bort den. 
+            //handle response function here checks if the user is authenticed and if so, go to purschase orders list
             _handleResponse(event) {
                 
                 this.set('authenticated', true)
                 // the user is already authenticated,
-                // if it is on login page and has a valid whoAmI response, redirect to the wo list
+                // if it is on login page and has a valid whoAmI response, redirect to the po list
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
                     this.set('route.path', '/purchaseorders/1')
                 }
    
             }
 
+            //handle error function, if any error occurs via logout then it's calling _onLogout function
             _handleError(event) {
-                //alert("wrong username/password, please try again");
                 this._onLogout()
             }
 
+            //log out function sets the user authentication to false and redirects to login page
             _onLogout() {
                 this.$.maximoLogoutAjax.generateRequest()
                 this.set('authenticated', false)
@@ -204,6 +202,7 @@
                 
             }
 
+            //observer function checks what page it is, checks if page has changed 
             static get observers() {
 
                 return [
@@ -212,6 +211,7 @@
 
             }
 
+            //the function changes the page
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
                 var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');               
@@ -227,13 +227,13 @@
                 
             }
 
+            //this function checks if page was found, if not the page will be an empty string, default 'view1' in that case
             _routePageChanged(page) {
-                // If no page was found in the route data, page will be an empty string.
-                // Default to 'view1' in that case.
                 this.page = page || 'login';
 
             }
 
+            //error message if page not found
             _showPage404() {
                 this.page = 'not-found';
             }
