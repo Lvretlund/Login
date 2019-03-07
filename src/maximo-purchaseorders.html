@@ -38,19 +38,33 @@
 
         <div class="poCard">
             <div class="poTitle">
-                <template is="dom-if" if="[[error]]">
-                    <!-- if there is an error it displays here -->
-                    <p class="alert-error"><strong>Error:</strong> [[error]]</p>
-                </template>
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
                 <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
                 <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
+
+                <div>
+                    <paper-dropdown-menu id="poStatus" label="Status" on-iron-select="_itemSelected">
+                        <paper-listbox id="dropdown" slot="dropdown-content" attr-for-selected="value">
+                            <paper-item value='CLOSE'>Closed</paper-item>
+                            <paper-item value='INPRG'>In Progress</paper-item>
+                            <paper-item value='CAN'>Canceled</paper-item>
+                            <paper-item value='APPR'>Approved</paper-item>
+                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
+                            <paper-item value='HOLD'>Hold</paper-item>
+                            <paper-item value='PNDREV'>Pending Revision</paper-item>
+                            <paper-item value='REVISD'>Revised</paper-item>
+                            <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                </div>
             </div>
-
-
+            <template is="dom-if" if="[[error]]">
+                <!-- if there is an error it displays here -->
+                <p class="alert-error">[[error]]</p>
+            </template>
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders.member}}">
                 <div class="PurchaseOrdersCard">
@@ -63,13 +77,13 @@
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-               
+
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                     </div>
-                    <div id="poView"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">Edit Order >></a></div>
+                    <div id="poView"><a name="purchaseorder" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]purchaseorder/{{item.poid}}">Inspect Order >></a></div>
                     <div id="poView"><a name="status" style="text-decoration: none; color: #1d3649; padding: 10px;" href="[[rootPath]]status/{{item.poid}}">Status >></a></div>
                 </div>
             </template>
@@ -99,9 +113,9 @@
                 }
             }
 
-            searchPurchaseOrder() {
-                let searchValue = document.getElementById("aaa").value;
-                alert(searchValue)
+            _itemSelected(e) {
+                var status = e.target.selectedItem;
+                console.log(status);
             }
 
             // the query for maximo
@@ -110,7 +124,7 @@
                     'oslc.pageSize': 20, //the number of records on a single page
                     'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                     'collectioncount': 5, //also returns the total number of records and pages
-                    'oslc.where': 'spi:status in["wappr","appr","inprg"]', //filter for purchase orders for waiting approval, approved only & inprogress (not closed)
+                    'oslc.where': 'spi:status in["wappr"]', //filter for purchase orders for waiting approval, approved only & inprogress (not closed)
                     "pageno": pageNum, //Set the requested page number
                     "lean": 1
                 }
