@@ -6,6 +6,8 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../src/maximo-norecords.html">
+<link rel="import" href="shared-styles.html" />
+
 
 <!-->Control the page's dimensions and scaling</!-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +25,7 @@
         <app-route route="{{route}}" pattern="/purchaseorders/:num" data="{{pageData}}"></app-route>
 
         <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
-        <iron-ajax 
-                   id="maximoPurchaseOrdersListAjax"
+        <iron-ajax id="maximoPurchaseOrdersListAjax"
                    with-credentials
                    content-type="application/json"
                    url="{{localBaseUri}}maximo/oslc/os/mxpo"
@@ -42,8 +43,8 @@
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
-                <iron-icon on-tap="_prevPageUrl"class="arrow" icon="chevron-left"></iron-icon>
-               <iron-icon on-tap="_nextPageUrl"class="arrow" icon="chevron-right"></iron-icon>
+                <iron-icon on-tap="_prevPageUrl" class="arrow" icon="chevron-left"></iron-icon>
+                <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
                 <!-- Filter status -->
@@ -170,8 +171,7 @@
             },
 
             _handleResponse(event) {
-                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
-                {
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
                     this.noPos = "block";
                 }
                 else {
@@ -287,7 +287,7 @@
             },
 
             // next/prev methods to change po-pages
-            _nextPageUrl: function() {
+            _nextPageUrl: function () {
                 let totalPages = this.get('totalPages');
                 let page = this.get('pageData.num');
                 if (page < totalPages) {
