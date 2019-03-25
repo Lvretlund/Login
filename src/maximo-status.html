@@ -30,14 +30,14 @@
                    method="get"
                    handle-as="json"
                    content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   url="http://localhost:9080/maximo/oslc/os/mxpo/{{theOrder}}"
                    last-response="{{purchaseOrder}}"
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
         <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
         <iron-ajax id="maximoSavePurchaseOrderAjax"
                    with-credentials
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.poid}}"
+                   url="http://localhost:9080/maximo/oslc/os/mxpo/{{theOrder}}"
                    method="post"
                    handle-as="json"
                    content-type="application/json"
