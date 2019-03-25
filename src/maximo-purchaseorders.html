@@ -175,6 +175,7 @@
                 if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
                 {
                     this.noPos = "block";
+                    this.totalRecords = 0;
                 }
                 else {
                     this.noPos = "none";
