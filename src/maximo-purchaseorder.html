@@ -74,7 +74,7 @@
                         </div>
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
-                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/index.html#/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
                         </template>
                     </div>
@@ -111,7 +111,7 @@
                                 <template is="dom-if" if="{{lines}}">
                                     <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
-                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/index.html#/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
 
                         </div>
