@@ -28,7 +28,7 @@
                    with-credentials
                    content-type="application/json"
                    url="{{localBaseUri}}maximo/oslc/os/mxpo"
-                   params="[[_urlParams(pageData.num)]]"
+                   params="[[_urlParams()]]"
                    method="get"
                    handle-as="json"
                    last-response="{{PurchaseOrders}}"
@@ -175,7 +175,9 @@
             },
 
             _handleResponse(event) {
-                if (event.detail.__data.response.responseInfo.totalCount < 1) {
+                console.log(event)
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
+                {
                     this.noPos = "block";
                 }
                 else {
@@ -266,7 +268,7 @@
                 this.theOrder = item.srcElement.dataAttr;
                 localStorage['theOrder'] = this.theOrder;
             },
-            _urlParams: function (pageData) {
+            _urlParams(pageData) {
                 if (pageData == undefined) {
                     return {
                         'oslc.pageSize': 20, //the number of records on a single page
@@ -290,7 +292,7 @@
             },
 
             // next/prev methods to change po-pages
-            _nextPageUrl: function () {
+            _nextPageUrl() {
                 let totalPages = this.get('totalPages');
                 let page = this.pageNum;
                 if (page < totalPages) {
@@ -301,7 +303,7 @@
                 //return `purchaseorders/` + (parseInt(page) + 1).toString()
             },
 
-            _prevPageUrl: function () {
+            _prevPageUrl() {
                 let page = this.pageNum;
                 if (page > 1) {
                     page -= 1
