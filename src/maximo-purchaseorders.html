@@ -6,6 +6,8 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../src/maximo-norecords.html">
+<link rel="import" href="shared-styles.html" />
+
 
 <!-->Control the page's dimensions and scaling</!-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +25,7 @@
         <app-route route="{{route}}" pattern="/purchaseorders/:num" data="{{pageData}}"></app-route>
 
         <!--when the page loades, calls a query for maximo, urlParams is the query, see below-->
-        <iron-ajax 
-                   id="maximoPurchaseOrdersListAjax"
+        <iron-ajax id="maximoPurchaseOrdersListAjax"
                    with-credentials
                    content-type="application/json"
                    url="{{localBaseUri}}maximo/oslc/os/mxpo"
@@ -35,11 +36,6 @@
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
 
-        <!-->Page title</!-->
-        <div class="poTitle">
-            <iron-icon class="titleIcon" icon="list"></iron-icon>
-            <h1 id="poTitleTxt">Purchase Orders</h1>
-        </div>
 
         <div class="poCard">
             <div class="poTitle">
@@ -47,8 +43,8 @@
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
                 <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
-                <a href="[[_prevPageUrl(pageData.num)]]"><iron-icon class="arrow" icon="chevron-left"></iron-icon></a>
-                <a href="[[_nextPageUrl(pageData.num)]]" [[parseInt(pageData.num)+1]]><iron-icon class="arrow" icon="chevron-right"></iron-icon></a>
+                <iron-icon on-tap="_prevPageUrl" class="arrow" icon="chevron-left"></iron-icon>
+                <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
                 <!-- Filter status -->
@@ -101,12 +97,12 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                            <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                            <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                         </div>
                         <div class="hideIcons">
-                            <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                            <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                            <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                         </div>
                     </div>
 
@@ -175,14 +171,13 @@
             },
 
             _handleResponse(event) {
-                //console.log(event)
-                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
-                {
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
                     this.noPos = "block";
                 }
                 else {
                     this.noPos = "none";
                     this.$.spinner.active = false
+                    this.set('pageData.num', event.detail.__data.response.responseInfo.pagenum)
                     this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
                     this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
                 }
@@ -199,43 +194,9 @@
                 }
             },
             // filter status method - in progress
-            _itemSelected(e) {
+            _itemSelected() {
                 let statusChosen = this.status;
-                
-                switch (e.detail.item.firstChild.data) {
-                    case "Approved":
-                        statusChosen = "APPR";
-                        break;
-                    case "Canceled":
-                        statusChosen = "CAN";
-                        break;
-                    case "Closed":
-                        statusChosen = "CLOSE";
-                        break;
-                    case "Hold":
-                        statusChosen = "HOLD";
-                        break;
-                    case "In Progress":
-                        statusChosen = "INPRG";
-                        break;
-                    case "Pending Revision":
-                        statusChosen = "PNDREV";
-                        break;
-                    case "Revised":
-                        statusChosen = "REVISD";
-                        break;
-                    case "Waiting on approval":
-                        statusChosen = "WAPPR";
-                        break;
-                    case "All":
-                        statusChosen = "ALL";
-                        break;
-                    default:
-                        statusChosen = "ALL";
-                        break;
-                }
 
-                //console.log(statusChosen);
                 if (statusChosen == "ALL") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
 
@@ -270,23 +231,9 @@
 
             },
 
-            _buyerSelected(e) {
+            _buyerSelected() {
                 let choosenBuyer = this.buyer
-
-                switch (e.detail.item.firstChild.data) {
-                    case "All orders":
-                        choosenBuyer = "ALL";
-                        break;
-                    case "My orders":
-                        choosenBuyer = "MY";
-                        break;
-                    default:
-                        choosenBuyer = "ALL";
-                        break;
-                }
-
-                console.log(e);
-                var user = sessionStorage.getItem('whoAmI')
+                var user = $M.getMaxauth().whoami.personId;
                 if (choosenBuyer == "MY") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
 
@@ -340,9 +287,9 @@
             },
 
             // next/prev methods to change po-pages
-            _nextPageUrl() {
+            _nextPageUrl: function () {
                 let totalPages = this.get('totalPages');
-                let page = this.pageNum;
+                let page = this.get('pageData.num');
                 if (page < totalPages) {
                     page++
                 }
@@ -352,7 +299,7 @@
             },
 
             _prevPageUrl() {
-                let page = this.pageNum;
+                let page = this.get('pageData.num');
                 if (page > 1) {
                     page -= 1
                 }

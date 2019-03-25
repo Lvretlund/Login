@@ -98,6 +98,7 @@
                                 </paper-listbox>
                             </paper-menu-button>
                             <div main-title id="responsivePO">Maximo Purchase Orders</div>
+                            <div id="title" style="width:100%; position:absolute; text-align:center;"><p>{{title}}</p></div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
@@ -160,10 +161,15 @@
             goto(e) {               
                 var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
-                this.set('route.path', link);
-                
+                this.set('route.path', link);   
             }
 
+            setTitle() {
+                var sr = this.subroute.prefix;
+                var page = sr.substring(1, sr.length);
+                var result = page.charAt(0).toUpperCase() + page.slice(1);
+                this.title = result;
+            }
 
             fill() {
                 this.$.maximoLogin.generateRequest()
@@ -186,7 +192,6 @@
                 if ((this.get('route.path') === '/login' || this.get('route.path') === '/purchaseorders' || this.get('route.path') === '/') && this.get('whoAmI')) {
                     this.set('route.path', '/purchaseorders/1')
                 }
-   
             }
 
             //handle error function, if any error occurs via logout then it's calling _onLogout function
@@ -213,6 +218,7 @@
 
             //the function changes the page
             _pageChanged(page) {
+                this.setTitle();
                 // Load page import on demand. Show 404 page if fails
                 var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');               
                 if (resolvedPageUrl != this.resolveUrl('maximo-login.html')) {

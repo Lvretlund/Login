@@ -10,10 +10,10 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../src/maximo-norecords.html">
 
 <link rel="import" href="shared-styles.html">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <dom-module id="maximo-purchaseorder">
     <!-- Defines the element's style and local DOM -->
@@ -32,7 +32,7 @@
                    method="get"
                    handle-as="json"
                    content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{theOrder}}"
                    last-response="{{purchaseOrder}}"
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
@@ -49,71 +49,78 @@
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{(spinner.active)}}">
 
-            <div class="poTitle">
-                <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                <h1 id="poTitleTxt">Order {{purchaseOrder.ponum}}</h1>
-            </div>
 
             <div class="poCard" style="filter:{{blur}}">
 
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
-                                Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div class="circlePurchaseOrder" label"><span>{{purchaseOrder.ponum}}</span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
-                            Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
 
+                        <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                        <strong class="ponum">{{purchaseOrder.ponum}}</strong>
+
+                        <div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
+                        <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                            <div class="saveCancel">
+                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                            </div>
+                        </template>
                     </div>
 
-                    <hr />
-
-                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+                    <template is="dom-if" if="{{purchaseOrder.poline}}">
                         <div class="card">
-                            <div>
-                                <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
-                                    Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
-                                    <span style="margin: 16px 0px 0px 16px;"></span>
+
+                            <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                            <template is="dom-if" if="{{wap}}">
+                                <paper-button id="pen" style="display:{{pen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit lines</span><iron-icon icon="create"></iron-icon></paper-button>
+                            </template>
+
+                            <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+
+                                <iron-icon style="padding-bottom:10px;" icon="description"></iron-icon>
+                                <strong>{{item.itemnum}}</strong>
+
+                                <div class="lineContent">
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 </div>
-                            </div>
-                            <div>
-                                <div class="circle"><span>{{item.itemnum}}</span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                                <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
-                                <template is="dom-if" if="{{wap}}">
-                                    <paper-button id="pen" style="display:{{pen}}" on-tap="editPo"><iron-icon icon="create"></iron-icon> Edit</paper-button>
+
+                                <div id="poQuant" style="display:{{showq}}">
+                                    <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
+                                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
+                                    <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
+                                </div>
+                                <hr />
+                            </template>
+
+                            <div class="saveCancel">
+                                <template is="dom-if" if="{{lines}}">
+                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
+                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
-                        </div>
 
-                        <div id="poQuant" style="display:{{showq}}">
-                            <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon icon="add"></iron-icon></paper-button>
-                            <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
-                            <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon icon="remove"></iron-icon></paper-button>
                         </div>
-
                     </template>
                 </form>
 
-                <div>
-                    <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                    <paper-button style="margin-top: 2em;" class="indigo" data-args="purchaseorders/1" raised on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                </div>
+
 
             </div>
+
+            <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
+            </template>
 
             <template is="dom-if" if="[[success]]">
                 <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
@@ -126,61 +133,91 @@
         </template>
     </template>
     <script>
-        class MaximoPurchaseOrder extends Polymer.Element {
-            static get is() { return 'maximo-purchaseorder'; }
+        Polymer({
+            is: "maximo-purchaseorder",
 
-            static get properties() {
-                return {
-                    baseUrl: {
-                        type: String,
-                        observer: '_baseUrlChanged',
-                    },
-                    workOrder: {
-                        type: Object,
-                        value: {},
-                        notify: true
-                    },
-                    whoAmI: {
-                        type: Object,
-                        observer: '_whoAmIChanged',
-                    }
+            attached: function () {
+                if (!this._initialized) {
+                    this._initialized = true;
                 }
-            }
+            },
 
-            static get observers() {
-                return [
-                    '_poRefChanged(pageData)'
-                ]
-            }
+            theOrder: {
+                type: String
+            },
+            baseUri: {
+                type: String
+            },
+            ready: function () {
+                this.baseUri = sessionStorage.getItem('baseUri');
+                this.theOrder = localStorage['theOrder']
+                this.$.maximoLoadPurchaseOrderAjax.generateRequest();
+            },
+            getKPIName: function (kpiname) {
+                var maxauth = JSON.parse(sessionStorage.getItem('maxauth'));
+                var user = $M.getMaxauth().whoami.personId;
+                return kpiname + user;
+            },
+            _subRouteChanged(subRoute) {
+                if (this.subRoute !== subRoute) {
+                    if (subRoute !== '') {
+                        //handle sub route changes here
+                    }
+                    this.subRoute = subRoute;
+                }
+            },
+
+            //static get properties() {
+            //    return {
+            //        baseUrl: {
+            //            type: String,
+            //            observer: '_baseUrlChanged',
+            //        },
+            //        workOrder: {
+            //            type: Object,
+            //            value: {},
+            //            notify: true
+            //        },
+            //        whoAmI: {
+            //            type: Object,
+            //            observer: '_whoAmIChanged',
+            //        }
+            //    }
+            //},
+
+            //static get observers() {
+            //    return [
+            //        '_poRefChanged(pageData)'
+            //    ]
+            //},
 
             goto(e) {
-                var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
-                this.set('route.path', link);
-            }
+                window.location.href = link;
+            },
 
             reload() {
                 location.reload();
-            }
+            },
 
-            editPo(item) {
+            editPo() {
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
-            }
+            },
 
             closeEditPo() {
                 this.showq = "none";
                 this.x = "none";
                 this.pen = "inline-block";
-            }
+            },
 
             _showDetails() {
                 if (parseInt(this.get('pageData.poRef')) > 0) {
                     return true
                 }
                 return false
-            }
+            },
 
             _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
@@ -194,19 +231,22 @@
                     this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
 
-            }
+            },
 
             _poLoaded() {
 
+                let poLines = this.get('purchaseOrder.poline')
                 let checkPoStatus = this.get('purchaseOrder.status')
-                if (checkPoStatus == "WAPPR") {
+                if (checkPoStatus == "WAPPR" && poLines != null) {
                     this.wap = true;
+                    this.lines = true;
                 }
                 else {
                     this.wap = false;
+                    this.lines = false;
                 }
 
-            }
+            },
 
             //After the whoAmI object is populated, we need to populate those fields
             _whoAmIChanged() {
@@ -214,7 +254,7 @@
                     this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
                     this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
-            }
+            },
 
             _baseUrlChanged() {
                 if (this._showDetails()) {
@@ -223,27 +263,27 @@
 
                 }
 
-            }
+            },
 
             _handleLoadResponse(event) {
                 this.$.spinner.active = false
                 this._poLoaded()
 
-            }
+            },
 
             _handleLoadError(event, request) {
                 this.$.spinner.active = false
-            }
+            },
 
             _handleSaveResponse(event) {
                 this.$.spinner.active = false
-                if (!this._showDetails()) {
-                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
-                } else {
-                    this.error = null;
-                    this.success = "Purchase Order Successfully Saved"
-                }
-            }
+                //if (!this._showDetails()) {
+                //    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
+                //} else {
+                this.error = null;
+                this.success = "Purchase Order Successfully Saved"
+                //}
+            },
 
             _handleSaveError(event, request) {
                 this.$.spinner.active = false
@@ -257,44 +297,52 @@
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
-            }
+            },
 
             //function for increasing the order line quantity by pressing + sign
             _poIncQuant(item) {
-                let inp = parseInt(item.model.__data.item.orderqty)
-                let line = parseInt(item.model.__data.item.polinenum)
+                let inp = parseInt(item.model.__data__.item.orderqty)
+                let line = parseInt(item.model.__data__.item.polinenum)
                 inp++
                 line--
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
 
-            }
+            },
 
             //function for decreasing the order line quantity by pressing - sign
             _poDecQuant(item) {
-                let inp = parseInt(item.model.__data.item.orderqty)
-                let line = parseInt(item.model.__data.item.polinenum)
+                let inp = parseInt(item.model.__data__.item.orderqty)
+                let line = parseInt(item.model.__data__.item.polinenum)
                 inp--
                 line--
 
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
-            }
+            },
 
-            //gets headers for the save-ajax call
+            //gets headers for the save-ajax call, if this is done locally we need to pass along the csrftoken as a header as well
+            // remove before deployment
             _getSaveHeaders() {
-                let headers = { 'properties': '*' }
+                let headers = {
+                    'properties': '*',
+                    'csrftoken': sessionStorage.getItem('csrftoken'),
+                    'x-method-override': 'PATCH',
+                    'patchtype': 'MERGE'
+                }
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
                     headers['patchtype'] = 'MERGE'
+                    headers['csrftoken'] = sessionStorage.getItem('csrftoken');
+
                 }
                 return headers
-            }
+            },
 
 
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
                 let item = this.get('purchaseOrder.poline')
-               
+
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
                 for (var i = 0; i < item.length;) {
                     let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
@@ -305,7 +353,7 @@
                         this.error = "You cannot enter a negative number!";
                         this.blur = "blur(8px); -webkit - filter: blur(8px);";
                         break;
-                       
+
                     } else {
                         //here we sets the order quantity in the ajax-calls body to the save function, do this one time for each POLINE
                         purchaseOrder.body = {
@@ -316,15 +364,17 @@
                                 }]
                         }
                     }
-                    
+
                     //here we sets the body if the ajax element with our new values
+
+
                     this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
                     this.savePurchaseOrder();
                     i++
 
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 }
-            }
+            },
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.
             savePurchaseOrder() {
@@ -335,8 +385,6 @@
                 this.$.maximoSavePurchaseOrderAjax.generateRequest()
                 this.$.spinner.active = true
             }
-        }
-
-        window.customElements.define(MaximoPurchaseOrder.is, MaximoPurchaseOrder);
+        });
     </script>
 </dom-module>
