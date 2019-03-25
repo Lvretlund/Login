@@ -301,7 +301,6 @@
 
             //function for increasing the order line quantity by pressing + sign
             _poIncQuant(item) {
-                console.log(item)
                 let inp = parseInt(item.model.__data.item.orderqty)
                 let line = parseInt(item.model.__data.item.polinenum)
                 inp++
@@ -334,7 +333,6 @@
                    
 
                 }
-                console.log(headers)
                 return headers
             },
 
