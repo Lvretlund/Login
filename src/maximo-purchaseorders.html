@@ -171,7 +171,9 @@
             },
 
             _handleResponse(event) {
-                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
+                console.log(event)
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
+                {
                     this.noPos = "block";
                 }
                 else {
@@ -194,9 +196,43 @@
                 }
             },
             // filter status method - in progress
-            _itemSelected() {
+            _itemSelected(e) {
                 let statusChosen = this.status;
+                
+                switch (e.detail.item.firstChild.data) {
+                    case "Approved":
+                        statusChosen = "APPR";
+                        break;
+                    case "Canceled":
+                        statusChosen = "CAN";
+                        break;
+                    case "Closed":
+                        statusChosen = "CLOSE";
+                        break;
+                    case "Hold":
+                        statusChosen = "HOLD";
+                        break;
+                    case "In Progress":
+                        statusChosen = "INPRG";
+                        break;
+                    case "Pending Revision":
+                        statusChosen = "PNDREV";
+                        break;
+                    case "Revised":
+                        statusChosen = "REVISD";
+                        break;
+                    case "Waiting on approval":
+                        statusChosen = "WAPPR";
+                        break;
+                    case "All":
+                        statusChosen = "ALL";
+                        break;
+                    default:
+                        statusChosen = "ALL";
+                        break;
+                }
 
+                //console.log(statusChosen);
                 if (statusChosen == "ALL") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
 
@@ -231,9 +267,23 @@
 
             },
 
-            _buyerSelected() {
+            _buyerSelected(e) {
                 let choosenBuyer = this.buyer
-                var user = $M.getMaxauth().whoami.personId;
+
+                switch (e.detail.item.firstChild.data) {
+                    case "All orders":
+                        choosenBuyer = "ALL";
+                        break;
+                    case "My orders":
+                        choosenBuyer = "MY";
+                        break;
+                    default:
+                        choosenBuyer = "ALL";
+                        break;
+                }
+
+                console.log(e);
+                var user = sessionStorage.getItem('whoAmI')
                 if (choosenBuyer == "MY") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
 
