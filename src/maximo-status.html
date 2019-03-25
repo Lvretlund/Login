@@ -13,8 +13,6 @@
 
 <link rel="import" href="shared-styles.html">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <dom-module id="maximo-status">
     <!-- Defines the element's style and local DOM -->
     <template>
@@ -32,14 +30,14 @@
                    method="get"
                    handle-as="json"
                    content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   url="http://localhost:9080/maximo/oslc/os/mxpo/{{theOrder}}"
                    last-response="{{purchaseOrder}}"
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
         <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
         <iron-ajax id="maximoSavePurchaseOrderAjax"
                    with-credentials
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{purchaseOrder.poid}}"
+                   url="http://localhost:9080/maximo/oslc/os/mxpo/{{theOrder}}"
                    method="post"
                    handle-as="json"
                    content-type="application/json"
@@ -50,118 +48,142 @@
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{(spinner.active)}}">
 
-            <div class="poTitle">
+            <div class="poTitleDetails">
                 <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                 <h1 id="poTitleTxt">Order Status {{purchaseOrder.ponum}}</h1>
             </div>
 
-            <div class="poCard">
+            <div class="poCard" style="filter:{{blur}}">
 
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
-                                Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span>
-                                <span style="margin: 16px 0px 0px 16px;"></span>
-                            </div>
-                        </div>
-                        <div class="circlePurchaseOrder" label"><span>{{purchaseOrder.ponum}}</span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">
-                            Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                        <strong class="ponum">{{purchaseOrder.ponum}}</strong> <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span><iron-icon style="color: {{iconcolor}};" icon="{{statusicon}}"></iron-icon></div>
 
+                        <div>
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
-                    </div>
-                    <template is="dom-repeat" items="{{purchaseOrder.poline}}">
-                        <div class="card">
-                            <div>
-                                <div style="margin: 16px -8px 0px 5px;font-weight: bold;display:inline;">
-                                    Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span>
-                                    <span style="margin: 16px 0px 0px 16px;"></span>
-                                </div>
+
+                        <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                            <div class="saveCancel">
+                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
-                            <div>
-                                <div class="circle"><span>{{item.itemnum}}</span></div>
+                        </template>
+
+                    </div>
+
+                </form>
+                <template is="dom-if" if="{{purchaseOrder.poline}}">
+
+                    <div class="card">
+                        <template is="dom-repeat" items="{{purchaseOrder.poline}}">
+
+                            <iron-icon style="padding-bottom:10px;" icon="description"></iron-icon>
+                            <strong>{{item.itemnum}}</strong>
+
+                            <div class="lineContent">
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline;">Line Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
+                            <hr />
+                        </template>
+
+                        <div class="changeStatus">
+                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon icon="icons:check-circle"></iron-icon></paper-button></div>
+                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon icon="cancel"></iron-icon></paper-button></div>
                         </div>
-                    </template>
-                </form>
-                <template is="dom-if" if="[[error]]">
-                    <!-- if there is an error it displays here -->
-                    <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
-                </template>
-                <template is="dom-if" if="[[success]]">
-                    <!-- if success, it displays here -->
-                    <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+
+                        <div class="saveCancel">
+                            <paper-button style="margin-top: 2em;" class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>
+                        </div>
+
+                    </div>
                 </template>
 
-                <div id="poCheckDiv">
-                    <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><iron-icon on-tap="_approveStatus" class="poCheck" icon="icons:check-circle"></iron-icon><h class="approveCancelText">Approve Purchase Order</h></div>
-                    <div id="poCheckCancel" style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><iron-icon on-tap="_closeStatus" class="poCheck" icon="cancel"></iron-icon><h class="approveCancelText">Close Purchase Order</h></div>
-                </div>
-
-                <paper-button style="margin-top: 2em;" class="indigo" data-args="purchaseorders/1" raised on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
 
             </div>
+
+            <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
+            </template>
+
+            <template is="dom-if" if="[[error]]">
+                <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+            </template>
+
+            <template is="dom-if" if="[[success]]">
+                <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+            </template>
+
         </template>
     </template>
     <script>
-        class MaximoPurchaseOrderStatus extends Polymer.Element {
-            static get is() { return 'maximo-status'; }
+        Polymer({
+            is: "maximo-status",
 
-            static get properties() {
-                return {
-                    baseUrl: {
-                        type: String,
-                        observer: '_baseUrlChanged',
-                    },
-                    workOrder: {
-                        type: Object,
-                        value: {},
-                        notify: true
-                    },
-                    whoAmI: {
-                        type: Object,
-                        observer: '_whoAmIChanged',
-                    },         
-                    shouldShow: {
-                        type: String,
+            //static get properties() {
+            //    return {
+            //        baseUrl: {
+            //            type: String,
+            //            observer: '_baseUrlChanged',
+            //        },
+            //        workOrder: {
+            //            type: Object,
+            //            value: {},
+            //            notify: true
+            //        },
+            //        whoAmI: {
+            //            type: Object,
+            //            observer: '_whoAmIChanged',
+            //        },
+            //        shouldShow: {
+            //            type: String,
 
-                        reflectToAttribute: true
-                    },
-                    shouldShow2: {
-                        type: String,
-                        reflectToAttribute: true
-                    }
+            //            reflectToAttribute: true
+            //        },
+            //        shouldShow2: {
+            //            type: String,
+            //            reflectToAttribute: true
+            //        }
 
 
-                }
-            }
+            //    }
+            //},
 
             reload() {
                 location.reload();
-            }
+            },
 
-            static get observers() {
-                return [
-                    '_poRefChanged(pageData)'
-                ]
-            }
+            //static get observers() {
+            //    return [
+            //        '_poRefChanged(pageData)'
+            //    ]
+            //},
 
             goto(e) {
-                var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
-                this.set('route.path', link);
+                window.location.href = link;
+            },
+            theOrder: {
+                type: String
+            },
+            baseUri: {
+                type: String
+            },
 
-            }
+            ready: function () {
+                this.baseUri = sessionStorage.getItem('baseUri');
+                this.theOrder = localStorage['theOrder']
+                this.$.maximoLoadPurchaseOrderAjax.generateRequest();
+            },
 
             _showDetails() {
                 if (parseInt(this.get('pageData.poRef')) > 0) {
@@ -169,8 +191,31 @@
                 }
 
                 return false
-            }
+            },
 
+            _changeStatusIcon() {
+                let status = this.get('purchaseOrder.status')
+                if (status == "APPR") {
+                    this.statusicon = "check-circle";
+                    this.iconcolor = "green";
+                }
+                else if (status == "CLOSE") {
+                    this.statusicon = "cancel";
+                    this.iconcolor = "black";
+                }
+                else if (status == "WAPPR") {
+                    this.statusicon = "hourglass-full";
+                    this.iconcolor = "#fdd600";
+                }
+                else if (status == "CAN") {
+                    this.statusicon = "block";
+                    this.iconcolor = "red";
+                }
+                else if (status == "INPRG") {
+                    this.statusicon = "cached";
+                    this.iconcolor = "orange";
+                }
+            },
 
             _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
@@ -184,7 +229,7 @@
                     this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
 
-            }
+            },
 
 
             _poLoaded() {
@@ -200,7 +245,7 @@
                     this.shouldShow2 = "none";
                 } else { this.shouldShow2 = "inline"; }
 
-            }
+            },
 
             //After the whoAmI object is populated, we need to populate those fields
             _whoAmIChanged() {
@@ -208,35 +253,35 @@
                     this.set('purchaseOrder.orgid', this.get('whoAmI.defaultOrg') || '')
                     this.set('purchaseOrder.siteid', this.get('whoAmI.defaultSite') || '')
                 }
-            }
+            },
 
             _baseUrlChanged() {
                 if (this._showDetails()) {
                     this.$.spinner.active = true
                     this.$.maximoLoadPurchaseOrderAjax.generateRequest()
                 }
-            }
+            },
 
             _handleLoadResponse(event) {
                 this.$.spinner.active = false
                 this._poLoaded()
-
-            }
+                this._changeStatusIcon();
+            },
 
             _handleLoadError(event, request) {
                 this.$.spinner.active = false
-            }
+            },
 
             _handleSaveResponse(event) {
-                this.$.spinner.active = false
-                if (!this._showDetails()) {
-                    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
-                } else {
-                    this.error = null;
-                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
-                    this.success = "Work Order Successfully Saved"
-                }
-            }
+                //this.$.spinner.active = false
+                //if (!this._showDetails()) {
+                //    this.set('route.path', '/purchaseorder/' + this.get('purchaseOrder.purchaseorderid'))
+                //} else {
+                this.error = null;
+                this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                this.success = "Purchase Order Successfully Saved"
+                //}
+            },
 
             _handleSaveError(event, request) {
                 this.$.spinner.active = false
@@ -246,12 +291,13 @@
                     event.detail.request.xhr.response["Error"]["message"]) {
                     this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 } else {
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.error = "Could not save Purchase Order"
                     this.success = null;
                 }
-            }
+            },
 
             _approveStatus(purchaseOrder) {
 
@@ -263,7 +309,7 @@
                 //here we sets the body if the ajax element with our new values
                 this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
                 this.savePurchaseOrder();
-            }
+            },
 
             _closeStatus(purchaseOrder) {
 
@@ -275,17 +321,22 @@
                 //here we sets the body if the ajax element with our new values
                 this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
                 this.savePurchaseOrder();
-            }
+            },
 
 
             _getSaveHeaders() {
-                let headers = { 'properties': '*' }
+                let headers = {
+                    'properties': '*',
+                    'csrftoken': sessionStorage.getItem('csrftoken'),
+                    'x-method-override': 'PATCH',
+                    'patchtype': 'MERGE'
+                }
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
                     headers['patchtype'] = 'MERGE'
                 }
                 return headers
-            }
+            },
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.
             savePurchaseOrder() {
@@ -297,8 +348,6 @@
                 this.$.spinner.active = true
 
             }
-        }
-
-        window.customElements.define(MaximoPurchaseOrderStatus.is, MaximoPurchaseOrderStatus);
+        });
     </script>
 </dom-module>

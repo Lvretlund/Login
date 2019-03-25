@@ -32,7 +32,7 @@
                    method="get"
                    handle-as="json"
                    content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{pageData.poRef}}"
+                   url="[[baseUrl]]maximo/oslc/os/mxpo/{{theOrder}}"
                    last-response="{{purchaseOrder}}"
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
@@ -74,7 +74,7 @@
                         </div>
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
-                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/index.html#/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
                         </template>
                     </div>
@@ -111,7 +111,7 @@
                                 <template is="dom-if" if="{{lines}}">
                                     <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
-                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/index.html#/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
 
                         </div>
@@ -143,11 +143,6 @@
             attached: function () {
                 if (!this._initialized) {
                     this._initialized = true;
-                    var self = this;
-                    var defaultOrg = $M.getMaxauth().whoami.defaultOrg;
-                    //this.$.wpeditsettingCollection.additionalParams.push('oslc.where=orgid=%22' + defaultOrg + '%22');
-                    //this.$.wpeditsettingCollection.filtered = true;
-                    //this.$.wpeditsettingCollection.refreshRecords();
                 }
             },
 
