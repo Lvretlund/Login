@@ -1,32 +1,34 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-
+<!--<link rel="import" href="../bower_components/polymer/polymer-element.html">-->
 <!-- shared styles for all views -->
 <dom-module id="shared-styles">
     <template>
         <style>
 
-/*The "white box" where we display purchase orders in maximo-status and maximo-purchaseorder*/
+            /*The "white box" where we display purchase orders in maximo-status and maximo-purchaseorder*/
             .card {
-                margin: 24px;
+                margin: auto;
+                margin-bottom: 26px;
                 padding: 16px;
                 color: #757575;
-                border-radius: 5px;
-                background-color: #fff;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-            }
-
-/*The "white box" where we display information about purchase orders in maximo-purchaseorders */
-            .PurchaseOrdersCard {
-                margin: 24px;
-                padding: 16px;
-                color: #757575;
-                border-radius: 5px;
                 background-color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 overflow: hidden;
+                width: 90%;
             }
 
-/*The circle with purchase order number in maximo-purchaseorders*/
+            /*The "white box" where we display information about purchase orders in maximo-purchaseorders */
+            .PurchaseOrdersCard {
+                margin: auto;
+                margin-bottom: 5px;
+                padding: 16px;
+                color: #757575;
+                background-color: #fff;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                width: 90%;
+            }
+
+            /*The circle with purchase order number in maximo-purchaseorders*/
             .circle {
                 display: inline-block;
                 text-align: center;
@@ -38,7 +40,7 @@
                 padding: 20px
             }
 
-/*Kolla om vi behöver ha den här cirkeln*/
+            /*Kolla om vi behöver ha den här cirkeln*/
             .circlePurchaseOrder {
                 display: inline-block;
                 text-align: center;
@@ -50,14 +52,12 @@
                 padding: 20px
             }
 
-/*General header style with its color, margin and fint size */
             h1 {
                 margin: 16px 0;
                 color: #212121;
                 font-size: 22px;
             }
-
-/*The "alert error" where we display error box if any error occurs*/
+            /*error-message*/
             .alert-error {
                 background: #ffcdd2;
                 border: 1px solid #ffcdd2;
@@ -76,7 +76,6 @@
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
-/*The "tool bar" where we display nav bar with menu inside in it*/
             #toolBar {
                 background-color: #1d3649;
                 color: white;
@@ -84,20 +83,19 @@
                 width: 100%;
             }
 
-/*The "po card" where we display a box with all orders in it, information, status, inspect order, etc*/
             .poCard {
-                padding: 20px;
+                padding: 10px, 10px, 10px, 10px;
                 margin: auto;
-                margin-top: 50px;
-                margin-bottom: 50px;
-                width: 90%;
-                background-color: #eeeeee;
-                border-radius: 5px;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                background-color: #1d3649;
                 position: relative;
             }
 
-/*The "alert-success" where we display success box when any success occurs*/
+            .saveCancel {
+                text-align: right;
+            }
+
+            /*success-message*/
             .alert-success {
                 background: #cdffcd;
                 border: 1px solid #cdffcd;
@@ -116,19 +114,51 @@
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
-/*The "po title" where we display "header" of the purchase orders*/
             .poTitle {
-                width: 30%;
-                text-align: center;
-                padding-top: 25px;
-                color: #757575;
+                color: white;
                 margin: auto;
-                margin-top: 40px;
-                padding: 10px;
+                padding: 16px;
                 position: relative;
+                width: 93%;
             }
 
-/*The "menu" where we display dropdown menu with its options*/
+            #centerSearch {
+                display: inline-block;
+                width: 20%;
+            }
+
+            .poTitleDetails {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            #poPages {
+                text-align: center;
+            }
+
+            .poFilter {
+                width: 15%;
+                display: inline-block;
+                text-align: right;
+            }
+
+            paper-dropdown-menu.poFilt {
+                --paper-input-container-label: {
+              color: #9b9b9b;
+                       };
+                --paper-input-container-input: {
+              color: #9b9b9b;
+
+            };
+            }
+
+
+            .poFilterSearch {
+                display: inline-block;
+                width: 100%;
+                margin-left: 0em;
+            }
+
             .menu {
                 --iron-icon-height: 40px;
                 --iron-icon-width: 40px;
@@ -140,12 +170,10 @@
                     background: #808080;
                 }
 
-/*Paper-item displays when we hover it*/
             paper-item:hover {
                 background: #808080;
             }
 
-/*The menu on right side (account and sign out)*/
             .menuRight {
                 --iron-icon-height: 40px;
                 --iron-icon-width: 40px;
@@ -158,17 +186,14 @@
                     background: #808080;
                 }
 
-
-/*The arrow for "next page" or "prev page"*/
             .arrow {
                 --iron-icon-height: 40px;
                 --iron-icon-width: 40px;
                 padding: 5px;
                 cursor: pointer;
-                color: black;
+                color: #4178be;
             }
 
-/*Style for dropdown hover*/
             .dropdown:hover {
                 background: #808080;
             }
@@ -180,6 +205,7 @@
 
             #poTitleTxt, #poListIcon {
                 display: inline-block;
+                color: white;
             }
 
             .menuIcon {
@@ -192,10 +218,13 @@
                 padding: 5px;
             }
 
-
-            .indigo:hover {
-                background: #ddd;
+            .indigo {
+                background-color: white;
             }
+
+                .indigo:hover {
+                    background: #ddd;
+                }
 
             #whoAmI {
                 background: #FFF;
@@ -212,61 +241,74 @@
                 position: relative;
             }
 
-            .PoCheck {
-                --iron-icon-height: 4em;
-                --iron-icon-width: 4em;
-                padding: 5px;
-                cursor: pointer;
-                padding: 10px;
-            }
-
-                .poCheck:hover {
-                    background: #808080;
-                }
-
-            #poCheckDiv {
+            .changeStatus {
                 text-align: center;
+                color: #4178be;
             }
 
             #totalPages {
                 display: block;
-                font-size: 1.20em;
-                font-weight: bold;
+                font-size: 15px;
             }
 
             #poView {
                 display: inline-block;
-                border: 1px solid;
-                border-radius: 2px;
                 float: right;
+                color: #4178be;
+            }
+
+            .poViewButton {
+                display: inline-block;
+                color: #4178be;
             }
 
             #poQuant {
                 display: none;
-                width: 25%;
-                margin: 24px;
+                width: 20%;
                 color: #757575;
                 border-radius: 5px;
                 background-color: #fff;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 text-align: center;
+                margin-top: 10px;
             }
 
             #poQuantLine {
+                width: 40%;
                 display: inline-block;
                 text-align: center;
                 padding-bottom: 10px;
             }
 
+            .editIcon {
+                width: 15px;
+                height: 15px;
+            }
+
+            .noPos {
+                display: none;
+            }
+
+            /*to open editpo*/
             #pen {
                 display: inline-block;
                 float: right;
+                color: #4178be;
             }
-
+            /*to close editpo*/
             #x {
                 display: none;
                 float: right;
+                color: #4178be;
             }
+
+            #filterIcon {
+                display: none;
+            }
+
+            .hideIcons {
+                display: none;
+            }
+
             /*Changes that depend on the screensize of the device follow bellow*/
             @media only screen and (max-width: 375px) {
                 .indigo {
@@ -302,6 +344,23 @@
                     display: none;
                 }
 
+                .poFilter {
+                    width: 100%;
+                    text-align: center;
+                    display: none;
+                }
+
+                .poFilterSearch {
+                    display: inline-block;
+                    width: 60%;
+                    margin: auto;
+                }
+
+                #totalPages {
+                    color: black;
+                    font-size: 10px;
+                }
+
                 .dropdown {
                     display: none;
                 }
@@ -314,25 +373,37 @@
                     font-size: 22px;
                 }
 
+                #editText {
+                    display: none;
+                }
+
+                #pen {
+                    text-align: right;
+                }
+
+                #x {
+                    text-align: right;
+                }
+
                 .poCard {
                     margin-top: 30px;
                     background-color: white;
+                    width: 100%;
                 }
 
                 .poTitle {
                     width: 100%;
                 }
 
-
-                #totalPages {
-                    font-size: 22px;
-                    font-weight: bold;
+                .poTitleDetails {
+                    margin-bottom: 0;
                 }
 
                 .PurchaseOrdersCard {
                     display: block;
-                    margin: 0px 20px 20px 20px;
+                    width: 100%;
                     font-size: 15px;
+                    margin: 0;
                 }
 
                 .circle {
@@ -342,8 +413,10 @@
                 }
 
                 .card {
-                    margin: 0px 20px 20px 20px;
+                    display: block;
+                    width: 100%;
                     font-size: 15px;
+                    margin-bottom: 5px;
                 }
 
                 .circlePurchaseOrder {
@@ -361,16 +434,76 @@
                     padding-bottom: 20px;
                 }
 
-                #poContent {
-                    display: none;
-                }
-
                 #descript {
                     display: block;
                 }
 
                 .approveCancelText {
                     display: none;
+                }
+
+                #filterIcon {
+                    display: inline-block;
+                    color: #757575;
+                    height: 40px;
+                    width: 40px;
+                }
+
+                #centerSearch {
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .hideContent {
+                    display: none;
+                }
+
+                .hideIcons {
+                    display: inline-block;
+                    float: right;
+                }
+
+                #mobileSearch {
+                    --iron-icon-height: 30px;
+                    --iron-icon-width: 30px;
+                    padding: 0px;
+                }
+
+                #mobileQuery {
+                    --iron-icon-height: 25px;
+                    --iron-icon-width: 25px;
+                }
+
+                #poView1 {
+                    /*display: inline-block;*/
+                    float: right;
+                    color: #4178be;
+                    padding: 0;
+                }
+
+                #poView2 {
+                    /*display: inline-block;*/
+                    float: right;
+                    color: #4178be;
+                    padding: 0;
+                    margin-right: -22px;
+                }
+
+                .ponum {
+                    display: none;
+                }
+
+                .lineContent {
+                    font-size: 12px;
+                }
+
+                #poQuant {
+                    display: none;
+                    width: 50%;
+                    color: #757575;
+                    background-color: #fff;
+                    text-align: center;
+                    margin-top: 10px;
                 }
             }
         </style>

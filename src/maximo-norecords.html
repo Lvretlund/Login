@@ -1,0 +1,30 @@
+﻿<!--
+ @license
+ Licensed Materials - Property of IBM
+ 5724-U18
+ Copyright IBM Corporation. 2018
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+
+<dom-module id="maximo-norecords">
+
+
+    <template id="template">
+        <div style="text-align:center;">
+            <h1 style="color: white;">{{norecordstext}}</h1>
+            <maximo-image id="image2" src="../../../images/dark-bee.png"></maximo-image>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: "maximo-norecords",
+            properties: {
+                norecordstext: {
+                    type: String,
+                }
+            }
+
+        });
+    </script>
+</dom-module>	
