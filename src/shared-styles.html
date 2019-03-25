@@ -142,13 +142,16 @@
                 text-align: right;
             }
 
+            
+
             paper-dropdown-menu.poFilt {
+                --paper-input-container-color: white;
+                --paper-input-container-focus-color: white;
                 --paper-input-container-label: {
-              color: #9b9b9b;
+              color: white;
                        };
                 --paper-input-container-input: {
-              color: #9b9b9b;
-
+              color: white;
             };
             }
 
@@ -157,6 +160,20 @@
                 display: inline-block;
                 width: 100%;
                 margin-left: 0em;
+            }
+
+            .search {
+                width: 15%;
+                display: inline-block;
+                text-align: left;
+                --paper-input-container-color: white;
+                --paper-input-container-focus-color: white;
+                --paper-input-container-label: {
+              color: white;
+                       };
+                --paper-input-container-input: {
+              color: white;
+            };
             }
 
             .menu {
@@ -222,9 +239,9 @@
                 background-color: white;
             }
 
-                .indigo:hover {
+            .indigo:hover {
                     background: #ddd;
-                }
+            }
 
             #whoAmI {
                 background: #FFF;

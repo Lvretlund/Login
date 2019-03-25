@@ -301,8 +301,8 @@
 
             //function for increasing the order line quantity by pressing + sign
             _poIncQuant(item) {
-                let inp = parseInt(item.model.__data__.item.orderqty)
-                let line = parseInt(item.model.__data__.item.polinenum)
+                let inp = parseInt(item.model.__data.item.orderqty)
+                let line = parseInt(item.model.__data.item.polinenum)
                 inp++
                 line--
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
@@ -311,8 +311,8 @@
 
             //function for decreasing the order line quantity by pressing - sign
             _poDecQuant(item) {
-                let inp = parseInt(item.model.__data__.item.orderqty)
-                let line = parseInt(item.model.__data__.item.polinenum)
+                let inp = parseInt(item.model.__data.item.orderqty)
+                let line = parseInt(item.model.__data.item.polinenum)
                 inp--
                 line--
 
@@ -324,14 +324,13 @@
             _getSaveHeaders() {
                 let headers = {
                     'properties': '*',
-                    'csrftoken': sessionStorage.getItem('csrftoken'),
                     'x-method-override': 'PATCH',
                     'patchtype': 'MERGE'
                 }
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
                     headers['patchtype'] = 'MERGE'
-                    headers['csrftoken'] = sessionStorage.getItem('csrftoken');
+                   
 
                 }
                 return headers

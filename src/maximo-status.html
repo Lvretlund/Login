@@ -322,7 +322,6 @@
             _getSaveHeaders() {
                 let headers = {
                     'properties': '*',
-                    'csrftoken': sessionStorage.getItem('csrftoken'),
                     'x-method-override': 'PATCH',
                     'patchtype': 'MERGE'
                 }

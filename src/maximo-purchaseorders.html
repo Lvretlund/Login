@@ -47,6 +47,12 @@
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
+                  <div class="search">
+                    <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
+                        <iron-icon slot="suffix" icon="search"></iron-icon>
+                    </paper-input>
+                </div>
+
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
@@ -171,10 +177,11 @@
             },
 
             _handleResponse(event) {
-                console.log(event)
                 if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
                 {
                     this.noPos = "block";
+                    this.totalRecords = 0;
+                    this.totalPages = 1;
                 }
                 else {
                     this.noPos = "none";
@@ -221,18 +228,20 @@
                     case "Revised":
                         statusChosen = "REVISD";
                         break;
-                    case "Waiting on approval":
+                    case "Waiting on Approval":
                         statusChosen = "WAPPR";
                         break;
                     case "All":
                         statusChosen = "ALL";
+                        break;
+                    case "Edited in History":
+                        statusChosen = "HISTEDIT"
                         break;
                     default:
                         statusChosen = "ALL";
                         break;
                 }
 
-                //console.log(statusChosen);
                 if (statusChosen == "ALL") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
 
@@ -282,7 +291,6 @@
                         break;
                 }
 
-                console.log(e);
                 var user = sessionStorage.getItem('whoAmI')
                 if (choosenBuyer == "MY") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
