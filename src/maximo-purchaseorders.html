@@ -27,7 +27,7 @@
                    id="maximoPurchaseOrdersListAjax"
                    with-credentials
                    content-type="application/json"
-                   url="[[baseUrl]]maximo/oslc/os/mxpo"
+                   url="{{localBaseUri}}maximo/oslc/os/mxpo"
                    params="[[_urlParams(pageData.num)]]"
                    method="get"
                    handle-as="json"
@@ -135,7 +135,11 @@
             baseUri: {
                 type: String
             },
+            localBaseUri: {
+                String
+            },
             ready: function () {
+                this.localBaseUri = "http://localhost:9080/";
                 this.baseUri = sessionStorage.getItem('baseUri');
                 this.$.maximoPurchaseOrdersListAjax.generateRequest();
             },
