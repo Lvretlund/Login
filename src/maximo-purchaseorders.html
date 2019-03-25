@@ -35,11 +35,6 @@
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
 
-        <!-->Page title</!-->
-        <div class="poTitle">
-            <iron-icon class="titleIcon" icon="list"></iron-icon>
-            <h1 id="poTitleTxt">Purchase Orders</h1>
-        </div>
 
         <div class="poCard">
             <div class="poTitle">
@@ -101,12 +96,12 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                            <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                            <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                         </div>
                         <div class="hideIcons">
-                            <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/index.html#/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                            <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                            <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                         </div>
                     </div>
 
