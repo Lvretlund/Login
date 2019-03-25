@@ -48,11 +48,6 @@
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{(spinner.active)}}">
 
-            <div class="poTitleDetails">
-                <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                <h1 id="poTitleTxt">Order Status {{purchaseOrder.ponum}}</h1>
-            </div>
-
             <div class="poCard" style="filter:{{blur}}">
 
                 <form action="/foo" method="get">
