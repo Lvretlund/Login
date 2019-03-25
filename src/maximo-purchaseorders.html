@@ -47,6 +47,12 @@
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
+                <div class="search">
+                    <paper-input label="Search description" id="inputWithButton">
+                        <iron-icon icon="search" slot="prefix"></iron-icon>
+                    </paper-input>
+                </div>
+
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
