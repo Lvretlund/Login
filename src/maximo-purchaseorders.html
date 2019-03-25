@@ -171,7 +171,7 @@
             },
 
             _handleResponse(event) {
-                console.log(event)
+                //console.log(event)
                 if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
                 {
                     this.noPos = "block";
@@ -198,6 +198,7 @@
             // filter status method - in progress
             _itemSelected(e) {
                 let statusChosen = this.status;
+                console.log(e.detail.item.firstChild.data)
                 
                 switch (e.detail.item.firstChild.data) {
                     case "Approved":
@@ -226,6 +227,9 @@
                         break;
                     case "All":
                         statusChosen = "ALL";
+                        break;
+                    case "Edited in History":
+                        statusChosen = "HISTEDIT"
                         break;
                     default:
                         statusChosen = "ALL";
@@ -282,7 +286,7 @@
                         break;
                 }
 
-                console.log(e);
+                //console.log(e);
                 var user = sessionStorage.getItem('whoAmI')
                 if (choosenBuyer == "MY") {
                     this.$.maximoPurchaseOrdersListAjax.params = {
