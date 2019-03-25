@@ -79,7 +79,6 @@
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="responsiveMenu" icon="menu" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
-                                <div id="title" style="width:95%; position:absolute; text-align:center;"><p>{{title}}</p></div>
                                 <paper-listbox slot="dropdown-content">
                                     <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
@@ -89,6 +88,8 @@
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
+                            <div id="title" style="width:95%; position:absolute;text-align:center;"><p>{{title}}</p></div>
+
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
