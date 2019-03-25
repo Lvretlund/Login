@@ -79,6 +79,7 @@
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="responsiveMenu" icon="menu" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
+                                <div id="title" style="width:95%; position:absolute; text-align:center;"><p>{{title}}</p></div>
                                 <paper-listbox slot="dropdown-content">
                                     <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
@@ -98,7 +99,6 @@
                                 </paper-listbox>
                             </paper-menu-button>
                             <div main-title id="responsivePO">Maximo Purchase Orders</div>
-                            <div id="title" style="width:95%; position:absolute; text-align:center;"><p>{{title}}</p></div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
