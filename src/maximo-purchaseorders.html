@@ -47,16 +47,16 @@
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
 
-                <div class="search">
-                    <paper-input label="Search description" id="inputWithButton">
-                        <iron-icon icon="search" slot="prefix"></iron-icon>
+                  <div class="search">
+                    <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
+                        <iron-icon slot="suffix" icon="search"></iron-icon>
                     </paper-input>
                 </div>
 
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
-                        <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected">
+                        <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 200px;">
                             <paper-item value='ALL'>All</paper-item>
                             <paper-item value='CLOSE'>Closed</paper-item>
                             <paper-item value='INPRG'>In Progress</paper-item>
@@ -73,7 +73,7 @@
 
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Buyer" vertical-offset="55" horizontal-align="left">
-                        <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected">
+                        <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected" style="width: 200px;">
                             <paper-item value='ALL'>All orders</paper-item>
                             <paper-item value='MY'>My orders</paper-item>
                         </paper-listbox>
@@ -92,11 +92,10 @@
 
                     <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                     <strong>{{item.ponum}}</strong>
-
                     <div id="poContent">
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin:16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br>
+                        <div id="statusColor" style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br>
                         <div class="hideContent">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>

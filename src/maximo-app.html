@@ -83,22 +83,22 @@
                                     <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
                                     <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
+
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
                                 <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
                                 <paper-listbox slot="dropdown-content">
                                     <!--dropdown menu for home and purchase orders-->
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
-                            <div main-title id="responsivePO">Maximo Purchase Orders</div>
-                            <div id="title" style="width:95%; position:absolute; text-align:center;"><p>{{title}}</p></div>
+                            <div main-title id="responsivePO"><p>{{title}}</p></div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
                             <paper-menu-button vertical-offset="60">
@@ -168,7 +168,19 @@
                 var sr = this.subroute.prefix;
                 var page = sr.substring(1, sr.length);
                 var result = page.charAt(0).toUpperCase() + page.slice(1);
-                this.title = result;
+
+                if (result == "Purchaseorders") {
+                    this.title = "Purchase orders"
+                }
+                else if (result == "Purchaseorder") {
+                    this.title = "Inspect order"
+                }
+                else if (result == "Status") {
+                    this.title = "Order status"
+                }
+                else {
+                    this.title = result;
+                }
             }
 
             fill() {
