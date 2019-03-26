@@ -16,6 +16,15 @@
 
 
 <dom-module id="maximo-purchaseorder">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
         <!--imports shared styles for the template-->
@@ -56,18 +65,22 @@
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
 
-                        <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                        <strong class="ponum">{{purchaseOrder.ponum}}</strong>
-
-                        <div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                        <div class="poContentDiv">
+                            <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                            <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+                        <div class="poContentDiv">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+                        <div class="poContentDiv">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
+
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
                                 <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
@@ -77,7 +90,7 @@
 
                     <template is="dom-if" if="{{purchaseOrder.poline}}">
                         <div class="card">
-
+                            <div id="orderLines"><h4 style="color:#757575; margin:0; text-decoration: underline;">Order lines</h4></div>
                             <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
                             <template is="dom-if" if="{{wap}}">
                                 <paper-button id="pen" style="display:{{pen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit lines</span><iron-icon icon="create"></iron-icon></paper-button>
@@ -330,7 +343,7 @@
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
                     headers['patchtype'] = 'MERGE'
-                   
+
 
                 }
                 return headers

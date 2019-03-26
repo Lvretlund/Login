@@ -7,11 +7,19 @@
 <link rel="import" href="../bower_components/polymer/polymer.html" />
 
 <dom-module id="maximo-norecords">
-
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
 
     <template id="template">
         <div style="text-align:center;">
-            <h1 style="color: white;">{{norecordstext}}</h1>
+            <h3 style="color: white;">{{norecordstext}}</h3>
             <maximo-image id="image2" src="../../../images/dark-bee.png"></maximo-image>
         </div>
     </template>

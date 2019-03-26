@@ -13,6 +13,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <dom-module id="maximo-purchaseorders">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
 
@@ -45,9 +54,9 @@
                 <!--links to next or previous pages, also fetched from script-->
                 <iron-icon on-tap="_prevPageUrl" class="arrow" icon="chevron-left"></iron-icon>
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
-                <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite>
+                <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite><br />
 
-                  <div class="search">
+                <div class="search">
                     <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
                         <iron-icon slot="suffix" icon="search"></iron-icon>
                     </paper-input>
@@ -56,7 +65,7 @@
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
-                        <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected">
+                        <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 200px;">
                             <paper-item value='ALL'>All</paper-item>
                             <paper-item value='CLOSE'>Closed</paper-item>
                             <paper-item value='INPRG'>In Progress</paper-item>
@@ -73,7 +82,7 @@
 
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Buyer" vertical-offset="55" horizontal-align="left">
-                        <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected">
+                        <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected" style="width: 200px;">
                             <paper-item value='ALL'>All orders</paper-item>
                             <paper-item value='MY'>My orders</paper-item>
                         </paper-listbox>
@@ -93,24 +102,24 @@
                     <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                     <strong>{{item.ponum}}</strong>
 
-                    <div id="poContent">
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin:16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br>
-                        <div class="hideContent">
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                            <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
-                        </div>
-                        <div class="hideIcons">
-                            <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                            <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
-                        </div>
+                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin:16px -8px 0px 5px;font-weight: normal;">{{item.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                    <div id="statusColor" style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br>
+                    <div class="hideContent">
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px; font-weight: normal;">{{item.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                        <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                     </div>
+
+                    <div class="hideIcons">
+                        <paper-button class="poViewRes"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                        <paper-button class="poViewRes"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                    </div>
+
 
                 </div>
             </template>
@@ -177,8 +186,7 @@
             },
 
             _handleResponse(event) {
-                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) 
-                {
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
                     this.noPos = "block";
                     this.totalRecords = 0;
                     this.totalPages = 1;
@@ -205,7 +213,7 @@
             // filter status method - in progress
             _itemSelected(e) {
                 let statusChosen = this.status;
-                
+
                 switch (e.detail.item.firstChild.data) {
                     case "Approved":
                         statusChosen = "APPR";

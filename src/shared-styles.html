@@ -16,6 +16,15 @@
                 width: 90%;
             }
 
+            #orderLines {
+                text-align: center;
+            }
+
+            .poContentDiv {
+                width: 30%;
+                display: inline-block;
+            }
+
             /*The "white box" where we display information about purchase orders in maximo-purchaseorders */
             .PurchaseOrdersCard {
                 margin: auto;
@@ -137,7 +146,7 @@
             }
 
             .poFilter {
-                width: 15%;
+                width: 200px;
                 display: inline-block;
                 text-align: right;
             }
@@ -163,7 +172,7 @@
             }
 
             .search {
-                width: 15%;
+                width: 200px;
                 display: inline-block;
                 text-align: left;
                 --paper-input-container-color: white;
@@ -246,8 +255,8 @@
             }
 
             .titleIcon {
-                --iron-icon-height: 40px;
-                --iron-icon-width: 40px;
+                --iron-icon-height: 50px;
+                --iron-icon-width: 50px;
                 padding: 5px;
             }
 
@@ -255,9 +264,9 @@
                 background-color: white;
             }
 
-            .indigo:hover {
+                .indigo:hover {
                     background: #ddd;
-            }
+                }
 
             #whoAmI {
                 background-color: #1d3649;
@@ -275,10 +284,12 @@
                 border-radius: 5px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 position: relative;
+                background-color: white;
             }
 
             .changeStatus {
-                text-align: center;
+                margin-top: 40px;
+                text-align:center;
                 color: #4178be;
             }
 
@@ -296,6 +307,13 @@
             .poViewButton {
                 display: inline-block;
                 color: #4178be;
+            }
+
+            #hrStyle {
+                border: 0;
+                height: 1px;
+                background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(64, 117, 231), rgba(0, 0, 0, 0));
+                width: 80%;
             }
 
             #poQuant {
@@ -367,6 +385,7 @@
                     display: none;
                 }
 
+
                 .responsiveMenu {
                     height: 58px;
                     width: 58px;
@@ -383,7 +402,6 @@
                 .poFilter {
                     width: 100%;
                     text-align: center;
-                    display: none;
                 }
 
                 .poFilterSearch {
@@ -424,11 +442,13 @@
                 .poCard {
                     margin-top: 30px;
                     background-color: white;
-                    width: 100%;
+                    width: 90%;
                 }
 
                 .poTitle {
                     width: 100%;
+                    background-color: white;
+                    margin-top: 70px;
                 }
 
                 .poTitleDetails {
@@ -510,19 +530,11 @@
                     --iron-icon-width: 25px;
                 }
 
-                #poView1 {
-                    /*display: inline-block;*/
+                .poViewRes {
+                    display: inline-block;
                     float: right;
                     color: #4178be;
-                    padding: 0;
-                }
-
-                #poView2 {
-                    /*display: inline-block;*/
-                    float: right;
-                    color: #4178be;
-                    padding: 0;
-                    margin-right: -22px;
+                    padding: 10px;
                 }
 
                 .ponum {
@@ -540,6 +552,31 @@
                     background-color: #fff;
                     text-align: center;
                     margin-top: 10px;
+                }
+
+                .search {
+                    display:block;
+                    margin: auto;
+                    text-align: left;
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: black;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
+                }
+
+                paper-dropdown-menu.poFilt {
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: black;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
                 }
             }
         </style>
