@@ -16,6 +16,15 @@
 
 
 <dom-module id="maximo-purchaseorder">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
         <!--imports shared styles for the template-->
@@ -334,7 +343,7 @@
                 if (this._showDetails()) {
                     headers['x-method-override'] = 'PATCH'
                     headers['patchtype'] = 'MERGE'
-                   
+
 
                 }
                 return headers

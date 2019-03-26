@@ -14,18 +14,19 @@
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-status">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
         <!--imports shared styles for the template-->
-        <style include="shared-styles">
-            body {
-                margin: 0;
-                font-family: 'Roboto', 'Noto', sans-serif;
-                line-height: 1.5;
-                min-height: 100vh;
-                background-color: #1d3649;
-            }
-        </style>
+        <style include="shared-styles"></style>
         <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
