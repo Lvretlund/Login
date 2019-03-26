@@ -54,6 +54,7 @@
                 <!--links to next or previous pages, also fetched from script-->
                 <iron-icon on-tap="_prevPageUrl" class="arrow" icon="chevron-left"></iron-icon>
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
+                <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite><br />
 
                 <div class="search">
                     <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
@@ -115,8 +116,8 @@
                     </div>
 
                     <div class="hideIcons">
-                        <paper-button id="poView1"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon id="mobileSearch" data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
-                        <paper-button id="poView2"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon id="mobileQuery" data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
+                        <paper-button class="poViewRes"><a name="purchaseorder" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/"><iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
+                        <paper-button class="poViewRes"><a name="status" style="text-decoration: none; color: #4178be;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/"><iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                     </div>
 
 
