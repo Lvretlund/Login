@@ -356,8 +356,11 @@
             _nextPageUrl: function () {
                 let totalPages = this.get('totalPages');
                 let page = this.get('pageData.num');
-                if (page < totalPages) {
+                if (page <= totalPages) {
                     page++
+                }
+                if (page > totalPages) {
+                    page = 1;
                 }
                 this.$.maximoPurchaseOrdersListAjax.params = this._urlParams(page);
                 this.$.maximoPurchaseOrdersListAjax.generateRequest();
@@ -366,8 +369,11 @@
 
             _prevPageUrl() {
                 let page = this.get('pageData.num');
-                if (page > 1) {
+                if (page >= 1) {
                     page -= 1
+                }
+                if (page <= 0) {
+                    page = this.get('totalPages');
                 }
                 this.$.maximoPurchaseOrdersListAjax.params = this._urlParams(page);
                 this.$.maximoPurchaseOrdersListAjax.generateRequest();
