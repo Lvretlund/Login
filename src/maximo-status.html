@@ -14,11 +14,19 @@
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-status">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
         <!--imports shared styles for the template-->
-        <style include="shared-styles">
-        </style>
+        <style include="shared-styles"></style>
         <!--gets the stored baseUrl and saves as data-->
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
@@ -68,6 +76,12 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
+              
+                        <div class="changeStatus">
+                            <div><h4 style="color:#757575; margin:0; text-decoration: underline;">{{changeorderstatus}}</h4></div>
+                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
+                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
+                        </div>
 
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
@@ -94,11 +108,6 @@
                             </div>
                             <hr />
                         </template>
-
-                        <div class="changeStatus">
-                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon icon="icons:check-circle"></iron-icon></paper-button></div>
-                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon icon="cancel"></iron-icon></paper-button></div>
-                        </div>
 
                         <div class="saveCancel">
                             <paper-button style="margin-top: 2em;" class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>
@@ -160,12 +169,6 @@
             reload() {
                 location.reload();
             },
-
-            //static get observers() {
-            //    return [
-            //        '_poRefChanged(pageData)'
-            //    ]
-            //},
 
             goto(e) {
                 var link = e.target.getAttribute('data-args')
@@ -265,6 +268,10 @@
                 this.$.spinner.active = false
                 this._poLoaded()
                 this._changeStatusIcon();
+
+                if (this.purchaseOrder.poline != undefined) {
+                    this.changeorderstatus = "Change order status";
+                }
             },
 
             _handleLoadError(event, request) {
