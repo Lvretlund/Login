@@ -25,6 +25,13 @@
                 display: inline-block;
             }
 
+            #poImage{
+                width: 40px;
+                height: 40px;
+                display:inline-block;
+                margin-top: 20px;
+            }
+
             /*The "white box" where we display information about purchase orders in maximo-purchaseorders */
             .PurchaseOrdersCard {
                 margin: auto;
@@ -59,6 +66,10 @@
                 font-size: 15px;
                 font-weight: bold;
                 padding: 20px
+            }
+
+            #resmen {
+                display:none;
             }
 
             h1 {
@@ -151,8 +162,6 @@
                 text-align: right;
             }
 
-
-
             paper-dropdown-menu.poFilt {
                 --paper-input-container-color: white;
                 --paper-input-container-focus-color: white;
@@ -205,7 +214,7 @@
                 --iron-icon-width: 40px;
                 padding: 5px;
                 cursor: pointer;
-                margin-right: 90px;
+                /*margin-right: 90px;*/
             }
 
                 .menuRight:hover {
@@ -242,7 +251,7 @@
                 margin: 0;
                 padding: 0;
                 text-align: left;
-                margin-right:5px;
+                margin-right:40px;
             }
 
             #poTitleTxt, #poListIcon {
@@ -577,6 +586,10 @@
                     --paper-input-container-input: {
               color: black;
             };
+                }
+
+                #resmen {
+                    display: inline-block;
                 }
             }
         </style>
