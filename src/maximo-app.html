@@ -83,49 +83,52 @@
                                     <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="list"></iron-icon>Purchase orders</paper-item>
                                     <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
 
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
-                            <paper-menu-button vertical-offset="60">
-                                <paper-icon-button class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
-                                <paper-listbox slot="dropdown-content">
-                                    <!--dropdown menu for home and purchase orders-->
+                            <paper-menu-button class="hamburgerMenu" vertical-offset="42">
+                                <paper-icon-button toggles raised class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu" on-tap="fill"></paper-icon-button>
+                                <paper-listbox slot="dropdown-content" style="background-color:#1d3649; color:white; margin:0; padding:0; cursor:pointer;">
+                                    <!--dropdown menu for home and purchase orders>-->
+                                    <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
+                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>
                             </paper-menu-button>
                             <div main-title id="responsivePO"><p>{{title}}</p></div>
                             <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
-                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
+
+                            <!-- we use vertical offset here to put dropdown menu just below the icon button -->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
-                                <paper-listbox slot="dropdown-content">
-                                    <!--dropdown menu for my account and sign out-->
+                                <!--<paper-listbox slot="dropdown-content">
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
-                                </paper-listbox>
+                                </paper-listbox>-->
                             </paper-menu-button>
                         </app-toolbar>
                     </template>
                 </app-header>
 
-                <iron-pages style="margin: auto;width: 80%;"
-                            selected="[[page]]"
-                            attr-for-selected="name"
-                            fallback-selection="maximo-not-found"
-                            role="main">
-                    <maximo-account name="account" who-am-i='[[whoAmI]]'></maximo-account>
-                    <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
-                    <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
-                    <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
-                    <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
-                    <maximo-status name="status"></maximo-status>
-                </iron-pages>
+                    <iron-pages style="margin: auto;width: 80%;"
+                                selected="[[page]]"
+                                attr-for-selected="name"
+                                fallback-selection="maximo-not-found"
+                                role="main">
+                        <maximo-account name="account" who-am-i='[[whoAmI]]'></maximo-account>
+                        <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
+                        <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
+                        <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
+                        <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
+                        <maximo-status name="status"></maximo-status>
+                    </iron-pages>
             </app-header-layout>
         </app-drawer-layout>
     </template>

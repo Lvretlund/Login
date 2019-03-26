@@ -224,9 +224,25 @@
                 background: #808080;
             }
 
-            .dropdown {
-                height: 58px;
-                width: 58px;
+            paper-icon-button.dropdown {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            paper-icon-button.dropdown[active] {
+                background-color: #808080;
+            }
+
+            paper-menu-button.hamburgerMenu {
+                /*background-color: white;*/
+                width: 45px;
+                height: 45px;
+                margin: 0;
+                padding: 0;
+                text-align: left;
+                margin-right:5px;
             }
 
             #poTitleTxt, #poListIcon {
@@ -253,8 +269,11 @@
                 }
 
             #whoAmI {
-                background: #FFF;
+                background-color: #1d3649;
                 font-weight: bold;
+                color: white;
+                text-align: center;
+                cursor: auto;
             }
 
             .cardLogin {
