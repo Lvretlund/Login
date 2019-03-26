@@ -53,14 +53,18 @@
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
-                        <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                        <strong class="ponum">{{purchaseOrder.ponum}}</strong> <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span><iron-icon style="color: {{iconcolor}};" icon="{{statusicon}}"></iron-icon></div>
-
-                        <div>
+                        <div class="poContentDiv">
+                            <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                            <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span><iron-icon style="color: {{iconcolor}};" icon="{{statusicon}}"></iron-icon></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+                        <div class="poContentDiv">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                        </div>
+                        <div class="poContentDiv">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
@@ -75,8 +79,8 @@
 
                 </form>
                 <template is="dom-if" if="{{purchaseOrder.poline}}">
-                    <div id="orderLines"><h3 style="color:white; margin:0;">Order lines</h3></div>
                     <div class="card">
+                        <div id="orderLines"><h4 style="color:#757575; margin:0; text-decoration: underline;">Order lines</h4></div>
                         <template is="dom-repeat" items="{{purchaseOrder.poline}}">
 
                             <iron-icon style="padding-bottom:10px;" icon="description"></iron-icon>
