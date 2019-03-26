@@ -376,7 +376,6 @@
                 .poFilter {
                     width: 100%;
                     text-align: center;
-                    display: none;
                 }
 
                 .poFilterSearch {
@@ -417,11 +416,13 @@
                 .poCard {
                     margin-top: 30px;
                     background-color: white;
-                    width: 100%;
+                    width: 90%;
                 }
 
                 .poTitle {
                     width: 100%;
+                    background-color: white;
+                    margin-top: 70px;
                 }
 
                 .poTitleDetails {
@@ -533,6 +534,31 @@
                     background-color: #fff;
                     text-align: center;
                     margin-top: 10px;
+                }
+
+                .search {
+                    display:block;
+                    margin: auto;
+                    text-align: left;
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: black;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
+                }
+
+                paper-dropdown-menu.poFilt {
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: black;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
                 }
             }
         </style>
