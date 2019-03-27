@@ -25,6 +25,13 @@
                 display: inline-block;
             }
 
+            #poImage{
+                width: 40px;
+                height: 40px;
+                display:inline-block;
+                margin-top: 20px;
+            }
+
             /*The "white box" where we display information about purchase orders in maximo-purchaseorders */
             .PurchaseOrdersCard {
                 margin: auto;
@@ -59,6 +66,10 @@
                 font-size: 15px;
                 font-weight: bold;
                 padding: 20px
+            }
+
+            #resmen {
+                display:none;
             }
 
             h1 {
@@ -151,8 +162,6 @@
                 text-align: right;
             }
 
-
-
             paper-dropdown-menu.poFilt {
                 --paper-input-container-color: white;
                 --paper-input-container-focus-color: white;
@@ -193,11 +202,11 @@
             }
 
                 .menu:hover {
-                    background: #808080;
+                    background: #325c80;
                 }
 
             paper-item:hover {
-                background: #808080;
+                background: #325c80;
             }
 
             .menuRight {
@@ -205,11 +214,11 @@
                 --iron-icon-width: 40px;
                 padding: 5px;
                 cursor: pointer;
-                margin-right: 90px;
+                /*margin-right: 90px;*/
             }
 
                 .menuRight:hover {
-                    background: #808080;
+                    background: #325c80;
                 }
 
             .arrow {
@@ -221,7 +230,7 @@
             }
 
             .dropdown:hover {
-                background: #808080;
+                background: #325c80;
             }
 
             paper-icon-button.dropdown {
@@ -231,9 +240,9 @@
                 padding: 0;
             }
 
-            paper-icon-button.dropdown[active] {
-                background-color: #808080;
-            }
+                paper-icon-button.dropdown[active] {
+                    background-color: #325c80;
+                }
 
             paper-menu-button.hamburgerMenu {
                 /*background-color: white;*/
@@ -242,7 +251,7 @@
                 margin: 0;
                 padding: 0;
                 text-align: left;
-                margin-right:5px;
+                margin-right:40px;
             }
 
             #poTitleTxt, #poListIcon {
@@ -252,6 +261,7 @@
 
             .menuIcon {
                 padding: 10px;
+                color: #5aaafa;
             }
 
             .titleIcon {
@@ -396,12 +406,15 @@
                 }
 
                 .titleIcon {
-                    display: none;
+                    --iron-icon-height: 35px;
+                    --iron-icon-width: 35px;
+                    padding: 5px;
                 }
 
                 .poFilter {
                     width: 100%;
                     text-align: center;
+                    padding:5px;
                 }
 
                 .poFilterSearch {
@@ -441,7 +454,7 @@
 
                 .poCard {
                     margin-top: 30px;
-                    background-color: white;
+                    background-color: #1d3649;
                     width: 90%;
                 }
 
@@ -537,10 +550,6 @@
                     padding: 10px;
                 }
 
-                .ponum {
-                    display: none;
-                }
-
                 .lineContent {
                     font-size: 12px;
                 }
@@ -577,6 +586,10 @@
                     --paper-input-container-input: {
               color: black;
             };
+                }
+
+                #resmen {
+                    display: inline-block;
                 }
             }
         </style>

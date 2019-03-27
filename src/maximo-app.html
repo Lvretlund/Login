@@ -77,9 +77,9 @@
                     <template is="dom-if" if="[[authenticated]]">
                         <app-toolbar id="toolBar">
                             <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
-                            <paper-menu-button vertical-offset="60">
+                            <paper-menu-button vertical-offset="60" id="resmen">
                                 <iron-icon class="responsiveMenu" icon="menu" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
-                                <paper-listbox slot="dropdown-content">
+                                <paper-listbox slot="dropdown-content" style="background-color:#1d3649; color:white;">
                                     <!--this will display when it's small screen, but hidden when it's big screen-->
                                     <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
                                     <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
@@ -89,21 +89,10 @@
                                 </paper-listbox>
                             </paper-menu-button>
 
-                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
-                            <paper-menu-button class="hamburgerMenu" vertical-offset="42">
-                                <paper-icon-button toggles raised class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu" on-tap="fill"></paper-icon-button>
-                                <paper-listbox slot="dropdown-content" style="background-color:#1d3649; color:white; margin:0; padding:0; cursor:pointer;">
-                                    <!--dropdown menu for home and purchase orders>-->
-                                    <paper-item id="whoAmI">[[whoAmI.displayName]]</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
-                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
-                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
-                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
-                                </paper-listbox>
-                            </paper-menu-button>
-                            <div main-title id="responsivePO"><p>{{title}}</p></div>
-                            <iron-icon class="menu" icon="home" on-tap="goto" data-args="purchaseorders/1"></iron-icon>
 
+                            <div main-title id="responsivePO" style="margin-right:0;"><img id="poImage" src="images/purchaseorders.svg" /><p style="display:inline-block;">{{title}}</p></div>
+
+                            <p id="whoAmI">[[whoAmI.displayName]]</p>
                             <!-- we use vertical offset here to put dropdown menu just below the icon button -->
                             <paper-menu-button vertical-offset="60">
                                 <iron-icon class="menuRight" icon="account-circle" slot="dropdown-trigger" alt="account" on-tap="fill"></iron-icon>
@@ -113,22 +102,35 @@
                                     <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
                                 </paper-listbox>-->
                             </paper-menu-button>
+
+                            <!--we use vertical-offset="60" here to put dropdown menu just below the icon button-->
+                            <paper-menu-button class="hamburgerMenu" vertical-offset="44" horizontal-offset="-147">
+                                <paper-icon-button toggles raised class="dropdown" icon="menu" slot="dropdown-trigger" alt="menu" on-tap="fill"></paper-icon-button>
+                                <paper-listbox slot="dropdown-content" style="background-color:#1d3649; color:white; margin:0; padding:0; cursor:pointer;">
+                                    <!--dropdown menu for home and purchase orders>-->
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorder/1" icon="home"></iron-icon>Home</paper-item>
+                                    <paper-item on-tap="goto" data-args="purchaseorders/1"><iron-icon class="menuIcon" data-args="purchaseorders/1" icon="assignment"></iron-icon>Purchase orders</paper-item>
+                                    <paper-item on-tap="goto" data-args="account"><iron-icon class="menuIcon" data-args="account" icon="account-circle"></iron-icon>My account</paper-item>
+                                    <paper-item on-tap="_onLogout"><iron-icon class="menuIcon" data-args="on_Logout" icon="exit-to-app"></iron-icon>Sign out</paper-item>
+                                </paper-listbox>
+                            </paper-menu-button>
+
                         </app-toolbar>
                     </template>
                 </app-header>
 
-                    <iron-pages style="margin: auto;width: 80%;"
-                                selected="[[page]]"
-                                attr-for-selected="name"
-                                fallback-selection="maximo-not-found"
-                                role="main">
-                        <maximo-account name="account" who-am-i='[[whoAmI]]'></maximo-account>
-                        <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
-                        <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
-                        <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
-                        <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
-                        <maximo-status name="status"></maximo-status>
-                    </iron-pages>
+                <iron-pages style="margin: auto;width: 80%;"
+                            selected="[[page]]"
+                            attr-for-selected="name"
+                            fallback-selection="maximo-not-found"
+                            role="main">
+                    <maximo-account name="account" who-am-i='[[whoAmI]]'></maximo-account>
+                    <maximo-login name="login" on-authenticated='_onAuthenticated'></maximo-login>
+                    <maximo-purchaseorders name="purchaseorders" who-am-i='[[whoAmI]]'></maximo-purchaseorders>
+                    <maximo-purchaseorder name="purchaseorder" who-am-i='[[whoAmI]]'></maximo-purchaseorder>
+                    <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
+                    <maximo-status name="status"></maximo-status>
+                </iron-pages>
             </app-header-layout>
         </app-drawer-layout>
     </template>
@@ -161,10 +163,10 @@
             }
 
             //go to function where the route decide which path we go to
-            goto(e) {               
+            goto(e) {
                 var x = e.target.hasAttribute('data-args');
                 var link = e.target.getAttribute('data-args')
-                this.set('route.path', link);   
+                this.set('route.path', link);
             }
 
             setTitle() {
@@ -195,7 +197,6 @@
                 this.$.maximoLogin.generateRequest()
                 this.set('authenticated', true)
                 this.set('route.path', '/purchaseorders/1')
-                
             }
 
             //handle response function here checks if the user is authenticed and if so, go to purschase orders list
@@ -219,10 +220,10 @@
                 this.$.maximoLogoutAjax.generateRequest()
                 this.set('authenticated', false)
                 window.location.replace('/login');
-                
+
             }
 
-            //observer function checks what page it is, checks if page has changed 
+            //observer function checks what page it is, checks if page has changed
             static get observers() {
 
                 return [
@@ -235,17 +236,17 @@
             _pageChanged(page) {
                 this.setTitle();
                 // Load page import on demand. Show 404 page if fails
-                var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');               
+                var resolvedPageUrl = this.resolveUrl('maximo-' + page + '.html');
                 if (resolvedPageUrl != this.resolveUrl('maximo-login.html')) {
                     this.set('authenticated', true)
                 }
-                
+
                 Polymer.importHref(
                     resolvedPageUrl,
                     null,
                     this._showPage404.bind(this),
                     true);
-                
+
             }
 
             //this function checks if page was found, if not the page will be an empty string, default 'view1' in that case
