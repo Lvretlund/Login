@@ -56,29 +56,46 @@
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{(spinner.active)}}">
 
+            <div class="poTitleDetails">
+                <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                <h1 id="poTitleTxt">Order Status {{purchaseOrder.ponum}}</h1>
+            </div>
+
             <div class="poCard" style="filter:{{blur}}">
 
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
-                        <div class="poContentDiv">
-                            <iron-icon class="titleIcon" icon="assignment"></iron-icon>
-                            <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
+                        <div id="fullScreen">
+                            <div class="poContentDiv">
+                                <iron-icon class="titleIcon" icon="assignment"></iron-icon>
+                                <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span><iron-icon style="color: {{iconcolor}};" icon="{{statusicon}}"></iron-icon></div><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            </div>
+                            <div class="poContentDiv">
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            </div>
+                            <div class="poContentDiv">
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                            </div>
+                        </div>
+
+                        <div id="smallScreen">
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span><iron-icon style="color: {{iconcolor}};" icon="{{statusicon}}"></iron-icon></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Description:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-                        <div class="poContentDiv">
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Vendor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.vendor}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
-                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-                        <div class="poContentDiv">
+                            <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
-              
+
                         <div class="changeStatus">
-                            <div><h4 style="color:#757575; margin:0; text-decoration: underline;">{{changeorderstatus}}</h4></div>
+                            <div><h3 style="color:#757575; margin:0;">{{changeorderstatus}}</h3></div>
                             <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
                             <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
                         </div>
@@ -94,7 +111,6 @@
                 </form>
                 <template is="dom-if" if="{{purchaseOrder.poline}}">
                     <div class="card">
-                        <div id="orderLines"><h4 style="color:#757575; margin:0; text-decoration: underline;">Order lines</h4></div>
                         <template is="dom-repeat" items="{{purchaseOrder.poline}}">
 
                             <iron-icon style="padding-bottom:10px;" icon="description"></iron-icon>
@@ -269,8 +285,13 @@
                 this._poLoaded()
                 this._changeStatusIcon();
 
-                if (this.purchaseOrder.poline != undefined) {
-                    this.changeorderstatus = "Change order status";
+               
+
+                if (event.detail.__data.response.poline != undefined) {
+                   
+                        this.changeorderstatus = "Change order status";
+                    
+                    
                 }
             },
 
