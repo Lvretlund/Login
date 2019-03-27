@@ -199,8 +199,10 @@
 
             //handle response function here checks if the user is authenticed and if so, go to purschase orders list
             _handleResponse(event) {
-                sessionStorage.setItem('whoAmI', this.whoAmI.displayName)
-                this.name = sessionStorage.getItem('whoAmI');
+                sessionStorage.setItem('name', this.whoAmI.displayName)
+                sessionStorage.setItem('whoAmI', this.whoAmI.loginUserName);
+                console.log(this.whoAmI)
+                this.name = sessionStorage.getItem('name');
                 this.set('authenticated', true)
                 // the user is already authenticated,
                 // if it is on login page and has a valid whoAmI response, redirect to the po list
