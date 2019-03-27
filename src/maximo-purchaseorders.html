@@ -55,12 +55,14 @@
                 <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
                 <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite><br />
 
-                <div class="search">
-                    <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
-                        <iron-icon slot="suffix" icon="search"></iron-icon>
-                    </paper-input>
-                </div>
-
+                                                                                                                  <div id="centerSearch">
+                                                                                                                      <div class="search">
+                                                                                                                          <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
+                                                                                                                              <iron-icon slot="suffix" icon="search"></iron-icon>
+                                                                                                                          </paper-input>
+                                                                                                                      </div>
+                                                                                                                      <iron-icon id="filterIcon" icon="sort" on-tap="_showFilters"></iron-icon>
+                                                                                                                  </div>
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" style="padding:20px" label="Status" vertical-offset="55" horizontal-align="left">
