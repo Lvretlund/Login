@@ -6,10 +6,18 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
-<!--Make screen responsive-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="maximo-account">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: #1d3649;
+        }
+    </style>
     <!-- Defines the element's style and local DOM -->
     <template>
         <!--imports shared styles for the template-->
@@ -18,41 +26,38 @@
         <app-localstorage-document key="savedBaseUrl" data="{{baseUrl}}"></app-localstorage-document>
         <app-location route="{{route}}"></app-location>
 
-        <!-- this div include account-title and an account-icon -->
-        <div class="poTitle">
-            <iron-icon class="titleIcon" icon="account-circle" alt="account"></iron-icon>
-            <h1 id="poTitleTxt">Account</h1>
-        </div>
-
         <!-- change language -->
         <div class="poCard">
             <div class="card">
-                <h3>Change language</h3>
-                <paper-listbox>
-                    <paper-item>Swedish</paper-item>
-                    <paper-item>English</paper-item>
-                </paper-listbox>
+
+                <div class="accountDiv">
+                    <h3>Change language</h3>
+                    <paper-listbox selected>
+                        <paper-item>Swedish</paper-item>
+                        <paper-item>English</paper-item>
+                    </paper-listbox>
+                </div>
+
+                <div class="accountDiv">
+                    <h3>Change password</h3>
+                    <paper-input label="Current password" type="password"></paper-input>
+                    <paper-input label="New password" type="password"></paper-input>
+                </div>
+
+                <div class="saveCancel">
+                    <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                </div>
+
             </div>
 
-            <!-- change password -->
-            <div class="card">
-                <h3>Change password</h3>
-            </div>
-
-            <!-- save changes -->
-            <div>
-                <paper-button style="margin-top: 2em;" class="indigo" raised on-tap="_getSaveBody">Save</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-            </div>
         </div>
     </template>
 
     <!--element extends the Polymer.Element base class-->
     <script>
-        class MaximoAccount extends Polymer.Element {
-            static get is() { return 'maximo-account'; }
-        }
+        Polymer({
+            is: "maximo-account",
 
-        //register your new custom element so the browser can use it
-        window.customElements.define(MaximoAccount.is, MaximoAccount);
+        });
     </script>
 </dom-module>
