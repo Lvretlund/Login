@@ -44,8 +44,8 @@
 
                 <iron-form id="form1" style="text-align: center; margin-left: 35%; margin-right: 35%;">
                     <form action="/foo" method="get">
-                        <paper-input id="username" type="text" name="username" required label="Username" value="{{username}}"></paper-input>
-                        <paper-input id="password" type="password" name="password" required label="Password" value="{{password}}"></paper-input>
+                        <paper-input id="username" type="text" on-keypress="_enter" name="username" required label="Username" value="{{username}}"></paper-input>
+                        <paper-input id="password" type="password" on-keypress="_enter" name="password" required label="Password" value="{{password}}"></paper-input>
                         <paper-button raised class="indigo" on-tap="performLogin" style="display: block;">Sign In</paper-button>&nbsp;
                         <template>
                             <paper-input id="maximoBaseUrl" type="text" name="maximoUrl" required label="Maximo URL" value="{{baseUrl}}"></paper-input>
@@ -91,6 +91,13 @@
                     // if error, blur background
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
 
+                }
+            }
+
+            _enter(e) {
+                console.log(e.keyCode)
+                if (e.keyCode == 13) {
+                    this.performLogin();
                 }
             }
 
