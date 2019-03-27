@@ -94,18 +94,30 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
 
-                        <div class="changeStatus">
-                            <div><h3 style="color:#757575; margin:0;">{{changeorderstatus}}</h3></div>
-                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
-                            <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
+   
+
+                        <div id="penandkryss">
+                            <template is="dom-if" if="{{wap}}">
+                                <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                                <paper-button id="pen" style="display:{{pen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Change order status</span><iron-icon icon="create"></iron-icon></paper-button>
+                            </template>
                         </div>
+
+                        <div id="poStatus" style="display:{{showq}}">
+                            <div class="changeStatus">
+                                <div><h4 style="color:#757575; margin:0; text-decoration: underline;">{{changeorderstatus}}</h4></div>
+                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
+                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
+                            </div>
+                         </div>
+                      
+
 
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
                                 <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
                         </template>
-
                     </div>
 
                 </form>
@@ -186,6 +198,18 @@
                 location.reload();
             },
 
+            editPo() {
+                this.showq = "inline-block";
+                this.pen = "none";
+                this.x = "inline-block";
+            },
+
+            closeEditPo() {
+                this.showq = "none";
+                this.x = "none";
+                this.pen = "inline-block";
+            },
+
             goto(e) {
                 var link = e.target.getAttribute('data-args')
                 window.location.href = link;
@@ -257,11 +281,15 @@
 
                 if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
                     this.shouldShow = "none";
-                } else { this.shouldShow = "inline"; }
+                    
+
+                } else { this.shouldShow = "inline"; this.wap = true; }
+
 
                 if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
                     this.shouldShow2 = "none";
-                } else { this.shouldShow2 = "inline"; }
+    
+                } else { this.shouldShow2 = "inline"; this.wap = true; }
 
             },
 
@@ -285,13 +313,13 @@
                 this._poLoaded()
                 this._changeStatusIcon();
 
-               
+
 
                 if (event.detail.__data.response.poline != undefined) {
-                   
-                        this.changeorderstatus = "Change order status";
-                    
-                    
+
+                    //this.changeorderstatus = "Change order status";
+
+
                 }
             },
 
