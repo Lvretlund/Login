@@ -52,20 +52,20 @@
                 <h id="totalPages">Page [[pageData.num]] of [[totalPages]] ([[totalRecords]] records)</h>
                 <!--links to next or previous pages, also fetched from script-->
                 <iron-icon on-tap="_prevPageUrl" class="arrow" icon="chevron-left"></iron-icon>
-                <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon>
-                <paper-spinner-lite id="spinner" style="margin: auto;display: block;" active></paper-spinner-lite><br />
+                <iron-icon on-tap="_nextPageUrl" class="arrow" icon="chevron-right"></iron-icon><br />
 
-                                                                                                                  <div id="centerSearch">
-                                                                                                                      <div class="search">
-                                                                                                                          <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
-                                                                                                                              <iron-icon slot="suffix" icon="search"></iron-icon>
-                                                                                                                          </paper-input>
-                                                                                                                      </div>
-                                                                                                                      <iron-icon id="filterIcon" icon="sort" on-tap="_showFilters"></iron-icon>
-                                                                                                                  </div>
+                <div id="centerSearch">
+                    <div class="search">
+                        <paper-input label="Search description" id="inputWithButton" on-keypress="_getInput">
+                            <iron-icon id="searchIcon" slot="suffix" icon="search"></iron-icon>
+                        </paper-input>
+                    </div>
+                    <iron-icon id="filterIcon" icon="sort" on-tap="_showFilters"></iron-icon>
+                </div>
+
                 <!-- Filter status -->
                 <div style="display:{{fil}}" class="poFilter">
-                    <paper-dropdown-menu class="poFilt" style="padding:20px" label="Status" vertical-offset="55" horizontal-align="left">
+                    <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
                             <paper-item value='ALL'>All</paper-item>
                             <paper-item value='CLOSE'>Closed</paper-item>
@@ -194,14 +194,12 @@
                 }
                 else {
                     this.noPos = "none";
-                    this.$.spinner.active = false
                     this.set('pageData.num', event.detail.__data.response.responseInfo.pagenum)
                     this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
                     this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
                 }
             },
             _handleError(event) {
-                this.$.spinner.active = false
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
                     event.detail.request.xhr.response["Error"] &&
