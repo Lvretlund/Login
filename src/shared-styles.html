@@ -13,13 +13,11 @@
                 background-color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 overflow: hidden;
-                width: 90%;
-
+                width: 80%;
             }
 
-            #orderLines {
-                text-align: center;
-
+            #smallScreen{
+                display:none;
             }
 
             .poContentDiv {
@@ -27,11 +25,16 @@
                 display: inline-block;
             }
 
-            #poImage{
+            #poImage {
                 width: 40px;
                 height: 40px;
-                display:inline-block;
+                display: inline-block;
                 margin-top: 20px;
+            }
+
+            .accountDiv {
+                width: 30%;
+                margin: 50px;
             }
 
             /*The "white box" where we display information about purchase orders in maximo-purchaseorders */
@@ -43,7 +46,7 @@
                 background-color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 overflow: hidden;
-                width: 90%;
+                width: 80%;
             }
 
             /*The circle with purchase order number in maximo-purchaseorders*/
@@ -71,7 +74,7 @@
             }
 
             #resmen {
-                display:none;
+                display: none;
             }
 
             h1 {
@@ -106,8 +109,14 @@
             }
 
             .poCard {
-                padding: 10px, 10px, 10px, 10px;
-                margin-top: 5%;
+                /*padding: 0px;*/
+                margin-top: 10px;
+                width: 100%;
+                background-color: #1d3649;
+            }
+
+            .poCardOne {
+                margin-top: 4%;
                 width: 100%;
                 background-color: #1d3649;
             }
@@ -151,7 +160,7 @@
 
             .poTitleDetails {
                 text-align: center;
-                margin-bottom: 20px;
+                margin-top: 30px;
             }
 
             #poPages {
@@ -159,7 +168,7 @@
             }
 
             .poFilter {
-                width: 200px;
+                width: 15%;
                 display: inline-block;
                 text-align: right;
             }
@@ -253,7 +262,7 @@
                 margin: 0;
                 padding: 0;
                 text-align: left;
-                margin-right:40px;
+                margin-right: 40px;
             }
 
             #poTitleTxt, #poListIcon {
@@ -270,6 +279,7 @@
                 --iron-icon-height: 50px;
                 --iron-icon-width: 50px;
                 padding: 5px;
+                color: #757575;
             }
 
             .indigo {
@@ -429,15 +439,13 @@
                 }
 
                 .titleIcon {
-                    --iron-icon-height: 35px;
-                    --iron-icon-width: 35px;
-                    padding: 5px;
+                    display: none;
                 }
 
                 .poFilter {
                     width: 100%;
                     text-align: center;
-                    padding:5px;
+                    display: none;
                 }
 
                 .poFilterSearch {
@@ -479,7 +487,7 @@
                 .poCard {
                     margin-top: 30px;
                     background-color: #1d3649;
-                    width: 90%;
+                    width: 100%;
                 }
 
                 .poTitle {
@@ -540,6 +548,11 @@
                     color: #757575;
                     height: 40px;
                     width: 40px;
+                    padding-left: 10px;
+                }
+
+                #searchIcon {
+                    color: #757575;
                 }
 
                 #centerSearch {
@@ -588,7 +601,7 @@
                 }
 
                 .search {
-                    display:block;
+                    display: inline-block;
                     margin: auto;
                     text-align: left;
                     --paper-input-container-color: black;
@@ -605,7 +618,7 @@
                     --paper-input-container-color: black;
                     --paper-input-container-focus-color: black;
                     --paper-input-container-label: {
-              color: black;
+              color: #757575;
                        };
                     --paper-input-container-input: {
               color: black;
@@ -614,6 +627,14 @@
 
                 #resmen {
                     display: inline-block;
+                }
+
+                #fullScreen {
+                    display:none;
+                }
+
+                #smallScreen {
+                    display:block;
                 }
             }
         </style>
