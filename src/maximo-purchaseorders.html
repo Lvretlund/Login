@@ -45,6 +45,17 @@
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
 
+        <iron-ajax auto
+                   id="maximoGetAllStates"
+                   with-credentials
+                   content-type="application/json"
+                   url='{{localBaseUri}}maximo/oslc/os/mxapidomain?oslc.where=domainid="POSTATUS"&oslc.select=*&lean=1'
+                   method="get"
+                   handle-as="json"
+                   last-response="{{states}}"
+                   on-response="_handleStateResponse"
+                   on-error="_handleError"></iron-ajax>
+
         <div class="poCardOne">
             <div class="poTitle">
                 <!-- Displays the swap page tags here, pageData.num is fetched below in script, and shows total records-->
@@ -66,21 +77,13 @@
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
-                            <paper-item value='ALL'>All</paper-item>
-                            <paper-item value='CLOSE'>Closed</paper-item>
-                            <paper-item value='INPRG'>In Progress</paper-item>
-                            <paper-item value='CAN'>Canceled</paper-item>
-                            <paper-item value='APPR'>Approved</paper-item>
-                            <paper-item value='WAPPR'>Waiting on Approval</paper-item>
-                            <paper-item value='HOLD'>Hold</paper-item>
-                            <paper-item value='PNDREV'>Pending Revision</paper-item>
-                            <paper-item value='REVISD'>Revised</paper-item>
-                            <paper-item value='HISTEDIT'>Edited in History</paper-item>
+                            <template is="dom-repeat" items="{{statuslist}}">
+                                <paper-item value="{{item.value}}">{{item.description}}</paper-item>
+                            </template>
                         </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
-
-
+                
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Buyer" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected" style="width: 200px;">
@@ -150,55 +153,69 @@
             localBaseUri: {
                 String
             },
-            ready: function () {
-                this.localBaseUri = "http://localhost:9080/";
-                this.baseUri = sessionStorage.getItem('baseUri');
-                this.$.maximoPurchaseOrdersListAjax.generateRequest();
+            theStates: {
+                type: Array
             },
+        ready: function () {
+            this.localBaseUri = "http://localhost:9080/";
+            this.baseUri = sessionStorage.getItem('baseUri');
+            this.$.maximoPurchaseOrdersListAjax.generateRequest();
+        },
 
-            _getInput(e) {
-                if (e.keyCode == 13) {
-                    if (e.target.value == "") {
-                        this.$.maximoPurchaseOrdersListAjax.params = {
+        _getInput(e) {
+            if (e.keyCode == 13) {
+                if (e.target.value == "") {
+                    this.$.maximoPurchaseOrdersListAjax.params = {
 
-                            'oslc.pageSize': 20, //the number of records on a single page
-                            'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                            'collectioncount': 5, //also returns the total number of records and pages
-                            'oslc.where': 'spi:status in["wappr","appr","can","inprg","close","hold","pndrev","revisd","HISTEDIT"]', //filter for description orders
-                            "pageno": 1, //Set the requested page number
-                            "lean": 1
-                        }
-                        this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                        'oslc.pageSize': 20, //the number of records on a single page
+                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
+                        'collectioncount': 5, //also returns the total number of records and pages
+                        'oslc.where': 'spi:status in["wappr","appr","can","inprg","close","hold","pndrev","revisd","HISTEDIT"]', //filter for description orders
+                        "pageno": 1, //Set the requested page number
+                        "lean": 1
                     }
-                    else {
-
-                        this.$.maximoPurchaseOrdersListAjax.params = {
-
-                            'oslc.pageSize': 20, //the number of records on a single page
-                            'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                            'collectioncount': 5, //also returns the total number of records and pages
-                            'oslc.where': 'spi:description in["%' + e.target.value + '%"]', //filter for description orders
-                            "pageno": 1, //Set the requested page number
-                            "lean": 1
-                        }
-                        this.$.maximoPurchaseOrdersListAjax.generateRequest();
-                    }
-                }
-            },
-
-            _handleResponse(event) {
-                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
-                    this.noPos = "block";
-                    this.totalRecords = 0;
-                    this.totalPages = 1;
+                    this.$.maximoPurchaseOrdersListAjax.generateRequest();
                 }
                 else {
-                    this.noPos = "none";
-                    this.set('pageData.num', event.detail.__data.response.responseInfo.pagenum)
-                    this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
-                    this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
+
+                    this.$.maximoPurchaseOrdersListAjax.params = {
+
+                        'oslc.pageSize': 20, //the number of records on a single page
+                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
+                        'collectioncount': 5, //also returns the total number of records and pages
+                        'oslc.where': 'spi:description in["%' + e.target.value + '%"]', //filter for description orders
+                        "pageno": 1, //Set the requested page number
+                        "lean": 1
+                    }
+                    this.$.maximoPurchaseOrdersListAjax.generateRequest();
                 }
+            }
+        },
+
+
+        _handleResponse(event) {
+            if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
+                this.noPos = "block";
+                this.totalRecords = 0;
+                this.totalPages = 1;
+            }
+
+            else {
+                this.noPos = "none";
+                this.set('pageData.num', event.detail.__data.response.responseInfo.pagenum)
+                this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
+                this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
+            }
             },
+
+            _handleStateResponse() {
+                var allStates = { "description": "All", "maxvalue": "ALL", "value" : "ALL"};
+                theStates = this.states.member[0].synonymdomain;
+                theStates.unshift(allStates);
+
+                this.statuslist = theStates;
+            },
+
             _handleError(event) {
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
