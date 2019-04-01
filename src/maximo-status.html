@@ -53,6 +53,17 @@
                    on-response="_handleSaveResponse"
                    on-error="_handleSaveError"></iron-ajax>
 
+        <iron-ajax auto
+                   id="maximoPoStatus"
+                   with-credentials
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   url="http://localhost:9080/maximo/oslc/os/rep_po/{{theOrder}}/getlist~status?oslc.select=*"
+                   last-response="{{purchaseOrderstatus}}"
+                   on-response="_handleLoadResponseStatus"
+                   on-error="_handleLoadError"></iron-ajax>
+
         <paper-spinner-lite id="spinner" style="margin: auto;display: block;"></paper-spinner-lite>
         <template is="dom-if" if="{{(spinner.active)}}">
 
@@ -94,24 +105,28 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         </div>
 
-   
-
-                        <div id="penandkryss">
-                            <template is="dom-if" if="{{wap}}">
-                                <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
-                                <paper-button id="pen" style="display:{{pen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Change order status</span><iron-icon icon="create"></iron-icon></paper-button>
-                            </template>
-                        </div>
-
-                        <div id="poStatus" style="display:{{showq}}">
-                            <div class="changeStatus">
-                                <div><h4 style="color:#757575; margin:0; text-decoration: underline;">{{changeorderstatus}}</h4></div>
-                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
-                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
+                        <div id="statusContainer">
+                            <div id="penandkryss">
+                                <template is="dom-if" if="{{wap}}">
+                                    <paper-button id="x" style="display:{{x}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                                    <paper-button id="pen" style="display:{{pen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Change order status</span><iron-icon icon="create"></iron-icon></paper-button>
+                                </template>
                             </div>
-                         </div>
-                      
 
+
+                            <div class="changeStatus" style="display:{{showq}}">
+                                <!--<div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
+                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>-->
+
+                                <paper-dropdown-menu label="Choose status" vertical-offset="55" horizontal-align="left">
+                                    <paper-listbox style="width:206px;" slot="dropdown-content" class="dropdown-content" selected="{{statusChoice}}" attr-for-selected="value">
+                                        <template is="dom-repeat" items="{{purchaseOrderstatus.member}}">
+                                            <paper-item value="{{item.value}}">{{item.description}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </div>
+                        </div>
 
                         <template is="dom-if" if="{{!purchaseOrder.poline}}">
                             <div class="saveCancel">
@@ -138,6 +153,7 @@
                         </template>
 
                         <div class="saveCancel">
+                            <paper-button on-tap="_changePoStatus" class="poViewButton">Save</paper-button>
                             <paper-button style="margin-top: 2em;" class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>
                         </div>
 
@@ -196,6 +212,15 @@
 
             reload() {
                 location.reload();
+            },
+
+            _changePoStatus(purchaseOrder) {
+                var poStatus = this.statusChoice;
+                purchaseOrder.body = {
+                    "status": poStatus,
+                }
+                this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                this.savePurchaseOrder();
             },
 
             editPo() {
@@ -281,14 +306,14 @@
 
                 if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
                     this.shouldShow = "none";
-                    
+
 
                 } else { this.shouldShow = "inline"; this.wap = true; }
 
 
                 if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
                     this.shouldShow2 = "none";
-    
+
                 } else { this.shouldShow2 = "inline"; this.wap = true; }
 
             },
@@ -315,12 +340,20 @@
 
 
 
-                if (event.detail.__data.response.poline != undefined) {
+                //if (event.detail.__data.response.poline != undefined) {
 
-                    //this.changeorderstatus = "Change order status";
+                //    //this.changeorderstatus = "Change order status";
 
 
-                }
+                //}
+            },
+
+            _handleLoadResponseStatus(event) {
+                this.$.spinner.active = false
+                //this._poLoaded()
+                //this._changeStatusIcon();
+                console.log(event);
+
             },
 
             _handleLoadError(event, request) {
