@@ -77,16 +77,13 @@
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Status" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{status}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
-                            <template is="dom-repeat" items="{{states.member[0].synonymdomain}}">
+                            <template is="dom-repeat" items="{{statuslist}}">
                                 <paper-item value="{{item.value}}">{{item.description}}</paper-item>
                             </template>
                         </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
-
                 
-
-
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Buyer" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected" style="width: 200px;">
@@ -139,23 +136,26 @@
     </template>
 
     <script>
-    Polymer({
-        is: "maximo-purchaseorders",
+        Polymer({
+            is: "maximo-purchaseorders",
 
-        attached: function () {
-            if (!this._initialized) {
-                this._initialized = true;
-            }
-        },
-        theOrder: {
-            type: String
-        },
-        baseUri: {
-            type: String
-        },
-        localBaseUri: {
-            String
-        },
+            attached: function () {
+                if (!this._initialized) {
+                    this._initialized = true;
+                }
+            },
+            theOrder: {
+                type: String
+            },
+            baseUri: {
+                type: String
+            },
+            localBaseUri: {
+                String
+            },
+            theStates: {
+                type: Array
+            },
         ready: function () {
             this.localBaseUri = "http://localhost:9080/";
             this.baseUri = sessionStorage.getItem('baseUri');
@@ -192,6 +192,7 @@
             }
         },
 
+
         _handleResponse(event) {
             if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
                 this.noPos = "block";
@@ -205,8 +206,13 @@
                 this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
                 this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
             }
-            console.log(this.states.member[0].synonymdomain[0])
             },
+
+            _handleStateResponse() {
+                theStates = this.states.member[0].synonymdomain;
+                this.statuslist = theStates;
+            },
+
             _handleError(event) {
                 if (event.detail.request.xhr &&
                     event.detail.request.xhr.response &&
