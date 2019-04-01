@@ -209,7 +209,10 @@
             },
 
             _handleStateResponse() {
+                var allStates = { "description": "All", "maxvalue": "ALL", "value" : "ALL"};
                 theStates = this.states.member[0].synonymdomain;
+                theStates.unshift(allStates);
+
                 this.statuslist = theStates;
             },
 
