@@ -214,6 +214,11 @@
                 localStorage.removeItem('theOrder');
                 this.theList = event.detail.__data.response.member;
                 this.filteredList = this.theList.slice(0, 20);
+                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
             },
 
             _handleStateResponse() {
@@ -278,7 +283,13 @@
                     this.filteredList = this.theList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN"))
                 }
                 else {
-                    this.filteredList = this.theList.filter(item => item.status.includes(statusChosen))
+                    this.filteredList = this.theList.filter(item => item.status == statusChosen);
+                    
+                }
+                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
                 }
             },
 
@@ -327,12 +338,20 @@
                         }
                     }
                     this.filteredList = buyerArray;
-                    console.log(this.forList)
+                    if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                        this.noPos = "block";
+                    } else {
+                        this.noPos = "none";
+                    }
 
                 } else if (choosenBuyer == "ALL") {
                     this.filteredList = this.theList;
                 }
-
+                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
             },
 
             //_poLoaded() {
@@ -410,8 +429,12 @@
                     default: this.filteredList = this.theList.slice(0, 20);
 
                 }
-
-
+                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
+                
             },
 
             _prevPageUrl() {
@@ -441,7 +464,11 @@
                     default: this.filteredList = this.theList.slice(0, 20);
 
                 }
-
+                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
             }
 
         });
