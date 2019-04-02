@@ -81,10 +81,15 @@
                 <form action="/foo" method="get">
                     <!--display some choosen values regarding the order, wich we want to be able to edit. -->
                     <div class="card">
-
                         <div id="fullScreen">
-
-                            <div class="poContentDiv">
+                            <div id="penandkryss">
+                                <paper-button id="x" style="display:{{pox}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                                <template is="dom-if" if="{{wap}}">
+                                    <paper-button id="pen" style="display:{{popen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit order</span><iron-icon icon="create"></iron-icon></paper-button>
+                                </template>
+                            </div>
+                            <div class="poContentDiv"> 
+                                <paper-button id="backButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto"><iron-icon id="backIcon" icon="arrow-back" data-args="http://127.0.0.1:8081/purchaseorders"></iron-icon></paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite><br />
                                 <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                                 <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
@@ -110,13 +115,6 @@
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Entered by:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.poline.0.enterby}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Total Cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.totalcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Type:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.potype_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
-                        </div>
-
-                        <div id="penandkryss">
-                            <paper-button id="x" style="display:{{pox}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
-                            <template is="dom-if" if="{{wap}}">
-                                <paper-button id="pen" style="display:{{popen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit order</span><iron-icon icon="create"></iron-icon></paper-button>
-                            </template>
                         </div>
 
                         <div id="poEdit" style="display:{{showorderedit}}">
@@ -167,13 +165,12 @@
                                 <hr />
                             </template>
 
-                            <div class="saveCancel">
+                            <div id="hideSave" style="display:{{showSave}}">
                                 <template is="dom-if" if="{{lines}}">
-                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
+                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>&nbsp;
+                                    <paper-spinner-lite id="spinner"></paper-spinner-lite>
                                 </template>
-                                <paper-button class="poViewButton" style="color: #4178be;" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
                             </div>
-
                         </div>
                     </template>
                 </form>
@@ -285,19 +282,21 @@
             },
 
             editPoLines() {
+                this.showSave = "block";
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
             },
 
             closeEditPoLines() {
+                this.showSave = "none";
                 this.showq = "none";
                 this.x = "none";
                 this.pen = "inline-block";
             },
 
             editPo() {
-                this.showorderedit = "inline-block";
+                this.showorderedit = "block";
                 this.popen = "none";
                 this.pox = "inline-block";
             },

@@ -21,7 +21,7 @@
             }
 
             .poContentDiv {
-                width: 30%;
+                width: 25%;
                 display: inline-block;
             }
 
@@ -123,7 +123,12 @@
 
             .saveCancel {
                 text-align: right;
-                display:block;
+                display: block;
+            }
+
+            #hideSave {
+                display: none;
+                text-align: right;
             }
 
             #myMenuTitel {
@@ -357,6 +362,23 @@
                 margin-top: 10px;
             }
 
+            #backIcon {
+                color: #4178be;
+                --iron-icon-height: 40px;
+                --iron-icon-width: 40px;
+                padding: 5px;
+                margin-left: -40px;
+                cursor: pointer;
+            }
+
+            #backButton {
+                color: #4178be;
+                padding: 0;
+                --paper-button: {
+    width: 5px;
+  }
+            }
+
             .changeStatus {
                 display: inline-block;
                 float: right;
@@ -403,7 +425,7 @@
             }
 
             #statusContainer {
-                margin-top:40px;
+                margin-top: 40px;
             }
 
             #filterIcon {
