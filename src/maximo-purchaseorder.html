@@ -108,6 +108,14 @@
 
 
                         <div id="smallScreen">
+                            <paper-button id="backButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto"><iron-icon id="backIcon" icon="arrow-back" data-args="http://127.0.0.1:8081/purchaseorders"></iron-icon></paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
+                            <div id="penandkryss">
+                                <paper-button id="x" style="display:{{pox}}" on-tap="closeEditPo"><iron-icon icon="close"></iron-icon></paper-button>
+                                <template is="dom-if" if="{{wap}}">
+                                    <paper-button id="pen" style="display:{{popen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit order</span><iron-icon icon="create"></iron-icon></paper-button>
+                                </template>
+                            </div>
+
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
@@ -130,12 +138,6 @@
                                 <paper-button style="display:{{save}}" class="poViewButton" on-tap="_saveOrderBody">Save</paper-button>
                             </div>
                         </div>
-
-                        <template is="dom-if" if="{{!purchaseOrder.poline}}">
-                            <div class="saveCancel">
-                                <paper-button class="poViewButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto">Cancel</paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite>
-                            </div>
-                        </template>
                     </div>
 
                     <template is="dom-if" if="{{purchaseOrder.poline}}">
@@ -167,8 +169,7 @@
 
                             <div id="hideSave" style="display:{{showSave}}">
                                 <template is="dom-if" if="{{lines}}">
-                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>&nbsp;
-                                    <paper-spinner-lite id="spinner"></paper-spinner-lite>
+                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
                             </div>
                         </div>
