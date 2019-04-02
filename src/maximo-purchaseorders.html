@@ -176,6 +176,7 @@
                     else {
                         var temporateList = [];
                         var theInput = e.target.value[0].toUpperCase() + e.target.value.slice(1);
+                        console.log(theInput)
 
                         for (var i = 0; i < this.theList.length; i++) {
                             if (this.theList[i].description != undefined) {
@@ -186,7 +187,12 @@
                                 }
                             }
                         }
-                        this.filteredList = temporateList;
+                        if (this.status != undefined) {
+                            this.filteredList = temporateList.filter(item => item.status.includes(this.status));
+                        } else {
+                            this.filteredList = temporateList;
+                        }
+                        
                     }
                 }
             },
@@ -334,7 +340,12 @@
                             buyerArray.push(item);
                         }
                     }
-                    this.filteredList = buyerArray;
+                    if (this.status != undefined) {
+                        this.filteredList = buyerArray.filter(item => item.status == this.status);
+                    } else {
+                        this.filteredList = buyerArray;
+                    }
+                    
                     if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
                         this.noPos = "block";
                     } else {
@@ -342,7 +353,12 @@
                     }
 
                 } else if (choosenBuyer == "ALL") {
-                    this.filteredList = this.theList;
+                    if (this.status != undefined) {
+                        this.filteredList = this.theList.filter(item => item.status == this.status);
+                    } else {
+                        this.filteredList = this.theList;
+                    }
+                    
                 }
                 if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
                     this.noPos = "block";
