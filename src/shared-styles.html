@@ -21,7 +21,7 @@
             }
 
             .poContentDiv {
-                width: 30%;
+                width: 25%;
                 display: inline-block;
             }
 
@@ -122,6 +122,12 @@
             }
 
             .saveCancel {
+                text-align: right;
+                display: block;
+            }
+
+            #hideSave {
+                display: none;
                 text-align: right;
             }
 
@@ -349,9 +355,28 @@
                 margin-top: 10px;
             }
 
+            #poEdit {
+                display: none;
+                color: #757575;
+                background-color: #fff;
+                margin-top: 10px;
+            }
+
+            #backIcon {
+                color: #4178be;
+                --iron-icon-height: 40px;
+                --iron-icon-width: 40px;
+                padding: 5px;
+                margin-left: -40px;
+                cursor: pointer;
+            }
+
+            #backButton {
+                color: #4178be;
+                padding: 0;
+            }
+
             .changeStatus {
-                display: inline-block;
-                float: right;
                 color: #4178be;
                 display: none;
             }
@@ -395,7 +420,7 @@
             }
 
             #statusContainer {
-                margin-top:40px;
+                margin-top: 40px;
             }
 
             #filterIcon {
@@ -428,6 +453,19 @@
                     display: none;
                 }
 
+                #backIcon {
+                    color: #4178be;
+                    --iron-icon-height: 40px;
+                    --iron-icon-width: 40px;
+                    padding: 5px;
+                    margin-left: -40px;
+                    cursor: pointer;
+                }
+
+                #backButton {
+                    color: #4178be;
+                    padding: 0;
+                }
 
                 .responsiveMenu {
                     height: 58px;
