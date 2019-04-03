@@ -100,7 +100,7 @@
             </template>
 
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
-            <template is="dom-repeat" items="{{filteredList}}">
+            <template is="dom-repeat" items="{{PurchaseOrders}}">
                 <div class="PurchaseOrdersCard">
 
                     <iron-icon class="titleIcon" icon="assignment"></iron-icon>
@@ -174,7 +174,7 @@
             _getInput(e) {
                 if (e.keyCode == 13) {
                     if (e.target.value == "") {
-                        this.filteredList = this.theList;
+                        this.set('PurchaseOrders', this.theList);
                     }
                     else {
                         var temporateList = [];
@@ -191,9 +191,9 @@
                             }
                         }
                         if (this.status != undefined) {
-                            this.filteredList = temporateList.filter(item => item.status.includes(this.status));
+                            this.set('PurchaseOrders', temporateList.filter(item => item.status == this.status));
                         } else {
-                            this.filteredList = temporateList;
+                            this.set('PurchaseOrders', temporateList);
                         }
                         
                     }
@@ -209,6 +209,12 @@
                 }
 
                 else {
+                    //var aa = this.get('PurchaseOrders.member');
+                    //console.log(aa);
+                    this.set('PurchaseOrders', this.get('PurchaseOrders.member').slice(0,20))
+                   // this.filteredList = event.detail.__data.response.member.slice(0, 20);
+                    this.theList = event.detail.__data.response.member;
+                    
                     this.noPos = "none";
                     this.set('pageData.num', 1)
                     if (event.detail.response["responseInfo"]["totalCount"] > 20) {
@@ -217,14 +223,8 @@
                     }
                     this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
                 }
-                localStorage.removeItem('theOrder');
-                this.theList = event.detail.__data.response.member;
-                this.filteredList = this.theList.slice(0, 20);
-                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
-                    this.noPos = "block";
-                } else {
-                    this.noPos = "none";
-                }
+                
+                
             },
 
             _handleStateResponse() {
@@ -286,13 +286,13 @@
                 }
 
                 if (statusChosen == "ALL") {
-                    this.filteredList = this.theList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN"))
+                    this.set('PurchaseOrders', this.theList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN")));
                 }
                 else {
-                    this.filteredList = this.theList.filter(item => item.status == statusChosen);
+                    this.set('PurchaseOrders', this.theList.filter(item => item.status == statusChosen));
                     
                 }
-                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
                     this.noPos = "block";
                 } else {
                     this.noPos = "none";
@@ -344,26 +344,20 @@
                         }
                     }
                     if (this.status != undefined) {
-                        this.filteredList = buyerArray.filter(item => item.status == this.status);
+                        this.set('PurchaseOrders', buyerArray.filter(item => item.status == this.status));
                     } else {
-                        this.filteredList = buyerArray;
-                    }
-                    
-                    if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
-                        this.noPos = "block";
-                    } else {
-                        this.noPos = "none";
+                        this.set('PurchaseOrders', buyerArray);
                     }
 
                 } else if (choosenBuyer == "ALL") {
                     if (this.status != undefined) {
-                        this.filteredList = this.theList.filter(item => item.status == this.status);
+                        this.set('PurchaseOrders', this.theList.filter(item => item.status == this.status));
                     } else {
-                        this.filteredList = this.theList;
+                        this.set('PurchaseOrders', this.theList);
                     }
                     
                 }
-                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
                     this.noPos = "block";
                 } else {
                     this.noPos = "none";
@@ -397,20 +391,16 @@
             _urlParams(pageData) {
                 if (pageData == undefined) {
                     return {
-
                         'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                         'collectioncount': 5, //also returns the total number of records and pages
                         'oslc.where': 'spi:status in["wappr","appr","histedit","revisd","inprg","hold","close","can"]', //filter for purchase orders for waiting approval
-
                         "lean": 1
                     }
                 } else if (pageData !== undefined) {
                     return {
-
                         'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                         'collectioncount': 5, //also returns the total number of records and pages
                         'oslc.where': 'spi:status in["wappr","appr","histedit","revisd","inprg","hold","close","can"]', //filter for purchase orders for waiting approval
-
                         "lean": 1
                     }
                 }
@@ -430,22 +420,23 @@
 
                 switch (page) {
                     case 2:
-                        this.filteredList = this.theList.slice(20, 40);
+                        this.set('PurchaseOrders', this.theList.slice(20, 40));
                         break;
                     case 3:
-                        this.filteredList = this.theList.slice(41, 61);
+                        this.set('PurchaseOrders', this.theList.slice(41, 61));
                         break;
                     case 4:
-                        this.filteredList = this.theList.slice(62, 82);
+                        this.set('PurchaseOrders', this.theList.slice(62, 82));
                         break;
-                    case 5: this.filteredList = this.theList.slice(83, 103);
+                        this.set('PurchaseOrders', this.theList.slice(83, 103));
                         break;
-                    case 6: this.filteredList = this.theList.slice(104, this.theList.length);
+                    case 6:
+                        this.set('PurchaseOrders', this.theList.slice(104, this.theList.length));
                         break;
-                    default: this.filteredList = this.theList.slice(0, 20);
+                    default: this.set('PurchaseOrders', this.theList.slice(0, 20));
 
                 }
-                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
                     this.noPos = "block";
                 } else {
                     this.noPos = "none";
@@ -465,22 +456,23 @@
 
                 switch (page) {
                     case 2:
-                        this.filteredList = this.theList.slice(20, 40);
+                        this.set('PurchaseOrders', this.theList.slice(20, 40));
                         break;
                     case 3:
-                        this.filteredList = this.theList.slice(41, 61);
+                        this.set('PurchaseOrders', this.theList.slice(41, 61));
                         break;
                     case 4:
-                        this.filteredList = this.theList.slice(62, 82);
+                        this.set('PurchaseOrders', this.theList.slice(62, 82));
                         break;
-                    case 5: this.filteredList = this.theList.slice(83, 103);
+                        this.set('PurchaseOrders', this.theList.slice(83, 103));
                         break;
-                    case 6: this.filteredList = this.theList.slice(104, this.theList.length);
+                    case 6:
+                        this.set('PurchaseOrders', this.theList.slice(104, this.theList.length));
                         break;
-                    default: this.filteredList = this.theList.slice(0, 20);
+                    default: this.set('PurchaseOrders', this.theList.slice(0, 20));
 
                 }
-                if (this.filteredList.length == undefined || this.filteredList.length == null || this.filteredList.length <= 0) {
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
                     this.noPos = "block";
                 } else {
                     this.noPos = "none";
