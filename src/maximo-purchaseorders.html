@@ -99,6 +99,12 @@
                 <p class="alert-error">[[error]]</p>
             </template>
 
+            <div style="display:{{dots}}" class="loadingDots">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
             <template is="dom-repeat" items="{{PurchaseOrders}}">
                 <div class="PurchaseOrdersCard">
@@ -117,7 +123,7 @@
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
 
                         <!--<div id="poStatusButton" style="display:{{shouldShow2}}"><paper-button style="padding:10px;" on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
-                        <div id="poStatusButton"style="display:{{shouldShow}}"><paper-button style="padding:10px;" on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div><br />-->
+                <div id="poStatusButton"style="display:{{shouldShow}}"><paper-button style="padding:10px;" on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div><br />-->
                         <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
                         <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                     </div>
@@ -169,6 +175,7 @@
                 this.localBaseUri = "http://localhost:9080/";
                 this.baseUri = sessionStorage.getItem('baseUri');
                 this.$.maximoPurchaseOrdersListAjax.generateRequest();
+
             },
 
             _getInput(e) {
@@ -224,7 +231,7 @@
                     this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
                 }
                 
-                
+                this.dots = "none";
             },
 
             _handleStateResponse() {
