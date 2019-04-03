@@ -20,6 +20,26 @@
                 display: none;
             }
 
+            .successIcon {
+                width: 80px;
+                height: 80px;
+                color: green;
+                margin-bottom: 15px;
+            }
+
+            .errorIcon {
+                width: 80px;
+                height: 80px;
+                color: darkred;
+                margin-bottom: 15px;
+            }
+
+            #alertContent {
+                margin-top: 20%;
+                padding-bottom: 0;
+                margin-bottom: 0;
+            }
+
             .poContentDiv {
                 width: 25%;
                 display: inline-block;
@@ -89,14 +109,12 @@
                 border-radius: 3px;
                 color: #333;
                 font-size: 14px;
-                padding: 20px;
-                width: 150px;
-                position: absolute;
-                left: 50%;
-                margin-left: -100px;
-                top: 50%;
-                margin-top: -50px;
+                padding: 10px;
+                width: 250px;
+                height: 310px;
                 position: fixed;
+                top: 30%;
+                left: 42%;
                 text-align: center;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
@@ -146,13 +164,11 @@
                 color: #333;
                 font-size: 14px;
                 padding: 10px;
-                width: 100px;
-                position: absolute;
-                left: 50%;
-                margin-left: -50px;
-                top: 50%;
-                margin-top: -50px;
+                width: 200px;
+                height: 250px;
                 position: fixed;
+                top: 30%;
+                left: 44%;
                 text-align: center;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
@@ -297,6 +313,7 @@
 
             .indigo {
                 background-color: white;
+                margin: auto;
             }
 
                 .indigo:hover {
@@ -316,10 +333,9 @@
                 text-align: center;
                 margin: auto;
                 margin-top: 10%;
-                border-radius: 5px;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 position: relative;
                 background-color: white;
+                max-width: 70%;
             }
 
             #totalPages {
@@ -437,26 +453,430 @@
                 display: none;
             }
 
-            /*Changes that depend on the screensize of the device follow bellow*/
-            @media only screen and (max-width: 375px) {
-                .indigo {
-                    width: 10%;
+            #errorButton {
+                margin: 5px;
+                font-size: 20px;
+            }
+
+            .check {
+                width: 100px;
+                display: block;
+                margin: 20px auto 0;
+            }
+
+            .path {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 0;
+            }
+
+                .path.circle {
+                    -webkit-animation: dash 0.9s ease-in-out;
+                    animation: dash 0.9s ease-in-out;
+                }
+
+                .path.line {
+                    stroke-dashoffset: 1000;
+                    -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+                    animation: dash 0.9s 0.35s ease-in-out forwards;
+                }
+
+                .path.check {
+                    stroke-dashoffset: -100;
+                    -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+                    animation: dash-check 0.9s 0.35s ease-in-out forwards;
+                }
+
+                p.success {
+                    color: #73AF55;
+                }
+
+                p.error {
+                    color: #D06079;
+                }
+
+            @-webkit-keyframes dash {
+                0% {
+                    stroke-dashoffset: 1000;
+                }
+
+                100% {
+                    stroke-dashoffset: 0;
                 }
             }
 
-            @media only screen and (min-width: 769px) {
-                .cardLogin {
-                    max-width: 50%;
+            @keyframes dash {
+                0% {
+                    stroke-dashoffset: 1000;
+                }
+
+                100% {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            @-webkit-keyframes dash-check {
+                0% {
+                    stroke-dashoffset: -100;
+                }
+
+                100% {
+                    stroke-dashoffset: 900;
+                }
+            }
+
+            @keyframes dash-check {
+                0% {
+                    stroke-dashoffset: -100;
+                }
+
+                100% {
+                    stroke-dashoffset: 900;
+                }
+            }
+
+            .loadingDots {
+                margin: 100px auto 0;
+                width: 70px;
+                text-align: center;
+            }
+
+                .loadingDots > div {
+                    width: 20px;
+                    height: 20px;
+                    background-color: white;
+                    border-radius: 100%;
+                    display: inline-block;
+                    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+                    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+                }
+
+                .loadingDots .bounce1 {
+                    -webkit-animation-delay: -0.32s;
+                    animation-delay: -0.32s;
+                }
+
+                .loadingDots .bounce2 {
+                    -webkit-animation-delay: -0.16s;
+                    animation-delay: -0.16s;
+                }
+
+            @-webkit-keyframes sk-bouncedelay {
+                0%, 80%, 100% {
+                    -webkit-transform: scale(0)
+                }
+
+                40% {
+                    -webkit-transform: scale(1.0)
+                }
+            }
+
+            @keyframes sk-bouncedelay {
+                0%, 80%, 100% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+
+                40% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                }
+            }
+
+            /*tablet*/
+            @media (min-width: 768px) and (max-width: 1023px) {
+
+                .alert-success {
+                    background: #cdffcd;
+                    border: 1px solid #cdffcd;
+                    border-radius: 3px;
+                    color: #333;
+                    font-size: 14px;
+                    padding: 10px;
+                    width: 150px;
+                    height: 250px;
+                    left: 40%;
+                    position: fixed;
+                    text-align: center;
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                }
+
+                .alert-error {
+                    background: #ffcdd2;
+                    border: 1px solid #ffcdd2;
+                    border-radius: 3px;
+                    color: #333;
+                    font-size: 14px;
+                    padding: 10px;
+                    width: 250px;
+                    height: 310px;
+                    left: 33%;
+                    position: fixed;
+                    text-align: center;
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                }
+
+                .menu {
+                    display: none;
+                }
+
+                #backIcon {
+                    color: #4178be;
+                    --iron-icon-height: 40px;
+                    --iron-icon-width: 40px;
+                    padding: 5px;
+                    margin-left: -40px;
+                    cursor: pointer;
+                }
+
+                #backButton {
+                    color: #4178be;
+                    padding: 0;
                 }
 
                 .responsiveMenu {
+                    height: 58px;
+                    width: 58px;
+                }
+
+                .menuRight {
                     display: none;
+                }
+
+                .titleIcon {
+                    display: none;
+                }
+
+                .poFilter {
+                    width: 100%;
+                    text-align: center;
+                    display: none;
+                }
+
+                .poFilterSearch {
+                    display: inline-block;
+                    width: 60%;
+                    margin: auto;
+                }
+
+                #totalPages {
+                    color: black;
+                    font-size: 10px;
+                }
+
+                .dropdown {
+                    display: none;
+                }
+
+                #responsivePO {
+                    display: none;
+                }
+
+                #poListTitle {
+                    font-size: 22px;
+                }
+
+                #editText {
+                    display: none;
+                }
+
+                #pen {
+                    text-align: right;
+                }
+
+                #x {
+                    text-align: right;
+                }
+
+                .poCard {
+                    margin-top: 30px;
+                    background-color: #1d3649;
+                    width: 100%;
+                }
+
+                .poTitle {
+                    width: 100%;
+                    background-color: white;
+                    margin-top: 70px;
+                }
+
+                .poTitleDetails {
+                    margin-bottom: 0;
+                }
+
+                .PurchaseOrdersCard {
+                    display: block;
+                    width: 100%;
+                    font-size: 15px;
+                    margin: 0;
+                }
+
+                .circle {
+                    margin-left: 30%;
+                    margin-bottom: 15%;
+                    cursor: pointer;
+                }
+
+                .card {
+                    display: block;
+                    width: 100%;
+                    font-size: 15px;
+                    margin-bottom: 5px;
+                }
+
+                .circlePurchaseOrder {
+                    margin-left: 28%;
+                    margin-bottom: 5%;
+                    cursor: pointer;
+                    margin-top: 15px;
+                }
+
+                #detailedInfoText {
+                    display: inline-block;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-align: center;
+                    padding-bottom: 20px;
+                }
+
+                #descript {
+                    display: block;
+                }
+
+                .approveCancelText {
+                    display: none;
+                }
+
+                #filterIcon {
+                    display: inline-block;
+                    color: #757575;
+                    height: 40px;
+                    width: 40px;
+                    padding-left: 10px;
+                }
+
+                #searchIcon {
+                    color: #757575;
+                }
+
+                #centerSearch {
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .hideContent {
+                    display: none;
+                }
+
+                .hideIcons {
+                    display: inline-block;
+                    float: right;
+                }
+
+                #mobileSearch {
+                    --iron-icon-height: 30px;
+                    --iron-icon-width: 30px;
+                    padding: 0px;
+                }
+
+                #mobileQuery {
+                    --iron-icon-height: 25px;
+                    --iron-icon-width: 25px;
+                }
+
+                .poViewRes {
+                    display: inline-block;
+                    float: right;
+                    color: #4178be;
+                    padding: 10px;
+                }
+
+                .lineContent {
+                    font-size: 12px;
+                }
+
+                #poQuant {
+                    display: none;
+                    width: 50%;
+                    color: #757575;
+                    background-color: #fff;
+                    text-align: center;
+                    margin-top: 10px;
+                }
+
+
+
+                .search {
+                    display: inline-block;
+                    margin: auto;
+                    text-align: left;
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: black;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
+                }
+
+                paper-dropdown-menu.poFilt {
+                    --paper-input-container-color: black;
+                    --paper-input-container-focus-color: black;
+                    --paper-input-container-label: {
+              color: #757575;
+                       };
+                    --paper-input-container-input: {
+              color: black;
+            };
+                }
+
+                #resmen {
+                    display: inline-block;
+                }
+
+                #fullScreen {
+                    display: none;
+                }
+
+                #smallScreen {
+                    display: block;
                 }
             }
 
-            @media only screen and (max-width: 769px) {
+            /*mobile-devices*/
+            @media only screen and (max-width: 767px) {
                 .menu {
                     display: none;
+                }
+
+                .alert-success {
+                    background: #cdffcd;
+                    border: 1px solid #cdffcd;
+                    border-radius: 3px;
+                    color: #333;
+                    font-size: 14px;
+                    padding: 10px;
+                    width: 150px;
+                    height: 250px;
+                    position: fixed;
+                    left: 28%;
+                    text-align: center;
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                }
+
+                .alert-error {
+                    background: #ffcdd2;
+                    border: 1px solid #ffcdd2;
+                    border-radius: 3px;
+                    color: #333;
+                    font-size: 14px;
+                    padding: 10px;
+                    width: 250px;
+                    height: 310px;
+                    position: fixed;
+                    left: 15%;
+                    text-align: center;
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
                 }
 
                 #backIcon {

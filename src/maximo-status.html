@@ -13,6 +13,8 @@
 
 <link rel="import" href="shared-styles.html">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <dom-module id="maximo-status">
     <style>
         body {
@@ -125,7 +127,7 @@
 
                             <div class="changeStatus" style="display:{{showq}}">
                                 <!--<div style="margin: 16px -15px 0px -2px; display:{{shouldShow}}"><paper-button on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div>
-                                <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>-->
+                        <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>-->
 
                                 <paper-dropdown-menu label="Choose status" vertical-offset="55" horizontal-align="left">
                                     <paper-listbox style="width:206px;" slot="dropdown-content" class="dropdown-content" selected="{{statusChoice}}" attr-for-selected="value">
@@ -162,19 +164,32 @@
                     </div>
                 </template>
 
+                <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                    <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
+                </template>
 
             </div>
 
-            <template is="dom-if" if="{{!purchaseOrder.poline}}">
-                <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
-            </template>
-
             <template is="dom-if" if="[[error]]">
-                <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+                <div class="alert-error">
+                    <p id="alertContent">[[error]]</p>
+                    <svg class="check" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+                        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+                        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+                    </svg>
+                    <paper-button id="errorButton" on-tap="reload">OK</paper-button>
+                </div>
             </template>
 
             <template is="dom-if" if="[[success]]">
-                <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+                <div class="alert-success">
+                    <p id="alertContent">[[success]]</p>
+                    <svg class="check" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+                        <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+                    </svg>
+                </div>
             </template>
 
         </template>
@@ -370,6 +385,7 @@
                 this.error = null;
                 this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 this.success = "Purchase Order Successfully Saved"
+                setTimeout(this.reload, 1500);
                 //}
             },
 
@@ -382,10 +398,12 @@
                     this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    setTimeout(this.reload, 3000);
                 } else {
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.error = "Could not save Purchase Order"
                     this.success = null;
+                    setTimeout(this.reload, 3000);
                 }
             },
 

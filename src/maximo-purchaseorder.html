@@ -88,7 +88,7 @@
                                     <paper-button id="pen" style="display:{{popen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit order</span><iron-icon icon="create"></iron-icon></paper-button>
                                 </template>
                             </div>
-                            <div class="poContentDiv"> 
+                            <div class="poContentDiv">
                                 <paper-button id="backButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto"><iron-icon id="backIcon" icon="arrow-back" data-args="http://127.0.0.1:8081/purchaseorders"></iron-icon></paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite><br />
                                 <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                                 <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
@@ -114,7 +114,7 @@
                                 <template is="dom-if" if="{{wap}}">
                                     <paper-button id="pen" style="display:{{popen}}" on-tap="editPo" data-attr="{{item}}"><span id="editText">Edit order</span><iron-icon icon="create"></iron-icon></paper-button>
                                 </template>
-                            </div>
+                            </div><br />
 
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                             <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
@@ -176,20 +176,32 @@
                     </template>
                 </form>
 
-
+                <template is="dom-if" if="{{!purchaseOrder.poline}}">
+                    <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
+                </template>
 
             </div>
 
-            <template is="dom-if" if="{{!purchaseOrder.poline}}">
-                <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
+            <template is="dom-if" if="[[error]]">
+                <div class="alert-error">
+                    <p id="alertContent">[[error]]</p>
+                    <svg class="check" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+                        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+                        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+                    </svg>
+                    <paper-button id="errorButton" on-tap="reload">OK</paper-button>
+                </div>
             </template>
 
             <template is="dom-if" if="[[success]]">
-                <p class="alert-success">[[success]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
-            </template>
-
-            <template is="dom-if" if="[[error]]">
-                <p class="alert-error">[[error]]<paper-button style="margin-top:10px;" raised on-tap="reload">OK</paper-button></p>
+                <div class="alert-success">
+                    <p id="alertContent">[[success]]</p>
+                    <svg class="check" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+                        <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+                    </svg>
+                </div>
             </template>
 
         </template>
@@ -378,6 +390,7 @@
                 //} else {
                 this.error = null;
                 this.success = "Purchase Order Successfully Saved"
+                setTimeout(this.reload, 3000);
                 //}
             },
 
@@ -447,6 +460,7 @@
                     if (poCostQty < 0) {
                         this.error = "You cannot enter a negative number!";
                         this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                        setTimeout(this.reload, 3000);
                         break;
 
                     } else {
