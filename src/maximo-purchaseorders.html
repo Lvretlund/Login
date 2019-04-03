@@ -182,7 +182,7 @@
                         
 
                         for (var i = 0; i < this.theList.length; i++) {
-                            if (this.theList[i].description != undefined) {
+                            if (this.theList[i].description != undefined || this.theList[i].ponum != undefined) {
                                 if (this.theList[i].description.indexOf(theInput) !== -1 || this.theList[i].ponum.indexOf(theInput) !== -1) {
                                     var item = this.theList[i];
                                     temporateList.push(item);
