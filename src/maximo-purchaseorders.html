@@ -163,7 +163,7 @@
 
             },
             theSearch: {
-                type: String
+                
             },
             localBaseUri: {
                 String
@@ -175,7 +175,7 @@
                 this.localBaseUri = "http://localhost:9080/";
                 this.baseUri = sessionStorage.getItem('baseUri');
                 this.$.maximoPurchaseOrdersListAjax.generateRequest();
-
+                this.theSearch = undefined;
             },
 
             _getInput(e) {
@@ -198,7 +198,7 @@
                                 }
                             }
                         }
-                        if (this.status != undefined) {
+                        if (this.status != undefined && this.status != "ALL") {
                             this.set('PurchaseOrders', temporateList.filter(item => item.status == this.status));
                         } else {
                             this.set('PurchaseOrders', temporateList);
@@ -294,26 +294,24 @@
                 }
 
                 if (statusChosen == "ALL") {
-                    if (this.theSearch != undefined || this.theSearch != "") {
+                    if (this.theSearch != undefined) {
                         var temporateList = [];
                         for (var i = 0; i < this.theList.length; i++) {
                             if (this.theList[i].description != undefined || this.theList[i].ponum != undefined) {
                                 if (this.theList[i].description !== undefined && this.theList[i].description.indexOf(this.theSearch) !== -1 || this.theList[i].ponum.indexOf(this.theSearch) !== -1) {
                                     var item = this.theList[i];
                                     temporateList.push(item);
-
                                 }
                             }
                         }
-                        this.set('PurchaseOrders', temporateList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN")));
+                        this.set('PurchaseOrders', temporateList);
                     } else {
-                        this.set('PurchaseOrders', this.theList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN")));
-
+                        this.set('PurchaseOrders', this.theList);
                     }
-
+                    
                      }
                 else {
-                    if (this.theSearch != undefined || this.theSearch != "") {
+                    if (this.theSearch != undefined) {
                         var temporateList = [];
                         for (var i = 0; i < this.theList.length; i++) {
                             if (this.theList[i].description != undefined || this.theList[i].ponum != undefined) {
@@ -388,7 +386,7 @@
                     }
 
                 } else if (choosenBuyer == "ALL") {
-                    if (this.status != undefined) {
+                    if (this.status != undefined && this.status != "ALL") {
                         this.set('PurchaseOrders', this.theList.filter(item => item.status == this.status));
                     } else {
                         this.set('PurchaseOrders', this.theList);
