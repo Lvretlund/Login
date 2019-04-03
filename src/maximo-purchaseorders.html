@@ -83,7 +83,7 @@
                         </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
-                
+
                 <div style="display:{{fil}}" class="poFilter">
                     <paper-dropdown-menu class="poFilt" label="Buyer" vertical-offset="55" horizontal-align="left">
                         <paper-listbox slot="dropdown-content" selected="{{buyer}}" attr-for-selected="value" on-iron-select="_buyerSelected" style="width: 200px;">
@@ -100,7 +100,7 @@
             </template>
 
             <!--this is a repeat dom, witch will create a card for each item in Purchaseorders, and display choosen values depending on item.spi.* in the card-->
-            <template is="dom-repeat" items="{{PurchaseOrders.member}}">
+            <template is="dom-repeat" items="{{PurchaseOrders}}">
                 <div class="PurchaseOrdersCard">
 
                     <iron-icon class="titleIcon" icon="assignment"></iron-icon>
@@ -115,6 +115,9 @@
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.pocost.0.quantity}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                         <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.poline.0.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+
+                        <!--<div id="poStatusButton" style="display:{{shouldShow2}}"><paper-button style="padding:10px;" on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>
+                        <div id="poStatusButton"style="display:{{shouldShow}}"><paper-button style="padding:10px;" on-tap="_approveStatus">Approve<iron-icon style="color:green" icon="icons:check-circle"></iron-icon></paper-button></div><br />-->
                         <paper-button id="poView"><a name="purchaseorder" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/purchaseorder/">Inspect Order<iron-icon data-attr={{item.poid}} icon="search"></iron-icon></a></paper-button>
                         <paper-button id="poView"><a name="status" style="text-decoration: none; color: #4178be; padding: 10px;" on-tap="_openOrder" data-attr={{item.poid}} href="http://127.0.0.1:8081/status/">Status<iron-icon data-attr={{item.poid}} icon="query-builder"></iron-icon></a></paper-button>
                     </div>
@@ -150,66 +153,82 @@
             baseUri: {
                 type: String
             },
+            theList: {
+
+            },
+            filteredList: {
+
+            },
             localBaseUri: {
                 String
             },
             theStates: {
                 type: Array
             },
-        ready: function () {
-            this.localBaseUri = "http://localhost:9080/";
-            this.baseUri = sessionStorage.getItem('baseUri');
-            this.$.maximoPurchaseOrdersListAjax.generateRequest();
-        },
+            ready: function () {
+                this.localBaseUri = "http://localhost:9080/";
+                this.baseUri = sessionStorage.getItem('baseUri');
+                this.$.maximoPurchaseOrdersListAjax.generateRequest();
+            },
 
-        _getInput(e) {
-            if (e.keyCode == 13) {
-                if (e.target.value == "") {
-                    this.$.maximoPurchaseOrdersListAjax.params = {
-
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["wappr","appr","can","inprg","close","hold","pndrev","revisd","HISTEDIT"]', //filter for description orders
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
+            _getInput(e) {
+                if (e.keyCode == 13) {
+                    if (e.target.value == "") {
+                        this.set('PurchaseOrders', this.theList);
                     }
-                    this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                    else {
+                        var temporateList = [];
+                        var theInput = e.target.value[0].toUpperCase() + e.target.value.slice(1);
+                        
+
+                        for (var i = 0; i < this.theList.length; i++) {
+                            if (this.theList[i].description != undefined) {
+                                if (this.theList[i].description.indexOf(theInput) !== -1 || this.theList[i].ponum.indexOf(theInput) !== -1) {
+                                    var item = this.theList[i];
+                                    temporateList.push(item);
+
+                                }
+                            }
+                        }
+                        if (this.status != undefined) {
+                            this.set('PurchaseOrders', temporateList.filter(item => item.status == this.status));
+                        } else {
+                            this.set('PurchaseOrders', temporateList);
+                        }
+                        
+                    }
                 }
+            },
+
+
+            _handleResponse(event) {
+                if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
+                    this.noPos = "block";
+                    this.totalRecords = 0;
+                    this.totalPages = 1;
+                }
+
                 else {
-
-                    this.$.maximoPurchaseOrdersListAjax.params = {
-
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:description in["%' + e.target.value + '%"]', //filter for description orders
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
+                    //var aa = this.get('PurchaseOrders.member');
+                    //console.log(aa);
+                    this.set('PurchaseOrders', this.get('PurchaseOrders.member').slice(0,20))
+                   // this.filteredList = event.detail.__data.response.member.slice(0, 20);
+                    this.theList = event.detail.__data.response.member;
+                    
+                    this.noPos = "none";
+                    this.set('pageData.num', 1)
+                    if (event.detail.response["responseInfo"]["totalCount"] > 20) {
+                        var pgs = Math.ceil(event.detail.response["responseInfo"]["totalCount"] / 20);
+                        this.set('totalPages', pgs)
                     }
-                    this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                    this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
                 }
-            }
-        },
-
-
-        _handleResponse(event) {
-            if (event == null || event.detail == null || event.detail.__data == null || event.detail.__data.response == null || event.detail.__data.response.responseInfo == null || event.detail.__data.response.responseInfo.totalCount < 1) {
-                this.noPos = "block";
-                this.totalRecords = 0;
-                this.totalPages = 1;
-            }
-
-            else {
-                this.noPos = "none";
-                this.set('pageData.num', event.detail.__data.response.responseInfo.pagenum)
-                this.set('totalPages', event.detail.response["responseInfo"]["totalPages"])
-                this.set('totalRecords', event.detail.response["responseInfo"]["totalCount"])
-            }
+                
+                
             },
 
             _handleStateResponse() {
-                var allStates = { "description": "All", "maxvalue": "ALL", "value" : "ALL"};
+                var allStates = { "description": "All", "maxvalue": "ALL", "value": "ALL" };
                 theStates = this.states.member[0].synonymdomain;
                 theStates.unshift(allStates);
 
@@ -267,27 +286,27 @@
                 }
 
                 if (statusChosen == "ALL") {
-                    this.$.maximoPurchaseOrdersListAjax.params = {
-
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["wappr","appr","can","inprg","close","hold","pndrev","revisd","HISTEDIT"]', //filter for purchase orders
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
-                    }
+                    this.set('PurchaseOrders', this.theList.filter(item => item.status.includes("APPR", "WAPPR", "HISTEDIT", "REVISD", "INPRG", "HOLD", "CLOSE", "CAN")));
                 }
                 else {
-                    this.$.maximoPurchaseOrdersListAjax.params = {
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["' + statusChosen + '"]', //filter for purchase orders based on user's choice
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
-                    }
+                    this.set('PurchaseOrders', this.theList.filter(item => item.status == statusChosen));
+                    
                 }
-                this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
+            },
+
+            _showFilters() {
+                if (this.fil == "none" || this.fil == undefined) {
+                    this.fil = "inline-block;"
+                }
+                else {
+                    this.fil = "none";
+                }
+
             },
 
             _showFilters() {
@@ -314,60 +333,79 @@
                         choosenBuyer = "ALL";
                         break;
                 }
-
+                var buyerArray = [];
                 var user = sessionStorage.getItem('whoAmI')
                 if (choosenBuyer == "MY") {
-                    this.$.maximoPurchaseOrdersListAjax.params = {
+                    for (var i = 0; i < this.theList.length; i++) {
+                        if (this.theList[i].purchaseagent != undefined && this.theList[i].purchaseagent.includes(user)) {
+                            var item = this.theList[i];
 
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:purchaseagent in["' + user + '"]', //filter for purchase orders based on user's choice
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
+                            buyerArray.push(item);
+                        }
+                    }
+                    if (this.status != undefined) {
+                        this.set('PurchaseOrders', buyerArray.filter(item => item.status == this.status));
+                    } else {
+                        this.set('PurchaseOrders', buyerArray);
                     }
 
                 } else if (choosenBuyer == "ALL") {
-                    this.$.maximoPurchaseOrdersListAjax.params = {
-
-                        'oslc.pageSize': 20, //the number of records on a single page
-                        'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
-                        'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["wappr","appr","can","inprg","close","hold","pndrev","revisd","HISTEDIT"]', //filter for purchase orders
-                        "pageno": 1, //Set the requested page number
-                        "lean": 1
+                    if (this.status != undefined) {
+                        this.set('PurchaseOrders', this.theList.filter(item => item.status == this.status));
+                    } else {
+                        this.set('PurchaseOrders', this.theList);
                     }
+                    
                 }
-                this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
             },
+
+            //_poLoaded() {
+            //    //check if we should allow the user to approve the status
+            //    let checkPoAppr = this.get('purchaseOrder.status')
+            //    let checkLines = this.get('purchaseOrder.poline')
+
+            //    if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
+            //        this.shouldShow = "none";
+
+
+            //    } else { this.shouldShow = "inline"; this.wap = true; }
+
+
+            //    if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
+            //        this.shouldShow2 = "none";
+
+            //    } else { this.shouldShow2 = "inline"; this.wap = true; }
+
+            //},
 
             _openOrder(item) {
                 this.theOrder = item.srcElement.dataAttr;
                 localStorage['theOrder'] = this.theOrder;
+
             },
             _urlParams(pageData) {
                 if (pageData == undefined) {
                     return {
-                        'oslc.pageSize': 20, //the number of records on a single page
                         'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                         'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["wappr","appr"]', //filter for purchase orders for waiting approval
-                        "pageno": 1, //Set the requested page number
+                        'oslc.where': 'spi:status in["wappr","appr","histedit","revisd","inprg","hold","close","can"]', //filter for purchase orders for waiting approval
                         "lean": 1
                     }
                 } else if (pageData !== undefined) {
                     return {
-                        'oslc.pageSize': 20, //the number of records on a single page
                         'oslc.select': "ponum,description,name,status,status_description, poid, vendor, purchaseagent, poline{polinenum, itemnum,linecost,enterby, unitcost, pocost{quantity}}", //the fields that will be returned on the response
                         'collectioncount': 5, //also returns the total number of records and pages
-                        'oslc.where': 'spi:status in["wappr","appr"]', //filter for purchase orders for waiting approval
-                        "pageno": pageData, //Set the requested page number
+                        'oslc.where': 'spi:status in["wappr","appr","histedit","revisd","inprg","hold","close","can"]', //filter for purchase orders for waiting approval
                         "lean": 1
                     }
                 }
 
             },
-
             // next/prev methods to change po-pages
             _nextPageUrl: function () {
                 let totalPages = this.get('totalPages');
@@ -378,9 +416,32 @@
                 if (page > totalPages) {
                     page = 1;
                 }
-                this.$.maximoPurchaseOrdersListAjax.params = this._urlParams(page);
-                this.$.maximoPurchaseOrdersListAjax.generateRequest();
-                //return `purchaseorders/` + (parseInt(page) + 1).toString()
+                this.set('pageData.num', page)
+
+                switch (page) {
+                    case 2:
+                        this.set('PurchaseOrders', this.theList.slice(20, 40));
+                        break;
+                    case 3:
+                        this.set('PurchaseOrders', this.theList.slice(41, 61));
+                        break;
+                    case 4:
+                        this.set('PurchaseOrders', this.theList.slice(62, 82));
+                        break;
+                        this.set('PurchaseOrders', this.theList.slice(83, 103));
+                        break;
+                    case 6:
+                        this.set('PurchaseOrders', this.theList.slice(104, this.theList.length));
+                        break;
+                    default: this.set('PurchaseOrders', this.theList.slice(0, 20));
+
+                }
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
+                
             },
 
             _prevPageUrl() {
@@ -391,8 +452,31 @@
                 if (page <= 0) {
                     page = this.get('totalPages');
                 }
-                this.$.maximoPurchaseOrdersListAjax.params = this._urlParams(page);
-                this.$.maximoPurchaseOrdersListAjax.generateRequest();
+                this.set('pageData.num', page)
+
+                switch (page) {
+                    case 2:
+                        this.set('PurchaseOrders', this.theList.slice(20, 40));
+                        break;
+                    case 3:
+                        this.set('PurchaseOrders', this.theList.slice(41, 61));
+                        break;
+                    case 4:
+                        this.set('PurchaseOrders', this.theList.slice(62, 82));
+                        break;
+                        this.set('PurchaseOrders', this.theList.slice(83, 103));
+                        break;
+                    case 6:
+                        this.set('PurchaseOrders', this.theList.slice(104, this.theList.length));
+                        break;
+                    default: this.set('PurchaseOrders', this.theList.slice(0, 20));
+
+                }
+                if (this.PurchaseOrders.length == undefined || this.PurchaseOrders.length == null || this.PurchaseOrders.length <= 0) {
+                    this.noPos = "block";
+                } else {
+                    this.noPos = "none";
+                }
             }
 
         });
