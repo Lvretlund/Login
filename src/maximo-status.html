@@ -130,7 +130,7 @@
                         <div style="margin: 16px -15px 0px -2px; display:{{shouldShow2}}"><paper-button on-tap="_closeStatus">Close<iron-icon style="color:black" icon="cancel"></iron-icon></paper-button></div>-->
 
                                 <paper-dropdown-menu label="Choose status" vertical-offset="55" horizontal-align="left">
-                                    <paper-listbox style="width:206px;" slot="dropdown-content" class="dropdown-content" selected="{{statusChoice}}" attr-for-selected="value">
+                                    <paper-listbox style="width:206px;" slot="dropdown-content" class="dropdown-content" on-iron-select="_itemSelected" selected="{{statusChoice}}" attr-for-selected="value">
                                         <template is="dom-repeat" items="{{purchaseOrderstatus.member}}">
                                             <paper-item value="{{item.value}}">{{item.description}}</paper-item>
                                         </template>
@@ -138,7 +138,7 @@
                                 </paper-dropdown-menu>
 
                                 <div class="saveCancel">
-                                    <paper-button on-tap="_changePoStatus" class="poViewButton">Save</paper-button>
+                                    <paper-button disabled$="{{disabledButton}}" style="color:{{disabledButtonColor}}" on-tap="_changePoStatus" class="poViewButton">Save</paper-button>
                                 </div>
                             </div>
                         </div>
@@ -244,6 +244,14 @@
                 this.showq = "block";
                 this.pen = "none";
                 this.x = "inline-block";
+                this.disabledButton = true;
+                this.disabledButtonColor = "grey";
+            },
+
+            _itemSelected() {
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
+
             },
 
             closeEditPo() {
