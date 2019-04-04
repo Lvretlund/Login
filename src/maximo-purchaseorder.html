@@ -135,7 +135,7 @@
                             </paper-dropdown-menu>
 
                             <div class="saveCancel">
-                                <paper-button style="display:{{save}}" class="poViewButton" on-tap="_saveOrderBody">Save</paper-button>
+                                <paper-button class="poViewButton" on-tap="_saveOrderBody">Save</paper-button>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
 
                             <div id="hideSave" style="display:{{showSave}}">
                                 <template is="dom-if" if="{{lines}}">
-                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
+                                    <paper-button disabled$="{{disabledButton}}" style="color:{{disabledButtonColor}}" class="poViewButtonPo" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
                             </div>
                         </div>
@@ -243,6 +243,8 @@
                     this.subRoute = subRoute;
                 }
             },
+
+
 
             //static get properties() {
             //    return {
@@ -329,6 +331,7 @@
                 }
                 return false
             },
+
 
             _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
