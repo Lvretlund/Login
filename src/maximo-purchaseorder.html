@@ -126,7 +126,7 @@
                         </div>
 
                         <div id="poEdit" style="display:{{showorderedit}}">
-                            <paper-dropdown-menu label="Type" vertical-offset="55" horizontal-align="left">
+                            <paper-dropdown-menu label="Select order type" vertical-offset="55" horizontal-align="left">
                                 <paper-listbox slot="dropdown-content" selected="{{type}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
                                     <template is="dom-repeat" items="{{types.member}}">
                                         <paper-item value="{{item.value}}">{{item.description}}</paper-item>
@@ -172,7 +172,7 @@
 
                             <div id="hideSave" style="display:{{showSave}}">
                                 <template is="dom-if" if="{{lines}}">
-                                    <paper-button disabled$="{{disabledButton}}" style="color:{{disabledButtonColor}}" class="poViewButtonPo" on-tap="_getSaveBody">Save</paper-button>
+                                    <paper-button disabled$="{{disabledButton2}}" style="color:{{disabledButtonColor2}}" class="poViewButtonPo" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
                             </div>
                         </div>
@@ -304,8 +304,8 @@
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
-                this.disabledButton = true;
-                this.disabledButtonColor = "grey";
+                this.disabledButton2 = true;
+                this.disabledButtonColor2 = "grey";
             },
 
             closeEditPoLines() {
@@ -330,14 +330,15 @@
             },
 
             _checkInputQuant() {
-                this.disabledButton = false;
-                this.disabledButtonColor = "#4178be";
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
             },
 
             closeEditPo() {
                 this.showorderedit = "none";
                 this.pox = "none";
                 this.popen = "inline-block";
+                this.type = null;
             },
 
             _showDetails() {
@@ -439,8 +440,8 @@
                 inp++
                 line--
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
-                this.disabledButton = false;
-                this.disabledButtonColor = "#4178be";
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
 
             },
 
@@ -450,8 +451,8 @@
                 let line = parseInt(item.model.__data.item.polinenum)
                 inp--
                 line--
-                this.disabledButton = false;
-                this.disabledButtonColor = "#4178be";
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
 
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
             },
