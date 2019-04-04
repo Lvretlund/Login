@@ -504,52 +504,6 @@
             },
 
 
-            //_getSaveBody(purchaseOrder) {
-            //    //here we have to set the values of the body we want to change
-            //    // first, check how many lines there are
-            //    let item = this.get('purchaseOrder.poline');
-
-            //    //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
-            //    for (var i = 0; i < item.length;) {
-            //        var getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
-            //        var getDescr = this.get('purchaseOrder.poline.' + i + '.description');
-
-            //        var poCostQty = parseInt(getPoCostQty);
-            //        //this stops the function from allowing negative numbers, however, it will accept other changes to the other lines
-            //        if (poCostQty < 0) {
-            //            this.error = "You cannot enter a negative number!";
-            //            this.blur = "blur(8px); -webkit - filter: blur(8px);";
-            //            break;
-
-            //        }
-
-            //        if (getDescr == "") {
-            //            this.error = "All fields must be filled!";
-            //            this.blur = "blur(8px); -webkit - filter: blur(8px);";
-            //            break;
-            //        }
-            //        else {
-            //            //here we sets the order quantity in the ajax-calls body to the save function, do this one time for each POLINE
-            //            purchaseOrder.body = {
-            //                "poline": [
-            //                    {
-            //                        "polinenum": i + 1,
-            //                        "orderqty": poCostQty,
-            //                        "description": getDescr
-            //                    }]
-            //            }
-
-            //            this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
-            //            this.savePurchaseOrder();
-            //        }
-
-            //        //here we sets the body if the ajax element with our new values
-
-            //        i++
-            //        this.blur = "blur(8px); -webkit - filter: blur(8px);";
-            //    }
-            //},
-
             //this is the save order function, wich calls to the iron ajax element with save order ID.
             savePurchaseOrder() {
                 this.error = null;
