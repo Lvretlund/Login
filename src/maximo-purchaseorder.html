@@ -135,7 +135,7 @@
                             </paper-dropdown-menu>
 
                             <div class="saveCancel">
-                                <paper-button class="poViewButton" on-tap="_saveOrderBody">Save</paper-button>
+                                <paper-button disabled$="{{disabledButton}}" style="color:{{disabledButtonColor}}" class="poViewButtonPo" on-tap="_saveOrderBody">Save</paper-button>
                             </div>
                         </div>
                     </div>
@@ -161,10 +161,10 @@
 
                                 <div id="poQuant" style="display:{{showq}}">
                                     <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
-                                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
+                                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}" on-keypress="_checkInputQuant"></paper-input>
                                     <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
 
-                                    <paper-input label="Line information" required auto-validate error-message="needs some text!" value="{{item.description}}"></paper-input>
+                                    <paper-input label="Line information" required auto-validate error-message="needs some text!" value="{{item.description}}" on-keypress="_checkInputQuant"></paper-input>
 
                                 </div>
                                 <hr />
@@ -304,6 +304,8 @@
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
+                this.disabledButton = true;
+                this.disabledButtonColor = "grey";
             },
 
             closeEditPoLines() {
@@ -317,6 +319,19 @@
                 this.showorderedit = "block";
                 this.popen = "none";
                 this.pox = "inline-block";
+                this.disabledButton = true;
+                this.disabledButtonColor = "grey";
+            },
+
+            _itemSelected() {
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
+
+            },
+
+            _checkInputQuant() {
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
             },
 
             closeEditPo() {
@@ -424,6 +439,8 @@
                 inp++
                 line--
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
 
             },
 
@@ -433,6 +450,8 @@
                 let line = parseInt(item.model.__data.item.polinenum)
                 inp--
                 line--
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
 
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
             },
