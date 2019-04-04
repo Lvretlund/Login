@@ -286,7 +286,7 @@
             _saveOrderBody() {
                 var po = this.get('purchaseOrder');
                 var type = this.type;
-                console.log(po);
+                
 
                 po.body = {
                     "potype": type
@@ -357,7 +357,7 @@
                     this.lines = true;
 
 
-                    console.log(po.poline[0].manufacturer);
+                    
                 }
                 else {
                     this.wap = false;
@@ -454,14 +454,15 @@
                 return headers
             },
 
-
+            
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
-                let item = this.get('purchaseOrder.poline');
+                let items = this.get('purchaseOrder.poline');
+                var validatedPolines = [];
 
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
-                for (var i = 0; i < item.length;) {
+                for (var i = 0; i < items.length;) {
                     var getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
                     var getDescr = this.get('purchaseOrder.poline.' + i + '.description');
 
@@ -481,25 +482,30 @@
                     }
                     else {
                         //here we sets the order quantity in the ajax-calls body to the save function, do this one time for each POLINE
-                        purchaseOrder.body = {
-                            "poline": [
-                                {
-                                    "polinenum": i + 1,
-                                    "orderqty": poCostQty,
-                                    "description": getDescr
-                                }]
+                        this.purchaseOrder.poline[i] = {
+                            "polinenum": i + 1,
+                            "orderqty": poCostQty,
+                            "description": getDescr
                         }
-
-                        this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
-                        this.savePurchaseOrder();
+                        validatedPolines.push(this.purchaseOrder.poline[i]);
                     }
 
                     //here we sets the body if the ajax element with our new values
-
+                    
                     i++
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 }
+
+                if (validatedPolines.length == items.length) {
+                    purchaseOrder.body = {             
+                        "poline": validatedPolines
+                    }
+
+                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                    this.savePurchaseOrder();
+                }
             },
+
 
             //this is the save order function, wich calls to the iron ajax element with save order ID.
             savePurchaseOrder() {
