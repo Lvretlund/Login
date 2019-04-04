@@ -163,6 +163,9 @@
                                     <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
                                     <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
                                     <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
+
+                                    <paper-input label="Line information" required auto-validate error-message="needs some text!" value="{{item.description}}"></paper-input>
+
                                 </div>
                                 <hr />
                             </template>
@@ -345,9 +348,13 @@
 
                 let poLines = this.get('purchaseOrder.poline')
                 let checkPoStatus = this.get('purchaseOrder.status')
+                var po = this.get('purchaseOrder');
                 if (checkPoStatus == "WAPPR" && poLines != null) {
                     this.wap = true;
                     this.lines = true;
+
+
+                    console.log(po.poline[0].manufacturer);
                 }
                 else {
                     this.wap = false;
@@ -376,7 +383,6 @@
             _handleLoadResponse(event) {
                 this.$.spinner.active = false
                 this._poLoaded()
-
             },
 
             _handleLoadError(event, request) {
@@ -449,38 +455,45 @@
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
-                let item = this.get('purchaseOrder.poline')
+                let item = this.get('purchaseOrder.poline');
 
                 //and then do this for each line. Since lines are in array, they start at 0, this is not the case for their polinenum, therefor we use linenumber + 1 to get correct polinenum
                 for (var i = 0; i < item.length;) {
-                    let getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    var getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    var getDescr = this.get('purchaseOrder.poline.' + i + '.description');
 
-                    let poCostQty = parseInt(getPoCostQty);
+                    var poCostQty = parseInt(getPoCostQty);
                     //this stops the function from allowing negative numbers, however, it will accept other changes to the other lines
                     if (poCostQty < 0) {
                         this.error = "You cannot enter a negative number!";
                         this.blur = "blur(8px); -webkit - filter: blur(8px);";
-                        setTimeout(this.reload, 3000);
                         break;
 
-                    } else {
+                    }
+
+                    if (getDescr == "") {
+                        this.error = "All fields must be filled!";
+                        this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                        break;
+                    }
+                    else {
                         //here we sets the order quantity in the ajax-calls body to the save function, do this one time for each POLINE
                         purchaseOrder.body = {
                             "poline": [
                                 {
                                     "polinenum": i + 1,
-                                    "orderqty": poCostQty
+                                    "orderqty": poCostQty,
+                                    "description": getDescr
                                 }]
                         }
+
+                        this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
+                        this.savePurchaseOrder();
                     }
 
                     //here we sets the body if the ajax element with our new values
 
-
-                    this.$.maximoSavePurchaseOrderAjax.body = purchaseOrder.body;
-                    this.savePurchaseOrder();
                     i++
-
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 }
             },
