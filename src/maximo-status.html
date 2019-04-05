@@ -329,14 +329,14 @@
                 let checkPoAppr = this.get('purchaseOrder.status')
                 let checkLines = this.get('purchaseOrder.poline')
 
-                if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
+                if (checkPoAppr == "APPR" || checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow = "none";
 
 
                 } else { this.shouldShow = "inline"; this.wap = true; }
 
 
-                if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD" || checkLines == null) {
+                if (checkPoAppr == "CAN" || checkPoAppr == "CLOSE" || checkPoAppr == "REVISD") {
                     this.shouldShow2 = "none";
 
                 } else { this.shouldShow2 = "inline"; this.wap = true; }
@@ -406,12 +406,11 @@
                     this.error = event.detail.request.xhr.response["Error"]["message"];
                     this.success = null;
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
-                    setTimeout(this.reload, 3000);
+                    
                 } else {
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.error = "Could not save Purchase Order"
                     this.success = null;
-                    setTimeout(this.reload, 3000);
                 }
             },
 
