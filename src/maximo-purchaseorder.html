@@ -176,6 +176,7 @@
                                 </template>
                             </div>
                         </div>
+                        <paper-button id="addRad"><iron-icon icon="add" on-tap="_addRad"></iron-icon></paper-button>
                     </template>
                 </form>
 
@@ -244,7 +245,9 @@
                 }
             },
 
-
+            _addRad() {
+                document.getElementById("addRad").style.display = "none";
+            },
 
             //static get properties() {
             //    return {
