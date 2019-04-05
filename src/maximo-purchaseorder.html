@@ -157,6 +157,7 @@
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Conversion factor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.conversion}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 </div>
 
                                 <div id="poQuant" style="display:{{showq}}">
@@ -179,20 +180,30 @@
                     </template>
                 </form>
 
-                <div id="newPoLine" style="display:{{newLine}}">
-                    <h3>New Line</h3>
-                    <paper-input class="newLineInput" label="Line information"></paper-input>
-                    <paper-input class="newLineInput" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
-                    <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
-                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}" on-keypress="_checkInputQuant"></paper-input>
-                    <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
-                </div>
+                <form action="/foo" method="get">
+                    <div id="newPoLine" style="display:{{newLine}}">
+                        <h3>Edit new Line</h3>
+                        <paper-input class="newLineInput" label="Line information"></paper-input>
+                        <paper-input class="newLineInput" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
+
+                        <div class="newLineInput">
+                            <paper-button style="display: inline;" on-tap="_poIncQuantNewLine"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
+                            <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{newLineQuant}}" on-keypress="_checkInputQuant"></paper-input>
+                            <paper-button style="display: inline;" on-tap="_poDecQuantNewLine"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
+                        </div>
+
+                        <div class="saveCancel">
+                            <paper-button on-tap="saveNewLine">Save</paper-button>
+                            <paper-button on-tap="closeNewPoLine"><iron-icon icon="delete"></iron-icon></paper-button>
+                        </div>
+                    </div>
+                </form>
 
                 <template is="dom-if" if="{{!purchaseOrder.poline}}">
                     <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
                 </template>
 
-                <paper-button id="addRad"><iron-icon icon="add" on-tap="_addRad"></iron-icon></paper-button>
+                <paper-button id="addRad" on-tap="_addRad"><iron-icon icon="add"></iron-icon>Add order line</paper-button>
 
             </div>
 
@@ -299,7 +310,7 @@
             _saveOrderBody() {
                 var po = this.get('purchaseOrder');
                 var type = this.type;
-                
+
 
                 po.body = {
                     "potype": type
@@ -386,7 +397,7 @@
                     this.lines = true;
 
 
-                    
+
                 }
                 else {
                     this.wap = false;
@@ -470,6 +481,18 @@
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
             },
 
+            _poIncQuantNewLine() {
+                this.newLineQuant++;
+            },
+
+            _poDecQuantNewLine() {
+                this.newLineQuant--;
+            },
+
+            closeNewPoLine() {
+                this.newLine = "none";
+            },
+
             //gets headers for the save-ajax call, if this is done locally we need to pass along the csrftoken as a header as well
             // remove before deployment
             _getSaveHeaders() {
@@ -487,7 +510,10 @@
                 return headers
             },
 
-            
+            saveNewLine(item) {
+                var newLine = item;
+            },
+
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
@@ -524,13 +550,13 @@
                     }
 
                     //here we sets the body if the ajax element with our new values
-                    
+
                     i++
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                 }
 
                 if (validatedPolines.length == items.length) {
-                    purchaseOrder.body = {             
+                    purchaseOrder.body = {
                         "poline": validatedPolines
                     }
 
