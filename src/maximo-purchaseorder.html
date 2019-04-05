@@ -229,6 +229,16 @@
                 </div>
             </template>
 
+            <template is="dom-if" if="[[changes]]">
+                <div class="alert-changes">
+                    <p id="alertContent">[[changes]]</p>
+                    <div class="yesAndNoButtons">
+                        <paper-button id="yesButton" on-tap="_getSaveBody"><iron-icon icon="check"></iron-icon></paper-button>
+                        <paper-button id="noButton" on-tap="reload"><iron-icon icon="close"></iron-icon></paper-button>
+                    </div>
+                </div>
+            </template>
+
         </template>
     </template>
     <script>
@@ -245,6 +255,9 @@
                 type: String
             },
             baseUri: {
+                type: String
+            },
+            lineInfo: {
                 type: String
             },
             ready: function () {
@@ -330,6 +343,10 @@
                 this.x = "inline-block";
                 this.disabledButton2 = true;
                 this.disabledButtonColor2 = "grey";
+
+                lineInfo = this.__data.purchaseOrder.poline[0].description;
+                console.log(lineInfo);
+
             },
 
             closeEditPoLines() {
@@ -337,6 +354,11 @@
                 this.showq = "none";
                 this.x = "none";
                 this.pen = "inline-block";
+
+                if (this.__data.purchaseOrder.poline[0].description != lineInfo) {
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = "Keep changes?"
+                }
             },
 
             editPo() {
@@ -553,6 +575,7 @@
 
                     i++
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = null;
                 }
 
                 if (validatedPolines.length == items.length) {
