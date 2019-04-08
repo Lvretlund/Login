@@ -287,6 +287,11 @@
             lineInfo: {
                 type: String
             },
+
+            quantInfo: {
+                type: String
+            },
+
             ready: function () {
                 this.baseUri = sessionStorage.getItem('baseUri');
                 this.theOrder = localStorage['theOrder']
@@ -372,7 +377,7 @@
                 this.disabledButtonColor2 = "grey";
 
                 lineInfo = this.__data.purchaseOrder.poline[0].description;
-                console.log(lineInfo);
+                quantInfo = this.__data.purchaseOrder.poline[0].orderqty;
 
             },
 
@@ -383,6 +388,11 @@
                 this.pen = "inline-block";
 
                 if (this.__data.purchaseOrder.poline[0].description != lineInfo) {
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = "Keep changes?"
+                }
+
+                else if (this.__data.purchaseOrder.poline[0].orderqty != quantInfo) {
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
                     this.changes = "Keep changes?"
                 }
