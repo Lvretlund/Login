@@ -571,19 +571,66 @@
                 var info = this.get('lineInformation');
                 var conv = parseInt(this.get('conversionFactor'));
                 var lineType = this.get('linetype').toUpperCase();
-                var lineQuantiy = this.get('newLineQuant').toString();
+                var lineQuantiy = this.get('newLineQuant');
                 let items = this.get('purchaseOrder.poline');
-                var L = items.length;
+                var L = items.length +1 ;
+                var validatedPolines = [];
 
-                this.purchaseOrder.poline[L] = {
+                let aa  = {
                     "polinenum": L,
                     "orderqty": lineQuantiy,
                     "description": info,
                     "conversion": conv,
                     "linetype": lineType,
                 }
-                this.$.maximoSavePurchaseOrderAjax.body = this.purchaseOrder;
-                this.savePurchaseOrder();
+                
+                for (var i = 0; i < items.length;) {
+                    var getPoCostQty = this.get('purchaseOrder.poline.' + i + '.orderqty');
+                    var getDescr = this.get('purchaseOrder.poline.' + i + '.description');
+
+                    var poCostQty = parseInt(getPoCostQty);
+                    //this stops the function from allowing negative numbers, however, it will accept other changes to the other lines
+                    if (poCostQty < 0) {
+                        this.error = "You cannot enter a negative number!";
+                        this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                        break;
+
+                    }
+
+                    if (getDescr == "") {
+                        this.error = "All fields must be filled!";
+                        this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                        break;
+                    }
+                    else {
+                        //here we sets the order quantity in the ajax-calls body to the save function, do this one time for each POLINE
+                        this.purchaseOrder.poline[i] = {
+                            "polinenum": i + 1,
+                            "orderqty": poCostQty,
+                            "description": getDescr
+                        }
+                        validatedPolines.push(this.purchaseOrder.poline[i]);
+                    }
+
+                    //here we sets the body if the ajax element with our new values
+
+                    i++
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = null;
+                }
+
+                validatedPolines.push(aa);
+
+                if (validatedPolines.length == items.length || validatedPolines.length == items.length +1) {
+                    this.purchaseOrder.body = {
+                        "poline": validatedPolines
+                    }
+
+                    
+
+                    this.$.maximoSavePurchaseOrderAjax.body = this.purchaseOrder.body;
+                    this.savePurchaseOrder();
+                }
             },
 
             _getSaveBody(purchaseOrder) {
