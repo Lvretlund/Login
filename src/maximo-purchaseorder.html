@@ -200,7 +200,7 @@
 
                         <div id="lineType">
                             <paper-dropdown-menu label="Select line type" vertical-offset="55" horizontal-align="left">
-                                <paper-listbox slot="dropdown-content" selected="{{linetype}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
+                                <paper-listbox slot="dropdown-content" selected="{{linetype}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 210px;">
                                     <template is="dom-repeat" items="{{linetypes}}">
                                         <paper-item value="{{item.value}}">{{item.description}}</paper-item>
                                     </template> 
@@ -482,9 +482,9 @@
             },
 
             _handleStateResponse() {
-                var allStates = { "description": "ALL", "maxvalue": "ALL", "value": "ALL" };
+                //var allStates = { "maxvalue": "ALL", "value": "ALL" };
                 theStates = this.states.member[0].synonymdomain;
-                theStates.unshift(allStates);
+                //theStates.unshift(allStates);
 
                 this.linetypes = theStates;
             },
