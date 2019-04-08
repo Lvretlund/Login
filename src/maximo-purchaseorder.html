@@ -57,6 +57,17 @@
                    on-response="_handleLoadResponse"
                    on-error="_handleLoadError"></iron-ajax>
 
+        <iron-ajax auto
+                   id="maximoLineTypeAjax"
+                   with-credentials
+                   method="get"
+                   handle-as="json"
+                   content-type="application/json"
+                   url='[[baseUrl]]maximo/oslc/os/mxapidomain?oslc.where=domainid="LINETYPE"&oslc.select=*&lean=1'
+                   last-response="{{states}}"
+                   on-response="_handleStateResponse"
+                   on-error="_handleLoadError"></iron-ajax>
+
         <!--when wh run savepurchaseorder, this iron ajax post is executed,it posts to maximo-po where poID is equal to choosen below-->
         <iron-ajax id="maximoSavePurchaseOrderAjax"
                    with-credentials
@@ -186,15 +197,26 @@
                         <paper-input class="newLineInput" label="Line information"></paper-input>
                         <paper-input class="newLineInput" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
 
-                        <div class="newLineInput">
-                            <paper-button style="display: inline;" on-tap="_poIncQuantNewLine"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
-                            <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{newLineQuant}}" on-keypress="_checkInputQuant"></paper-input>
-                            <paper-button style="display: inline;" on-tap="_poDecQuantNewLine"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
-                        </div>
 
-                        <div class="saveCancel">
-                            <paper-button on-tap="saveNewLine">Save</paper-button>
-                            <paper-button on-tap="closeNewPoLine"><iron-icon icon="delete"></iron-icon></paper-button>
+                        <div id="lineType">
+                            <paper-dropdown-menu label="Select line type" vertical-offset="55" horizontal-align="left">
+                                <paper-listbox slot="dropdown-content" selected="{{linetype}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
+                                    <template is="dom-repeat" items="{{linetypes}}">
+                                        <paper-item value="{{item.value}}">{{item.description}}</paper-item>
+                                    </template> 
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+
+                            <div class="newLineInput">
+                                <paper-button style="display: inline;" on-tap="_poIncQuantNewLine"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
+                                <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{newLineQuant}}" on-keypress="_checkInputQuant"></paper-input>
+                                <paper-button style="display: inline;" on-tap="_poDecQuantNewLine"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
+                            </div>
+
+                            <div class="saveCancel">
+                                <paper-button on-tap="saveNewLine">Save</paper-button>
+                                <paper-button on-tap="closeNewPoLine"><iron-icon icon="delete"></iron-icon></paper-button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -254,6 +276,11 @@
             theOrder: {
                 type: String
             },
+
+            theStates: {
+                type: Array
+            },
+
             baseUri: {
                 type: String
             },
@@ -452,6 +479,14 @@
 
             _handleLoadError(event, request) {
                 this.$.spinner.active = false
+            },
+
+            _handleStateResponse() {
+                var allStates = { "description": "ALL", "maxvalue": "ALL", "value": "ALL" };
+                theStates = this.states.member[0].synonymdomain;
+                theStates.unshift(allStates);
+
+                this.linetypes = theStates;
             },
 
             _handleSaveResponse(event) {
