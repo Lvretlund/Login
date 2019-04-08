@@ -92,8 +92,8 @@
                                 <paper-button id="backButton" data-args="http://127.0.0.1:8081/purchaseorders" on-tap="goto"><iron-icon id="backIcon" icon="arrow-back" data-args="http://127.0.0.1:8081/purchaseorders"></iron-icon></paper-button>&nbsp;<paper-spinner-lite id="spinner"></paper-spinner-lite><br />
                                 <iron-icon class="titleIcon" icon="assignment"></iron-icon>
                                 <strong class="ponum">{{purchaseOrder.ponum}}</strong><br />
-                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Order Information:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
+                                <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Status:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.status_description}}</span><span style="margin: 16px 0px 0px 16px;"></span></div><br />
                                 <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Buyer:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{purchaseOrder.purchaseagent}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                             </div>
                             <div class="poContentDiv">
@@ -126,7 +126,7 @@
                         </div>
 
                         <div id="poEdit" style="display:{{showorderedit}}">
-                            <paper-dropdown-menu label="Type" vertical-offset="55" horizontal-align="left">
+                            <paper-dropdown-menu label="Select order type" vertical-offset="55" horizontal-align="left">
                                 <paper-listbox slot="dropdown-content" selected="{{type}}" attr-for-selected="value" on-iron-select="_itemSelected" style="width: 160px;">
                                     <template is="dom-repeat" items="{{types.member}}">
                                         <paper-item value="{{item.value}}">{{item.description}}</paper-item>
@@ -135,7 +135,7 @@
                             </paper-dropdown-menu>
 
                             <div class="saveCancel">
-                                <paper-button style="display:{{save}}" class="poViewButton" on-tap="_saveOrderBody">Save</paper-button>
+                                <paper-button disabled$="{{disabledButton}}" style="color:{{disabledButtonColor}}" class="poViewButtonPo" on-tap="_saveOrderBody">Save</paper-button>
                             </div>
                         </div>
                     </div>
@@ -157,14 +157,15 @@
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Line Quantity:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.orderqty}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Unit cost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.unitcost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                     <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Linecost:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.linecost}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
+                                    <div style="margin: 16px 0px 0px 0px;font-weight: bold;display:inline-block;">Conversion factor:<span style="margin: 16px -8px 0px 5px;font-weight: normal;">{{item.conversion}}</span><span style="margin: 16px 0px 0px 16px;"></span></div>
                                 </div>
 
                                 <div id="poQuant" style="display:{{showq}}">
                                     <paper-button style="display: inline;" on-tap="_poIncQuant"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
-                                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}"></paper-input>
+                                    <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{item.orderqty}}" on-keypress="_checkInputQuant"></paper-input>
                                     <paper-button style="display: inline;" on-tap="_poDecQuant"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
 
-                                    <paper-input label="Line information" required auto-validate error-message="needs some text!" value="{{item.description}}"></paper-input>
+                                    <paper-input label="Line information" required auto-validate error-message="needs some text!" value="{{item.description}}" on-keypress="_checkInputQuant"></paper-input>
 
                                 </div>
                                 <hr />
@@ -172,16 +173,37 @@
 
                             <div id="hideSave" style="display:{{showSave}}">
                                 <template is="dom-if" if="{{lines}}">
-                                    <paper-button style="display:{{save}}" class="poViewButton" on-tap="_getSaveBody">Save</paper-button>
+                                    <paper-button disabled$="{{disabledButton2}}" style="color:{{disabledButtonColor2}}" class="poViewButtonPo" on-tap="_getSaveBody">Save</paper-button>
                                 </template>
                             </div>
                         </div>
                     </template>
                 </form>
 
+                <form action="/foo" method="get">
+                    <div id="newPoLine" style="display:{{newLine}}">
+                        <h3>Edit new Line</h3>
+                        <paper-input class="newLineInput" label="Line information"></paper-input>
+                        <paper-input class="newLineInput" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
+
+                        <div class="newLineInput">
+                            <paper-button style="display: inline;" on-tap="_poIncQuantNewLine"><iron-icon class="editIcon" icon="add"></iron-icon></paper-button>
+                            <paper-input id="poQuantLine" auto-validate pattern="[0-9]*" error-message="Positive numbers only!" required label="Line Quantity" value="{{newLineQuant}}" on-keypress="_checkInputQuant"></paper-input>
+                            <paper-button style="display: inline;" on-tap="_poDecQuantNewLine"><iron-icon class="editIcon" icon="remove"></iron-icon></paper-button>
+                        </div>
+
+                        <div class="saveCancel">
+                            <paper-button on-tap="saveNewLine">Save</paper-button>
+                            <paper-button on-tap="closeNewPoLine"><iron-icon icon="delete"></iron-icon></paper-button>
+                        </div>
+                    </div>
+                </form>
+
                 <template is="dom-if" if="{{!purchaseOrder.poline}}">
                     <maximo-norecords norecordstext="No purchase order lines were found."></maximo-norecords>
                 </template>
+
+                <paper-button id="addRad" on-tap="_addRad"><iron-icon icon="add"></iron-icon>Add order line</paper-button>
 
             </div>
 
@@ -207,6 +229,16 @@
                 </div>
             </template>
 
+            <template is="dom-if" if="[[changes]]">
+                <div class="alert-changes">
+                    <p id="alertContent">[[changes]]</p>
+                    <div class="yesAndNoButtons">
+                        <paper-button id="yesButton" on-tap="_getSaveBody"><iron-icon icon="check"></iron-icon></paper-button>
+                        <paper-button id="noButton" on-tap="reload"><iron-icon icon="close"></iron-icon></paper-button>
+                    </div>
+                </div>
+            </template>
+
         </template>
     </template>
     <script>
@@ -223,6 +255,9 @@
                 type: String
             },
             baseUri: {
+                type: String
+            },
+            lineInfo: {
                 type: String
             },
             ready: function () {
@@ -242,6 +277,10 @@
                     }
                     this.subRoute = subRoute;
                 }
+            },
+
+            _addRad() {
+                this.newLine = "block";
             },
 
             //static get properties() {
@@ -284,7 +323,7 @@
             _saveOrderBody() {
                 var po = this.get('purchaseOrder');
                 var type = this.type;
-                
+
 
                 po.body = {
                     "potype": type
@@ -302,6 +341,12 @@
                 this.showq = "inline-block";
                 this.pen = "none";
                 this.x = "inline-block";
+                this.disabledButton2 = true;
+                this.disabledButtonColor2 = "grey";
+
+                lineInfo = this.__data.purchaseOrder.poline[0].description;
+                console.log(lineInfo);
+
             },
 
             closeEditPoLines() {
@@ -309,18 +354,37 @@
                 this.showq = "none";
                 this.x = "none";
                 this.pen = "inline-block";
+
+                if (this.__data.purchaseOrder.poline[0].description != lineInfo) {
+                    this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = "Keep changes?"
+                }
             },
 
             editPo() {
                 this.showorderedit = "block";
                 this.popen = "none";
                 this.pox = "inline-block";
+                this.disabledButton = true;
+                this.disabledButtonColor = "grey";
+            },
+
+            _itemSelected() {
+                this.disabledButton = false;
+                this.disabledButtonColor = "#4178be";
+
+            },
+
+            _checkInputQuant() {
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
             },
 
             closeEditPo() {
                 this.showorderedit = "none";
                 this.pox = "none";
                 this.popen = "inline-block";
+                this.type = null;
             },
 
             _showDetails() {
@@ -329,6 +393,7 @@
                 }
                 return false
             },
+
 
             _poRefChanged(pageData) {
                 //if we have a valid id, load the related wo data
@@ -354,7 +419,7 @@
                     this.lines = true;
 
 
-                    
+
                 }
                 else {
                     this.wap = false;
@@ -421,6 +486,8 @@
                 inp++
                 line--
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
 
             },
 
@@ -430,8 +497,22 @@
                 let line = parseInt(item.model.__data.item.polinenum)
                 inp--
                 line--
+                this.disabledButton2 = false;
+                this.disabledButtonColor2 = "#4178be";
 
                 this.set('purchaseOrder.poline.' + line + '.orderqty', inp);
+            },
+
+            _poIncQuantNewLine() {
+                this.newLineQuant++;
+            },
+
+            _poDecQuantNewLine() {
+                this.newLineQuant--;
+            },
+
+            closeNewPoLine() {
+                this.newLine = "none";
             },
 
             //gets headers for the save-ajax call, if this is done locally we need to pass along the csrftoken as a header as well
@@ -451,7 +532,10 @@
                 return headers
             },
 
-            
+            saveNewLine(item) {
+                var newLine = item;
+            },
+
             _getSaveBody(purchaseOrder) {
                 //here we have to set the values of the body we want to change
                 // first, check how many lines there are
@@ -488,13 +572,14 @@
                     }
 
                     //here we sets the body if the ajax element with our new values
-                    
+
                     i++
                     this.blur = "blur(8px); -webkit - filter: blur(8px);";
+                    this.changes = null;
                 }
 
                 if (validatedPolines.length == items.length) {
-                    purchaseOrder.body = {             
+                    purchaseOrder.body = {
                         "poline": validatedPolines
                     }
 

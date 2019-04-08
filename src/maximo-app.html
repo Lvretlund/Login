@@ -129,6 +129,10 @@
                     <maximo-logout name="logout" on-logout='_onLogout'></maximo-logout>
                     <maximo-status name="status"></maximo-status>
                 </iron-pages>
+
+                <footer>
+                    <div class="footerLabel">Copyright@ 2019 Sigma AB</div>
+                </footer>
             </app-header-layout>
         </app-drawer-layout>
     </template>
@@ -262,6 +266,8 @@
             }
 
         }
+
+        
 
         //now, register your new custom element so the browser can use it
         window.customElements.define(MaximoApp.is, MaximoApp);

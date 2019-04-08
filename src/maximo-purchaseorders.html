@@ -138,7 +138,7 @@
             </template>
         </div>
 
-        <div class="noPos" style="display: {{noPos}}">
+        <div class="noPos" style="display:{{noPos}}">
             <maximo-norecords norecordstext="No matching records were found."></maximo-norecords>
         </div>
 
@@ -333,6 +333,7 @@
                 } else {
                     this.noPos = "none";
                 }
+                                console.log(this.noPos);
             },
 
             _showFilters() {
