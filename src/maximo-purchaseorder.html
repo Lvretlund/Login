@@ -194,8 +194,8 @@
                 <form action="/foo" method="get">
                     <div id="newPoLine" style="display:{{newLine}}">
                         <h3>Edit new Line</h3>
-                        <paper-input class="newLineInput" label="Line information"></paper-input>
-                        <paper-input class="newLineInput" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
+                        <paper-input class="newLineInput" value="{{lineInformation}}" label="Line information"></paper-input>
+                        <paper-input class="newLineInput" value="{{conversionFactor}}" auto-validate pattern="[0-9]*" label="Conversion factor"></paper-input>
 
 
                         <div id="lineType">
@@ -214,7 +214,7 @@
                             </div>
 
                             <div class="saveCancel">
-                                <paper-button on-tap="saveNewLine">Save</paper-button>
+                                <paper-button data-attr={{lineInformation}} on-tap="saveNewLine">Save</paper-button>
                                 <paper-button on-tap="closeNewPoLine"><iron-icon icon="delete"></iron-icon></paper-button>
                             </div>
                         </div>
@@ -568,7 +568,22 @@
             },
 
             saveNewLine(item) {
-                var newLine = item;
+                var info = this.get('lineInformation');
+                var conv = parseInt(this.get('conversionFactor'));
+                var lineType = this.get('linetype').toUpperCase();
+                var lineQuantiy = this.get('newLineQuant').toString();
+                let items = this.get('purchaseOrder.poline');
+                var L = items.length;
+
+                this.purchaseOrder.poline[L] = {
+                    "polinenum": L,
+                    "orderqty": lineQuantiy,
+                    "description": info,
+                    "conversion": conv,
+                    "linetype": lineType,
+                }
+                this.$.maximoSavePurchaseOrderAjax.body = this.purchaseOrder;
+                this.savePurchaseOrder();
             },
 
             _getSaveBody(purchaseOrder) {
